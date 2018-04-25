@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="fabric.min.js"></script>
+
+    <style>
+        .canvas-wrapper {
+            width: 800px;
+            height: 600px;
+            margin:40px auto;
+        }
+
+        #c {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-wrapper">
+        <canvas id="c"></canvas>
+    </div>
+</body>
+</html>
+
+<script>
+    paint();
+
+    function paint()  {
+        window.canvas = new fabric.Canvas('c');
+        canvas.setWidth(800);
+        canvas.setHeight(600);
+
+
+        //rectangle
+        window.rect = new fabric.Rect({
+            left: 10, top: 10,
+            fill: 'red',
+            width: 20, height: 20,
+            angle: 0
+        });
+
+        //canvas.add(rect);
+
+        window.line = new fabric.Line([30, 30, 100, 100], {
+            left: 30,
+            top: 30,
+            stroke: 'red',
+        })
+
+        //canvas.add(line);
+
+        window.group = new fabric.Group([rect, line], {
+            left: 10,
+            top: 10,
+            angle: -10
+        });
+
+        canvas.add(group);
+
+        return;
+
+        //ejemplo JSON
+        var json = canvas.toJSON();
+        canvas.clear();
+        canvas.loadFromJSON(json);
+
+        //Ejemplo añade array objetos
+        canvas.add(rect, line);
+
+        //Ejemplo movimiento:
+        setInterval(function () {
+            rect.left += 5;
+            canvas.renderAll();
+        }, 20);
+
+    }
+
+    
+
+</script>

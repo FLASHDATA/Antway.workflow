@@ -1,0 +1,306 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="fabric.min.js"></script>
+
+    <style>
+        .canvas-wrapper {
+            width: 800px;
+            height: 600px;
+            margin: 40px auto;
+        }
+
+        #c {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-wrapper">
+        <canvas id="c"></canvas>
+    </div>
+    <div style="display: inline-block; margin-left: 10px">
+        <button id="group" class="btn btn-info">Group selected objecs</button><br>
+        <button id="ungroup" class="btn btn-info">Ungroup selected objects</button><br>
+        <button id="multiselect" class="btn btn-info">Make a multiselection</button><br>
+        <button id="addmore" class="btn btn-info">Add more shapes</button><br>
+        <button id="discard" class="btn btn-info">Discard selection</button><br>
+    </div>
+</body>
+</html>
+
+<script>
+    paint();
+
+    function paint() {
+        window.canvas = new fabric.Canvas('c');
+        canvas.setWidth(800);
+        canvas.setHeight(600);
+
+
+
+        (function () {
+
+            function add() {
+                var red = new fabric.Rect({
+                    top: 100, left: 0, width: 80, height: 50, fill: 'red'
+                });
+                var blue = new fabric.Rect({
+                    top: 0, left: 100, width: 50, height: 70, fill: 'blue'
+                });
+                var green = new fabric.Rect({
+                    top: 100, left: 100, width: 60, height: 60, fill: 'green'
+                });
+                canvas.add(red, blue, green);
+            }
+
+            var $ = function (id) { return document.getElementById(id) };
+
+
+
+
+            fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
+
+
+
+
+
+            /////////////////////////CONECTORES/////////////////////////
+
+
+            function makeCircle(left, top, conector1, conector2) {
+                var c = new fabric.Circle({
+                    left: left,
+                    top: top,
+                    strokeWidth: 5,
+                    radius: 12,
+                    fill: 'transparent',
+                    stroke: '#666'
+                });
+
+                c.conector1 = conector1;
+                c.conector2 = conector2;
+
+                return c;
+            }
+
+            function makeCuadrao(left, top, conector1, conector2) {
+                var c = new fabric.Rect({
+                    left: left,
+                    top: top,
+                    stroke: '#666',
+                    width: 80,
+                    height: 50,
+                    fill: 'red',
+
+                });
+
+                c.conector1 = conector1;
+                c.conector2 = conector2;
+
+                return c;
+            }
+
+            function makeDecisiones(left, top, conector1, conector2, conector3) {
+                var c = new fabric.Triangle({
+                    left: left,
+                    top: top,
+                    stroke: '#666',
+                    width: 80,
+                    height: 50,
+                    fill: 'red',
+
+                });
+                c.hasControls = c.hasBorders = false;
+                c.conector1 = conector1;
+                c.conector2 = conector2;
+                c.conector3 = conector3;
+
+                return c;
+            }
+
+            //var start = new fabric.Circle({ radius: 20, fill: '#00C62A', top: 80, left: 100 })
+
+            function makeLine(coords) {
+                return new fabric.Line(coords, { //linea
+                    fill: 'red',
+                    stroke: 'red',
+                    strokeWidth: 5,
+                    selectable: false
+                });
+
+            }
+
+            function makeLineTrue(coords) {
+                return new fabric.Line(coords, { //linea
+                    fill: 'green',
+                    stroke: 'green',
+                    strokeWidth: 5,
+                    selectable: false
+                });
+
+            }
+
+            var line = makeLine([250, 125, 250, 175]),
+                line2 = makeLine([250, 175, 250, 250]),
+                lineTrue = makeLineTrue([250, 250, 300, 350]);
+                lineTrue2 = makeLineTrue([250, 250, 300, 350]);
+
+                canvas.add(line, line2, lineTrue, lineTrue2); //add linea
+
+            canvas.add( //añadimos cuantos circulos queramos y los conectamos con las lineas que queramos
+                makeCircle(line.get('x1'), line.get('y1'), null, line),
+                makeDecisiones(line2.get('x1'), line2.get('y2'), line, line2, lineTrue),
+                makeCircle(line.get('x2'), line.get('y2'), line2 ),
+                makeCuadrao(line.get('x2'), line.get('y2'), lineTrue),
+                
+            );
+            //canvas.add(start();
+
+            canvas.on('object:moving', function (e) {
+                var p = e.target;
+                p.conector1 && p.conector1.set({ 'x2': p.left, 'y2': p.top });
+                p.conector2 && p.conector2.set({ 'x1': p.left, 'y1': p.top });
+                p.conector3 && p.conector3.set({ 'x1': p.left, 'y1': p.top });
+                canvas.renderAll();
+            });
+
+
+
+
+            ///////////////FIN CONECTORES////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var red = new fabric.Rect({
+                top: 100, left: 0, width: 80, height: 50, fill: 'red'
+            });
+            var blue = new fabric.Rect({
+                top: 0, left: 100, width: 50, height: 70, fill: 'blue'
+            });
+            var green = new fabric.Rect({
+                top: 100, left: 100, width: 60, height: 60, fill: 'green'
+            });
+            fabric.Object.prototype.transparentCorners = false;
+            canvas.add(red, blue, green)
+            var group = $('group'),
+                ungroup = $('ungroup'),
+                multiselect = $('multiselect'),
+                addmore = $('addmore'),
+                discard = $('discard');
+
+            addmore.onclick = add;
+
+            multiselect.onclick = function () {
+                canvas.discardActiveObject();
+                var sel = new fabric.ActiveSelection(canvas.getObjects(), {
+                    canvas: canvas,
+                });
+                canvas.setActiveObject(sel);
+                canvas.requestRenderAll();
+            }
+
+            group.onclick = function () {
+                if (!canvas.getActiveObject()) {
+                    return;
+                }
+                if (canvas.getActiveObject().type !== 'activeSelection') {
+                    return;
+                }
+                canvas.getActiveObject().toGroup();
+                canvas.requestRenderAll();
+            }
+
+            ungroup.onclick = function () {
+                if (!canvas.getActiveObject()) {
+                    return;
+                }
+                if (canvas.getActiveObject().type !== 'group') {
+                    return;
+                }
+                canvas.getActiveObject().toActiveSelection();
+                canvas.requestRenderAll();
+            }
+
+            discard.onclick = function () {
+                canvas.discardActiveObject();
+                canvas.requestRenderAll();
+            }
+
+
+
+        })();
+
+
+
+
+
+
+
+        canvas.add(new fabric.Rect({ left: 110, top: 110, fill: '#f0f', width: 50, height: 50 }));
+        canvas.add(new fabric.Rect({ left: 50, top: 50, fill: '#77f', width: 40, height: 40 }));
+
+        canvas.forEachObject(function (o) { o.hasBorders = o.hasControls = false; });
+
+        canvas.hoverCursor = 'pointer';
+
+        function animate(e, dir) {
+            if (e.target) {
+                fabric.util.animate({
+                    startValue: e.target.get('angle'),
+                    endValue: e.target.get('angle') + (dir ? 10 : -10),
+                    duration: 100,
+                    onChange: function (value) {
+                        e.target.setAngle(value);
+                        canvas.renderAll();
+                    },
+                    onComplete: function () {
+                        e.target.setCoords();
+                    }
+                });
+                fabric.util.animate({
+                    startValue: e.target.get('scaleX'),
+                    endValue: e.target.get('scaleX') + (dir ? 0.2 : -0.2),
+                    duration: 100,
+                    onChange: function (value) {
+                        e.target.scale(value);
+                        canvas.renderAll();
+                    },
+                    onComplete: function () {
+                        e.target.setCoords();
+                    }
+                });
+            }
+        }
+        canvas.on('mouse:down', function (e) { animate(e, 1); });
+        canvas.on('mouse:up', function (e) { animate(e, 0); });
+        this.__canvases.push(canvas);
+
+        /////add text
+
+
+
+
+
+        //var canvas = this.__canvas = new fabric.Canvas('c');
+
+
+    }
+
+
+
+</script>

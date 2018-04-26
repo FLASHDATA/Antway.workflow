@@ -29,6 +29,8 @@
 
 <script>
 
+
+
     var layout = new Layout();
 
     function Layout() {
@@ -47,9 +49,9 @@
 
         this.canvas.add(this.rect);
 
-        this.moveHandler = function (e) {
+        var moveHandler = function (e) {
             var movingObject = e.target;
-            console.log(movingObject.get('left'), movingObject.get('top'));
+            //console.log(movingObject.get('left'), movingObject.get('top'));
 
             var x = movingObject.get('left');
             var y = movingObject.get('top');
@@ -66,47 +68,13 @@
 
 
         this.canvas.on({
-            'object:moving': this.moveHandler,
+            'object:moving': moveHandler,
             //'object:modified': modifiedHandler,
             //'custom:event': customEvtHandler
         });
-
-
-        return this;
     };
 
 
-
-    //window.line = new fabric.Line([30, 30, 100, 100], {
-    //    left: 30,
-    //    top: 30,
-    //    stroke: 'red',
-    //})
-
-    ////canvas.add(line);
-
-    //window.group = new fabric.Group([rect, line], {
-    //    left: 10,
-    //    top: 10,
-    //    angle: -10
-    //});
-
-    //canvas.add(group);
-
-
-        ////ejemplo JSON
-        //var json = canvas.toJSON();
-        //canvas.clear();
-        //canvas.loadFromJSON(json);
-
-        ////Ejemplo añade array objetos
-        //canvas.add(rect, line);
-
-    //Ejemplo movimiento:
-    //setInterval(function () {
-    //    rect.left += 5;
-    //    canvas.renderAll();
-    //}, 20);    
-
+    
 </script>
 

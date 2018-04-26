@@ -57,13 +57,13 @@
       <Project>{7d61bada-6d2b-4b62-bfcd-91ce992d0977}</Project>
       <Name>Workflow.EFDAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IMHab.PreventBlanqueo.Model.Views\Workflow.Views.csproj">
-      <Project>{63f8cd62-9439-4e5d-a02b-504974720ed6}</Project>
-      <Name>Workflow.Views</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Workflow.Interfaces\Workflow.Interfaces.csproj">
       <Project>{79444d23-fe26-4fb8-b043-ebeb25ac74e2}</Project>
       <Name>Workflow.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkFlow.Views\WorkFlow.Views.csproj">
+      <Project>{77e86246-6241-45be-9fd4-87902bf451a1}</Project>
+      <Name>WorkFlow.Views</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

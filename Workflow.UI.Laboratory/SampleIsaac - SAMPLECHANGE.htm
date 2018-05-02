@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="fabric.min.js"></script>
+
+    <style>
+        .canvas-wrapper {
+            width: 800px;
+            height: 600px;
+            margin: 40px auto;
+        }
+
+        #c {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-wrapper">
+        <canvas id="c"></canvas>
+    </div>
+    <div style="display: inline-block; margin-left: 10px">
+        <button id="group" class="btn btn-info">Group selected objecs</button><br>
+        <button id="ungroup" class="btn btn-info">Ungroup selected objects</button><br>
+        <button id="multiselect" class="btn btn-info">Make a multiselection</button><br>
+        <button id="addmore" class="btn btn-info">Add more shapes</button><br>
+        <button id="discard" class="btn btn-info">Discard selection</button><br>
+    </div>
+</body>
+</html>
+
+<script>
+    paint();
+
+    function paint() {
+        window.canvas = new fabric.Canvas('c');
+        canvas.setWidth(800);
+        canvas.setHeight(600);
+
+
+
+        (function () {
+
+
+            // var canvas = this.__canvas = new fabric.Canvas('c', { selection: false });
+            fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
+
+            function makeCircle(left, top, line1, line2, line3, line4) {
+                var c = new fabric.Rect({
+                    left: left,
+                    top: top, fill: 'Green', width: 100, height: 50
+                    //strokeWidth: 5,
+                    //radius: 12,
+                    //fill: '#fff',
+                    //stroke: '#666'
+                });
+                c.hasControls = c.hasBorders = false;
+
+                c.line1 = line1;
+                c.line2 = line2;
+                c.line3 = line3;
+                c.line4 = line4;
+
+                return c;
+            }
+
+            function makeLine(coords) {
+                return new fabric.Line(coords, {
+                    fill: 'red',
+                    stroke: 'red',
+                    strokeWidth: 5,
+                    selectable: true
+                });
+            }
+
+
+            var linetest = makeLine([cuadrotest.left, cuadrotest.top, cuadrotest2.left, cuadrotest2.top]); //line([x1, y1, x2, y2])
+            canvas.add(linetest);
+
+
+            var cuadrotest = makeCircle(150, 250, null, linetest),
+               cuadrotest2 = makeCircle(250, 175, linetest);
+
+            canvas.add(cuadrotest, cuadrotest2);
+
+
+            canvas.on('object:moving', function (e) {
+                var p = e.target;
+                p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
+                p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
+                p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
+                p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
+
+                canvas.renderAll();
+            });
+        })();
+
+        ///////////////FIN CONECTORES////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //var canvas = this.__canvas = new fabric.Canvas('c');
+
+
+    }
+
+
+
+</script>

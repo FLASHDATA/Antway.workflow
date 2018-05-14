@@ -22,7 +22,7 @@ namespace Client.ConsoleApp
         }
 
 
-        static string schemeCode = "SimpleWF";
+        static string schemeCode = "SchemePBC";
         static Guid? processId = null;
         static void Main(string[] args)
         {
@@ -149,7 +149,25 @@ namespace Client.ConsoleApp
             {
                 Console.Write($"{cp.ParameterName}:");
                 var stringValue = Console.ReadLine();
-                command.SetParameter(cp.ParameterName, stringValue);
+
+                switch (cp.Type.Name.ToLower())
+                {
+                    case "decimal":
+                        command.SetParameter(cp.ParameterName, Convert.ToDecimal(stringValue));
+                        break;
+
+                    case "boolean":
+                        command.SetParameter(cp.ParameterName, stringValue == "1");
+                        break;
+
+                    case "string":
+                        command.SetParameter(cp.ParameterName, stringValue);
+                        break;
+
+                    default:
+                        command.SetParameter(cp.ParameterName, stringValue);
+                        break;
+                }
             }
  
             WorkflowInit.Runtime.ExecuteCommand(command, string.Empty, string.Empty);

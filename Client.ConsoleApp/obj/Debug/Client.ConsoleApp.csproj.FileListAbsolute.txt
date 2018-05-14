@@ -14,5 +14,4 @@ C:\PROJECTS\WorkFlow\Client.ConsoleApp\bin\Debug\WorkFlowEngine.pdb
 C:\PROJECTS\WorkFlow\Client.ConsoleApp\bin\Debug\WorkFlowEngine.dll.config
 C:\PROJECTS\WorkFlow\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.exe.config
 C:\PROJECTS\WorkFlow\Client.ConsoleApp\bin\Debug\OptimaJet.Workflow.Core.pdb
-C:\Projects\workflow\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.csprojAssemblyReference.cache
-C:\Projects\workflow\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.csproj.CopyComplete
+C:\PROJECTS\WorkFlow\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.csprojResolveAssemblyReference.cache

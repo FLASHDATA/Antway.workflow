@@ -23,5 +23,3 @@ C:\PROJECTS\WorkFlow\WorkFlowEngine\bin\Debug\Newtonsoft.Json.xml
 C:\PROJECTS\WorkFlow\WorkFlowEngine\obj\Debug\WorkFlowEngine.csproj.CoreCompileInputs.cache
 C:\PROJECTS\WorkFlow\WorkFlowEngine\obj\Debug\WorkFlowEngine.dll
 C:\PROJECTS\WorkFlow\WorkFlowEngine\obj\Debug\WorkFlowEngine.pdb
-C:\Projects\workflow\WorkFlowEngine\obj\Debug\WorkFlowEngine.csprojAssemblyReference.cache
-C:\Projects\workflow\WorkFlowEngine\obj\Debug\WorkFlowEngine.csproj.CopyComplete

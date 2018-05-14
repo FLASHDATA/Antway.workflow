@@ -49,6 +49,8 @@ namespace WorkFlowEngine
         private bool ConditionalParser(ProcessInstance processInstance, WorkflowRuntime runtime,
                                       string actionParameter)
         {
+            return false;
+
             //var price = processInstance.GetParameter<decimal>("price");
             dynamic myObject = JsonConvert.DeserializeObject<dynamic>(actionParameter);
             string eval = myObject.eval.ToString(); // $"[price]>10";

@@ -108,5 +108,4 @@ C:\PROJECTS\WorkFlow\Client.Web\bin\WorkFlowEngine.dll
 C:\PROJECTS\WorkFlow\Client.Web\bin\WorkFlowEngine.pdb
 C:\PROJECTS\WorkFlow\Client.Web\bin\WorkFlowEngine.dll.config
 C:\PROJECTS\WorkFlow\Client.Web\bin\OptimaJet.Workflow.Core.pdb
-C:\Projects\workflow\Client.Web\obj\Debug\Client.Web.csprojAssemblyReference.cache
-C:\Projects\workflow\Client.Web\obj\Debug\Client.Web.csproj.CopyComplete
+C:\PROJECTS\WorkFlow\Client.Web\obj\Debug\Client.Web.csprojResolveAssemblyReference.cache

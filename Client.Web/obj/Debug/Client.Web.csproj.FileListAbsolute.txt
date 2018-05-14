@@ -101,7 +101,6 @@ C:\PROJECTS\WorkFlow\Client.Web\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\PROJECTS\WorkFlow\Client.Web\bin\Microsoft.AI.WindowsServer.xml
 C:\PROJECTS\WorkFlow\Client.Web\bin\Microsoft.AI.Web.xml
 C:\PROJECTS\WorkFlow\Client.Web\bin\Devart.Data.xml
-C:\PROJECTS\WorkFlow\Client.Web\obj\Debug\Client.Web.csprojResolveAssemblyReference.cache
 C:\PROJECTS\WorkFlow\Client.Web\obj\Debug\Client.Web.csproj.CoreCompileInputs.cache
 C:\PROJECTS\WorkFlow\Client.Web\obj\Debug\Client.Web.dll
 C:\PROJECTS\WorkFlow\Client.Web\obj\Debug\Client.Web.pdb
@@ -109,3 +108,5 @@ C:\PROJECTS\WorkFlow\Client.Web\bin\WorkFlowEngine.dll
 C:\PROJECTS\WorkFlow\Client.Web\bin\WorkFlowEngine.pdb
 C:\PROJECTS\WorkFlow\Client.Web\bin\WorkFlowEngine.dll.config
 C:\PROJECTS\WorkFlow\Client.Web\bin\OptimaJet.Workflow.Core.pdb
+C:\Projects\workflow\Client.Web\obj\Debug\Client.Web.csprojAssemblyReference.cache
+C:\Projects\workflow\Client.Web\obj\Debug\Client.Web.csproj.CopyComplete

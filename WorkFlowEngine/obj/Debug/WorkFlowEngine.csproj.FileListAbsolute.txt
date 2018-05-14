@@ -20,7 +20,8 @@ C:\PROJECTS\WorkFlow\WorkFlowEngine\bin\Debug\OptimaJet.Workflow.Oracle.dll
 C:\PROJECTS\WorkFlow\WorkFlowEngine\bin\Debug\Oracle.ManagedDataAccess.dll
 C:\PROJECTS\WorkFlow\WorkFlowEngine\bin\Debug\OptimaJet.Workflow.Core.pdb
 C:\PROJECTS\WorkFlow\WorkFlowEngine\bin\Debug\Newtonsoft.Json.xml
-C:\PROJECTS\WorkFlow\WorkFlowEngine\obj\Debug\WorkFlowEngine.csprojResolveAssemblyReference.cache
 C:\PROJECTS\WorkFlow\WorkFlowEngine\obj\Debug\WorkFlowEngine.csproj.CoreCompileInputs.cache
 C:\PROJECTS\WorkFlow\WorkFlowEngine\obj\Debug\WorkFlowEngine.dll
 C:\PROJECTS\WorkFlow\WorkFlowEngine\obj\Debug\WorkFlowEngine.pdb
+C:\Projects\workflow\WorkFlowEngine\obj\Debug\WorkFlowEngine.csprojAssemblyReference.cache
+C:\Projects\workflow\WorkFlowEngine\obj\Debug\WorkFlowEngine.csproj.CopyComplete

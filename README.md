@@ -1,2 +1,0 @@
-# PreventBlanqueo
-Prevención blanqueo

@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D92EF824-B99D-4955-8078-AA8ECE917187}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OptimaJet.Workflow.Core</RootNamespace>
+    <AssemblyName>OptimaJet.Workflow.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\DLL\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\DLL\OptimaJet.Workflow.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BPMN\Bounds.cs" />
+    <Compile Include="BPMN\Collaboration.cs" />
+    <Compile Include="BPMN\Definition.cs" />
+    <Compile Include="BPMN\BPMNDiagram.cs" />
+    <Compile Include="BPMN\BPMNEdge.cs" />
+    <Compile Include="BPMN\BPMNLabel.cs" />
+    <Compile Include="BPMN\BPMNPlane.cs" />
+    <Compile Include="BPMN\BPMNShape.cs" />
+    <Compile Include="BPMN\Event.cs" />
+    <Compile Include="BPMN\Gateway.cs" />
+    <Compile Include="BPMN\Process.cs" />
+    <Compile Include="BPMN\Flow.cs" />
+    <Compile Include="BPMN\Task.cs" />
+    <Compile Include="BPMN\Waypoint.cs" />
+    <Compile Include="Builder\IWorkflowBuilder.cs" />
+    <Compile Include="Builder\WorkflowBuilder.cs" />
+    <Compile Include="Bus\ActivityExecutor.cs" />
+    <Compile Include="Bus\ExecutionRequestParameters.cs" />
+    <Compile Include="Bus\ExecutionResponseEventArgs.cs" />
+    <Compile Include="Bus\ExecutionResponseParameters.cs" />
+    <Compile Include="Bus\IWorkflowBus.cs" />
+    <Compile Include="Bus\NullBus.cs" />
+    <Compile Include="Cache\DefaultParcedProcessCache.cs" />
+    <Compile Include="Cache\IParsedProcessCache.cs" />
+    <Compile Include="CodeActions\CodeActionsCompiller.cs" />
+    <Compile Include="CodeActions\CodeActionsInvoker.cs" />
+    <Compile Include="CodeActions\CodeActionUtils.cs" />
+    <Compile Include="CodeActions\IExternalCompiler.cs" />
+    <Compile Include="DefiningParametersSerializer.cs" />
+    <Compile Include="Designer\Designer.cs" />
+    <Compile Include="Designer\ParsedType.cs" />
+    <Compile Include="Designer\StringTypeConverter.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Fault\ActivityNotFoundException.cs" />
+    <Compile Include="Fault\InvalidCommandException.cs" />
+    <Compile Include="Fault\InvalidJsonParameterValueException.cs" />
+    <Compile Include="Fault\CommandNotValidException.cs" />
+    <Compile Include="Fault\CommandNotValidForStateException.cs" />
+    <Compile Include="Fault\InvalidParameterValueException.cs" />
+    <Compile Include="Fault\SchemeNotValidException.cs" />
+    <Compile Include="Fault\ImpossibleToSetStatusException.cs" />
+    <Compile Include="Fault\InitialActivityNotFoundException.cs" />
+    <Compile Include="Fault\ProcessAlreadyExistsException.cs" />
+    <Compile Include="Fault\ProcessNotFoundException.cs" />
+    <Compile Include="Fault\SchemeAlredyExistsException.cs" />
+    <Compile Include="Fault\SchemeNotFoundException.cs" />
+    <Compile Include="Fault\StatusNotDefinedException.cs" />
+    <Compile Include="Fault\TimerManagerException.cs" />
+    <Compile Include="Fault\TransitionNotFoundException.cs" />
+    <Compile Include="Fault\WrongParameterTypeException.cs" />
+    <Compile Include="Fault\WrongSubprocessMarkupException.cs" />
+    <Compile Include="Generator\IWorkflowGenerator.cs" />
+    <Compile Include="Generator\TTXmlWorkflowGenerator.cs" />
+    <Compile Include="HashHelper.cs" />
+    <Compile Include="License\LicenseException.cs" />
+    <Compile Include="License\LicenseKey.cs" />
+    <Compile Include="License\LicenseUtils.cs" />
+    <Compile Include="Model\ActionDefinitionReference.cs" />
+    <Compile Include="Model\ActivityDefinition.cs" />
+    <Compile Include="Model\ActorDefinition.cs" />
+    <Compile Include="Model\BaseDefinition.cs" />
+    <Compile Include="Model\CodeActionDefinition.cs" />
+    <Compile Include="Model\CommandDefinition.cs" />
+    <Compile Include="Model\ConditionDefinition.cs" />
+    <Compile Include="Model\DefaultDefinitions.cs" />
+    <Compile Include="Model\DesignerSettings.cs" />
+    <Compile Include="Model\LocalizeDefinition.cs" />
+    <Compile Include="Model\ParameterDefinition.cs" />
+    <Compile Include="Model\ParameterDefinitionWithValue.cs" />
+    <Compile Include="Model\ParameterPurpose.cs" />
+    <Compile Include="Model\ParametersCollection.cs" />
+    <Compile Include="Model\ProcessDefinition.cs" />
+    <Compile Include="Model\ProcessInstance.cs" />
+    <Compile Include="Model\SchemeDefinition.cs" />
+    <Compile Include="Model\TimerDefinition.cs" />
+    <Compile Include="Model\TimerType.cs" />
+    <Compile Include="Model\TransitionClassifier.cs" />
+    <Compile Include="Model\TransitionDefinition.cs" />
+    <Compile Include="Model\RestrictionDefinition.cs" />
+    <Compile Include="Model\TransitionForkType.cs" />
+    <Compile Include="Model\UnknownParameterType.cs" />
+    <Compile Include="Runtime\ActivityChangedEventArgs.cs" />
+    <Compile Include="Runtime\BulkCreateInstancePrams.cs" />
+    <Compile Include="Runtime\CommandExeutionResult.cs" />
+    <Compile Include="Runtime\CreateInstanceParams.cs" />
+    <Compile Include="Runtime\BeforeActivityExecutionEventArgs.cs" />
+    <Compile Include="Runtime\ExecutionSearchOrder.cs" />
+    <Compile Include="Runtime\IDesignerAutocompleteProvider.cs" />
+    <Compile Include="Runtime\NeedTimerValueEventArgs.cs" />
+    <Compile Include="Runtime\ParametersSerializer.cs" />
+    <Compile Include="Runtime\ProcessHistoryItem.cs" />
+    <Compile Include="Runtime\StartingTransitionNotFoundEventArgs.cs" />
+    <Compile Include="Runtime\WorkflowRuntimeBulkApi.cs" />
+    <Compile Include="Subprocess\TreeSearchFilter.cs" />
+    <Compile Include="Runtime\WorkflowErrorEventArgs.cs" />
+    <Compile Include="Subprocess\SubprocessUtils.cs" />
+    <Compile Include="Subprocess\ProcessTree.cs" />
+    <Compile Include="Subprocess\SubprocessInfo.cs" />
+    <Compile Include="Parser\IWorkflowParser.cs" />
+    <Compile Include="Parser\WorkflowParser.cs" />
+    <Compile Include="Parser\XmlWorkflowParser.cs" />
+    <Compile Include="Persistence\ErrorLevel.cs" />
+    <Compile Include="Persistence\IRuntimePersistence.cs" />
+    <Compile Include="Persistence\ProcessStatus.cs" />
+    <Compile Include="Persistence\IPersistenceProvider.cs" />
+    <Compile Include="Persistence\ISchemePersistenceProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\EmptyWorkflowActionProvider.cs" />
+    <Compile Include="Runtime\EmptyWorkflowRuleProvider.cs" />
+    <Compile Include="Runtime\ITimerManager.cs" />
+    <Compile Include="Runtime\IWorkflowActionProvider.cs" />
+    <Compile Include="Runtime\IWorkflowRuleProvider.cs" />
+    <Compile Include="Runtime\NeedDeterminingParametersEventArgs.cs" />
+    <Compile Include="Runtime\ProcessStatusChangedEventArgs.cs" />
+    <Compile Include="Runtime\SchemaWasChangedEventArgs.cs" />
+    <Compile Include="Runtime\TimerManager.cs" />
+    <Compile Include="Runtime\WorkflowCommand.cs" />
+    <Compile Include="Runtime\WorkflowRuntime.cs" />
+    <Compile Include="Runtime\WorkflowRuntimeConfigurationExtension.cs" />
+    <Compile Include="Runtime\WorkflowState.cs" />
+    <Compile Include="Runtime\WorkflowSync.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

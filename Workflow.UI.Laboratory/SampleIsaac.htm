@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="fabric.min.js"></script>
+
+    <style>
+        .canvas-wrapper {
+            width: 900px;
+            height: 900px;
+            margin: 40px auto;
+        }
+
+        #c {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-wrapper">
+        <canvas id="c"></canvas>
+        <canvas id="c1"></canvas>
+    </div>
+
+</body>
+</html>
+
+<script>
+     function paint()  {
+        window.canvas = new fabric.Canvas('c');
+        canvas.setWidth(800);
+        canvas.setHeight(600);
+
+    var canvas = new fabric.Canvas('c');
+    canvas.add(new fabric.Circle({ radius: 20, fill: '#f55', top: 80, left: 100 }));
+    canvas.item(0).hasControls = canvas.item(0).hasBorders = false;
+
+    canvas.on({
+        'mouse:down': function (e) {
+            if (e.target) {
+                e.target.opacity = 0.5;
+                canvas.renderAll();
+            }
+        },
+        'mouse:up': function (e) {
+            if (e.target) {
+                e.target.opacity = 1;
+                canvas.renderAll();
+            }
+        },
+        'object:moved': function (e) {
+            e.target.opacity = 0.5;
+        },
+        'object:modified': function (e) {
+            e.target.opacity = 1;
+        }
+    });
+
+
+
+
+    canvas.add(new fabric.Rect({ left: 110, top: 110, fill: '#f0f', width: 50, height: 50 }));
+    canvas.add(new fabric.Rect({ left: 50, top: 50, fill: '#77f', width: 40, height: 40 }));
+
+    canvas.forEachObject(function (o) { o.hasBorders = o.hasControls = false; });
+
+    canvas.hoverCursor = 'pointer';
+
+    function animate(e, dir) {
+        if (e.target) {
+            fabric.util.animate({
+                startValue: e.target.get('angle'),
+                endValue: e.target.get('angle') + (dir ? 10 : -10),
+                duration: 100,
+                onChange: function (value) {
+                    e.target.setAngle(value);
+                    canvas.renderAll();
+                },
+                onComplete: function () {
+                    e.target.setCoords();
+                }
+            });
+            fabric.util.animate({
+                startValue: e.target.get('scaleX'),
+                endValue: e.target.get('scaleX') + (dir ? 0.2 : -0.2),
+                duration: 100,
+                onChange: function (value) {
+                    e.target.scale(value);
+                    canvas.renderAll();
+                },
+                onComplete: function () {
+                    e.target.setCoords();
+                }
+            });
+        }
+    }
+    canvas.on('mouse:down', function (e) { animate(e, 1); });
+    canvas.on('mouse:up', function (e) { animate(e, 0); });
+    this.__canvases.push(canvas);
+</script>

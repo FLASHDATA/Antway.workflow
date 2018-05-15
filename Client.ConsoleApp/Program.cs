@@ -104,7 +104,9 @@ namespace Client.ConsoleApp
             }
 
             //var processGuid = Raw16ToGuid("66160E76DBE42D4CAFA288CD1DF1E15D");
-            //var commands1 = WorkflowClient.Runtime.GetAvailableCommands(processGuid, string.Empty);
+            //var commands1 = WorkflowInit.Runtime.GetAvailableCommands(processGuid, string.Empty);
+            //var activityname = WorkflowInit.Runtime.GetCurrentActivityName(processId.Value);
+
 
             var commands = WorkflowInit.Runtime.GetAvailableCommands(processId.Value, string.Empty);
 

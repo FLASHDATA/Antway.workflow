@@ -55,6 +55,10 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OptimaJet.Workflow.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WorkflowEngine.NET-Core.3.0.2\lib\net45\OptimaJet.Workflow.Core.dll</HintPath>
+    </Reference>
     <Reference Include="OptimaJet.Workflow.Oracle, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3d29392dccd464d7, processorArchitecture=MSIL">
       <HintPath>..\packages\WorkflowEngine.NET-ProviderForOracle.3.0.2\lib\net45\OptimaJet.Workflow.Oracle.dll</HintPath>
     </Reference>
@@ -269,13 +273,9 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
-      <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
-      <Name>OptimaJet.Workflow.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WorkFlowEngine\WorkFlowEngine.csproj">
-      <Project>{9f116887-3658-467c-8471-6a9c5d22eade}</Project>
-      <Name>WorkFlowEngine</Name>
+    <ProjectReference Include="..\AntWay.Core\AntWay.Core.csproj">
+      <Project>{9FB295C0-E9E7-4B37-9120-D9DFCCA9A3F2}</Project>
+      <Name>AntWay.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

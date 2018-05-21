@@ -13,6 +13,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.Xml.Linq;
 using WorkflowRuntime = OptimaJet.Workflow.Core.Runtime.WorkflowRuntime;
+using WorkFlowEngine;
 
 namespace WF.Sample.Controllers
 {
@@ -59,7 +60,7 @@ namespace WF.Sample.Controllers
             get
             {
                 //INIT YOUR RUNTIME HERE
-                return WorkFlowEngine.WorkflowInit.Runtime;
+                return WorkflowInit.Runtime;
             }
         }
     }

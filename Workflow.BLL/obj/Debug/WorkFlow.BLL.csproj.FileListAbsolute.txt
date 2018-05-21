@@ -1,6 +1,0 @@
-C:\Projects\workflow\Workflow.BLL\bin\Debug\Workflow.BLL.dll
-C:\Projects\workflow\Workflow.BLL\bin\Debug\Workflow.BLL.pdb
-C:\Projects\workflow\Workflow.BLL\obj\Debug\WorkFlow.BLL.csprojResolveAssemblyReference.cache
-C:\Projects\workflow\Workflow.BLL\obj\Debug\WorkFlow.BLL.csproj.CoreCompileInputs.cache
-C:\Projects\workflow\Workflow.BLL\obj\Debug\Workflow.BLL.dll
-C:\Projects\workflow\Workflow.BLL\obj\Debug\Workflow.BLL.pdb

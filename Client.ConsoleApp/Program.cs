@@ -4,6 +4,7 @@ using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
 using WorkFlowEngine;
+using AntWay.Core;
 using System.Globalization;
 
 namespace Client.ConsoleApp
@@ -22,10 +23,15 @@ namespace Client.ConsoleApp
         }
 
 
-        static string schemeCode = "SchemePBC";
+        static string schemeCode = "SimpleWF";
         static Guid? processId = null;
         static void Main(string[] args)
         {
+            //Tests();
+            //Console.WriteLine();
+            //return;
+
+
             Console.WriteLine("Operation:");
             Console.WriteLine("0 - CreateInstance");
             Console.WriteLine("1 - GetAvailableCommands");
@@ -78,6 +84,25 @@ namespace Client.ConsoleApp
                 }
                 Console.WriteLine();
             } while (true);
+        }
+
+
+        private static void Tests()
+        {
+            var pd = WorkFlowEngine.WorkflowInit.Runtime.GetProcessDefinition(schemeCode);
+
+            var schemeParameters = pd.Parameters
+                                   .Where(p => p.Purpose != OptimaJet.Workflow.Core.Model.ParameterPurpose.System)
+                                   .ToList();
+
+            var schemeCommands = pd.Commands;
+            //TODO: Implementar una clase por cada comando
+            //Ejemplo:
+            //public class cmdGO : ICmd
+            //{
+            //    public string Name { get; set; }
+            //    public List<Parameter> Parameters { }
+            //}
         }
 
         private static void CreateInstance()

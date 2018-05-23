@@ -15,7 +15,6 @@ C:\PROJECTS\WorkFlow\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.csprojResolve
 C:\PROJECTS\WorkFlow\Client.ConsoleApp\bin\Debug\AntWay.Core.dll
 C:\PROJECTS\WorkFlow\Client.ConsoleApp\bin\Debug\AntWay.Core.pdb
 C:\PROJECTS\AntWay\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.csprojResolveAssemblyReference.cache
-C:\PROJECTS\AntWay\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.exe.config
 C:\PROJECTS\AntWay\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.csproj.CoreCompileInputs.cache
 C:\PROJECTS\AntWay\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.exe
 C:\PROJECTS\AntWay\Client.ConsoleApp\obj\Debug\Client.ConsoleApp.pdb

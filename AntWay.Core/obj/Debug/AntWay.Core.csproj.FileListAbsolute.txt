@@ -30,3 +30,4 @@ C:\PROJECTS\AntWay\AntWay.Core\bin\Debug\AntWay.Data.pdb
 C:\PROJECTS\AntWay\AntWay.Core\bin\Debug\AntWay.Data.dll.config
 C:\PROJECTS\AntWay\AntWay.Core\bin\Debug\AntWay.Views.pdb
 C:\PROJECTS\AntWay\AntWay.Core\bin\Debug\EntityFramework.xml
+C:\PROJECTS\AntWay\AntWay.Core\bin\Debug\Newtonsoft.Json.xml

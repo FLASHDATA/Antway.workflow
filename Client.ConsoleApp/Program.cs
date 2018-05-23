@@ -27,9 +27,11 @@ namespace Client.ConsoleApp
         static Guid? processId = null;
         static void Main(string[] args)
         {
+            WorkflowInit.Start();
+
             //Tests();
             //Console.WriteLine();
-            //return;
+            return;
 
 
             Console.WriteLine("Operation:");

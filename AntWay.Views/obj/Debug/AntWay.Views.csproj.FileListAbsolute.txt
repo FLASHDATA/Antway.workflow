@@ -4,3 +4,8 @@ C:\PROJECTS\blanqueo\AntWay.Views\obj\Debug\AntWay.Views.csprojResolveAssemblyRe
 C:\PROJECTS\blanqueo\AntWay.Views\obj\Debug\AntWay.Views.csproj.CoreCompileInputs.cache
 C:\PROJECTS\blanqueo\AntWay.Views\obj\Debug\AntWay.Views.dll
 C:\PROJECTS\blanqueo\AntWay.Views\obj\Debug\AntWay.Views.pdb
+C:\PROJECTS\AntWay\AntWay.Views\bin\Debug\AntWay.Views.dll
+C:\PROJECTS\AntWay\AntWay.Views\bin\Debug\AntWay.Views.pdb
+C:\PROJECTS\AntWay\AntWay.Views\obj\Debug\AntWay.Views.csproj.CoreCompileInputs.cache
+C:\PROJECTS\AntWay\AntWay.Views\obj\Debug\AntWay.Views.dll
+C:\PROJECTS\AntWay\AntWay.Views\obj\Debug\AntWay.Views.pdb

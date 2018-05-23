@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml.Linq;
 using OptimaJet.Workflow.Core.Builder;
 using OptimaJet.Workflow.Core.Bus;
@@ -9,10 +10,18 @@ namespace WorkFlowEngine
 {
     public static class WorkflowInit
     {
-        private static readonly Lazy<WorkflowRuntime> LazyRuntime = new Lazy<WorkflowRuntime>(InitWorkflowRuntime);
+        public static string SchemeCode;
+
+        private static readonly Lazy<WorkflowRuntime> LazyRuntime =
+                            new Lazy<WorkflowRuntime>(InitWorkflowRuntime);
         public static WorkflowRuntime Runtime
         {
             get { return LazyRuntime.Value; }
+        }
+
+        public static void Start()
+        {
+            Runtime.Start();
         }
 
         private static WorkflowRuntime InitWorkflowRuntime()
@@ -23,7 +32,7 @@ namespace WorkFlowEngine
             //TODO If you are using database different from SQL Server you have to use different persistence provider here.
             var connectionString = System.Configuration.ConfigurationManager
                                    .ConnectionStrings["ConnectionString"].ConnectionString;
-            var dbProvider = new OracleProvider(connectionString);
+            var dbProvider = new OracleProvider(connectionString, SchemeCode);
 
             var builder = new WorkflowBuilder<XElement>(
                 dbProvider,
@@ -43,6 +52,10 @@ namespace WorkFlowEngine
             //events subscription
             runtime.ProcessActivityChanged += (sender, args) => { };
             runtime.ProcessStatusChanged += (sender, args) => { };
+
+            runtime.RegisterAssemblyForCodeActions(
+                    Assembly.GetAssembly(typeof(System.Net.Http.HttpClient))
+                );
 
             runtime.Start();
 

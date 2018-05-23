@@ -26,8 +26,8 @@ C:\PROJECTS\AntWay\AntWay.Data\bin\Debug\Devart.Data.Oracle.Entity.EF6.xml
 C:\PROJECTS\AntWay\AntWay.Data\bin\Debug\EntityFramework.xml
 C:\PROJECTS\AntWay\AntWay.Data\bin\Debug\EntityFramework.SqlServer.xml
 C:\PROJECTS\AntWay\AntWay.Data\bin\Debug\Devart.Data.xml
-C:\PROJECTS\AntWay\AntWay.Data\obj\Debug\AntWay.Data.csprojResolveAssemblyReference.cache
 C:\PROJECTS\AntWay\AntWay.Data\obj\Debug\AntWay.Data.dll.licenses
 C:\PROJECTS\AntWay\AntWay.Data\obj\Debug\AntWay.Data.csproj.CoreCompileInputs.cache
 C:\PROJECTS\AntWay\AntWay.Data\obj\Debug\AntWay.Data.dll
 C:\PROJECTS\AntWay\AntWay.Data\obj\Debug\AntWay.Data.pdb
+C:\PROJECTS\AntWay\AntWay.Data\obj\Debug\AntWay.Data.csprojResolveAssemblyReference.cache

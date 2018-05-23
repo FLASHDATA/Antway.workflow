@@ -104,8 +104,6 @@ C:\PROJECTS\WorkFlow\Client.Web\bin\Devart.Data.xml
 C:\PROJECTS\WorkFlow\Client.Web\obj\Debug\Client.Web.csproj.CoreCompileInputs.cache
 C:\PROJECTS\WorkFlow\Client.Web\obj\Debug\Client.Web.dll
 C:\PROJECTS\WorkFlow\Client.Web\obj\Debug\Client.Web.pdb
-C:\PROJECTS\WorkFlow\Client.Web\bin\OptimaJet.Workflow.Core.pdb
-C:\PROJECTS\WorkFlow\Client.Web\obj\Debug\Client.Web.csprojResolveAssemblyReference.cache
 C:\PROJECTS\WorkFlow\Client.Web\bin\AntWay.Core.dll
 C:\PROJECTS\WorkFlow\Client.Web\bin\AntWay.Core.pdb
 C:\PROJECTS\AntWay\Client.Web\obj\Debug\Client.Web.csprojResolveAssemblyReference.cache
@@ -172,3 +170,16 @@ C:\PROJECTS\AntWay\Client.Web\bin\EntityFramework.xml
 C:\PROJECTS\AntWay\Client.Web\bin\AntWay.Data.pdb
 C:\PROJECTS\AntWay\Client.Web\bin\AntWay.Data.dll.config
 C:\PROJECTS\AntWay\Client.Web\bin\AntWay.Views.pdb
+C:\Projects\workflow\Client.Web\bin\AntWay.EFDAL.dll
+C:\Projects\workflow\Client.Web\bin\AntWay.Views.dll
+C:\Projects\workflow\Client.Web\bin\EntityFramework.dll
+C:\Projects\workflow\Client.Web\bin\AntWay.Data.dll
+C:\Projects\workflow\Client.Web\bin\OptimaJet.Workflow.Core.xml
+C:\Projects\workflow\Client.Web\bin\AntWay.EFDAL.pdb
+C:\Projects\workflow\Client.Web\bin\AntWay.EFDAL.dll.config
+C:\Projects\workflow\Client.Web\bin\AntWay.Views.pdb
+C:\Projects\workflow\Client.Web\bin\EntityFramework.xml
+C:\Projects\workflow\Client.Web\bin\AntWay.Data.pdb
+C:\Projects\workflow\Client.Web\bin\AntWay.Data.dll.config
+C:\Projects\workflow\Client.Web\obj\Debug\Client.Web.csprojAssemblyReference.cache
+C:\Projects\workflow\Client.Web\obj\Debug\Client.Web.csproj.CopyComplete

@@ -1,7 +1,0 @@
-C:\PROJECTS\WorkFlow\OptimaJet.Workflow.Core\bin\Debug\OptimaJet.Workflow.Core.dll
-C:\PROJECTS\WorkFlow\OptimaJet.Workflow.Core\bin\Debug\OptimaJet.Workflow.Core.pdb
-C:\PROJECTS\WorkFlow\OptimaJet.Workflow.Core\bin\Debug\Newtonsoft.Json.dll
-C:\PROJECTS\WorkFlow\OptimaJet.Workflow.Core\obj\Debug\OptimaJet.Workflow.Core.csproj.CoreCompileInputs.cache
-C:\PROJECTS\WorkFlow\OptimaJet.Workflow.Core\obj\Debug\OptimaJet.Workflow.Core.dll
-C:\PROJECTS\WorkFlow\OptimaJet.Workflow.Core\obj\Debug\OptimaJet.Workflow.Core.pdb
-C:\PROJECTS\WorkFlow\OptimaJet.Workflow.Core\obj\Debug\OptimaJet.Workflow.Core.csprojResolveAssemblyReference.cache

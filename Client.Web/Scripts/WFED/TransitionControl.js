@@ -483,7 +483,7 @@
         var color = this.GetColor();
         var circle = new Konva.Circle({
             x: offset.x,
-            y: offset.y,
+            y: offset.y, //////////////////////////////////////
             radius: 5,
             fill: color
         });
@@ -559,13 +559,13 @@
         var textvalue = '';
         var triggertype = this.item.Trigger.Type.toLowerCase();
         if (triggertype === 'auto') {
-            textvalue += 'A';
+            textvalue += 'A';//'⚡ 🚀 🚦';
         }
         else if (triggertype === 'command') {
-            textvalue += 'C';
+            textvalue += 'C'; //👨🏻‍💼
         }
         else if (triggertype === 'timer') {
-            textvalue += 'T';
+            textvalue += 'T';//'⏱ ⚡🚩 🚧';
         }
         
         var conditiontype = this.item.Conditions[0].Type.toLowerCase();
@@ -582,23 +582,62 @@
         if(Array.isArray(this.item.Restrictions) && this.item.Restrictions.length > 0){
             textvalue += 'R';
         }
+        if (textvalue == "AAR") { textvalue = "  ⚡⛔"; }
+        if (textvalue == "ACR") { textvalue = "⚡if⛔"; }
+        if (textvalue == "AOR") { textvalue = "⚡else⛔"; }
+        if (textvalue == "CAR") { textvalue = "  👨🏻‍💼⛔"; }
+        if (textvalue == "CCR") { textvalue = "👨🏻‍💼if⛔"; }
+        if (textvalue == "COR") { textvalue = "👨🏻‍💼else⛔"; }
+        if (textvalue == "TAR") { textvalue = "  ⏱⛔"; }
+        if (textvalue == "TCR") { textvalue = "⏱if⛔"; }
+        if (textvalue == "TOR") { textvalue = "⏱else⛔"; }
 
-        var circle = new Konva.Rect({
-            x: textvalue.length == 3 ? - 22 : -16,
-            y: -15,
-            width: textvalue.length == 3 ? 47 : 34,
-            height: 30,
-            fill: me.GetColor(),
-            cornerRadius: 15
-        });
+        if (textvalue == "AA") { textvalue = "    ⚡"; }
+        if (textvalue == "CA") { textvalue = "    👨🏻‍💼"; }
+        if (textvalue == "TA") { textvalue = "    ⏱"; }
+
+        if (textvalue == "AC") { textvalue = " ⚡ if"; }
+        if (textvalue == "CC") { textvalue = "  👨🏻‍💼 if"; }
+        if (textvalue == "TC") { textvalue = "  ⏱ if"; }
+
+        if (textvalue == "AO") { textvalue = "⚡else"; }
+        if (textvalue == "CO") { textvalue = " 👨🏻‍💼else"; }
+        if (textvalue == "TO") { textvalue = "⏱else"; }
+        
+
+        //if (conditiontype == 'action' || conditiontype == 'otherwise' ) {
+        //    var circle = new Konva.Rect({
+        //        x: textvalue.length == 5 ? - 32 : 16,
+        //        y: -40,
+        //        width: 65,
+        //        height: 65,
+        //        fill: "#FCF55F",
+        //        rotation: 50,
+        //    });
+
+        //}
+        //else {
+            var circle = new Konva.Rect({
+                x: textvalue.length == 5 ? - 32 : -26,
+                y: -15,
+                width: 75,
+                height: 37,
+                fill: me.GetColor(),
+                cornerRadius: 15
+            });
+
+        //}
+        
+
+
 
         cActivePoint.add(circle);
 
         var text = new Konva.Text({
-            x: textvalue.length == 3 ? -16 : -10,
+            x: textvalue.length == 5 ? -32 : -26,
             y: -7,
             text: textvalue,
-            fontSize: 16,
+            fontSize: 20,
             fontFamily: 'Arial',
             fill: '#FFFFFF',
             fontStyle: 'bold'
@@ -767,7 +806,7 @@
         if(tooltiptext2.length > 0){
             var textctrl = new Konva.Text({
                 x: 0,
-                y: 20,
+                y: 25,
                 text: tooltiptext2,
                 fontFamily: 'Arial',
                 fontSize: 12,

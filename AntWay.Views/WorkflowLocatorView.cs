@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AntWay.Views
 {
-    public class AntWayWorkflowLocatorView
+    public class WorkflowLocatorView
     {
         public Guid WFProcessGuid { get; set; }
 

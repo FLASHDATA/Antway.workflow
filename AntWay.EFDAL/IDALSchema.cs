@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace AntWay.EFDAL
 {
-    public interface IDALAntWay
+    public interface IDALSchema: IDAL
     {
-        T Fetch<T>(object pk);
-        T Update<T>(T objectView);
-        T Insert<T>(T objectView);
+       
     }
 }

@@ -72,10 +72,11 @@ namespace Client.ConsoleApp
             System.Threading.Thread.Sleep(5000);
             Console.WriteLine("Pulsa enter y consulta estado respuesta");
             Console.ReadLine();
+
             var processInstance = Workflow.Runtime
                                  .GetProcessInstanceAndFillProcessParameters(processId.Value);
-
-            var statusProcesoX = processInstance.GetParameter("httpResponse_ProcesoX").Value;
+            
+            var statusProcesoX = processInstance.GetParameter("httpResponse_ProcesoX")?.Value;
             Console.WriteLine($"{statusProcesoX}");
         }
 

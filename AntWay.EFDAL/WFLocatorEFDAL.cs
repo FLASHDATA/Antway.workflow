@@ -8,7 +8,7 @@ using AntWay.Views;
 
 namespace AntWay.EFDAL
 {
-    public class AntWayWFLocatorEFDAL : IDALAntWay
+    public class WFLocatorEFDAL : IDAL
     {
         public T Fetch<T>(object pk)
         {
@@ -16,7 +16,7 @@ namespace AntWay.EFDAL
 
             using (var ctx = new Model1())
             {
-                var entity = ctx.AW_WF_LOCATOR
+                var entity = ctx.WF_LOCATOR
                              .FirstOrDefault(q => q.LOCATOR_VALUE.ToUpper() == id.ToUpper());
 
                 var result = MapFromDalToView(entity);
@@ -31,7 +31,7 @@ namespace AntWay.EFDAL
 
             using (var ctx = new Model1())
             {
-                ctx.AW_WF_LOCATOR.Attach(value);
+                ctx.WF_LOCATOR.Attach(value);
                 ctx.Entry(value).State = System.Data.Entity.EntityState.Added;
                 int i = ctx.SaveChanges();
 
@@ -48,7 +48,7 @@ namespace AntWay.EFDAL
 
             using (var ctx = new Model1())
             {
-                ctx.AW_WF_LOCATOR.Attach(value);
+                ctx.WF_LOCATOR.Attach(value);
                 ctx.Entry(value).State = System.Data.Entity.EntityState.Modified;
                 int i = ctx.SaveChanges();
 
@@ -59,11 +59,11 @@ namespace AntWay.EFDAL
         }
 
 
-        private AntWayWorkflowLocatorView MapFromDalToView(AW_WF_LOCATOR entity)
+        private WorkflowLocatorView MapFromDalToView(WF_LOCATOR entity)
         {
             if (entity == null) return null;
 
-            var view = new AntWayWorkflowLocatorView
+            var view = new WorkflowLocatorView
             {
                 WFProcessGuid = entity.ID_WFPROCESSINSTANCE,
                 LocatorValue = entity.LOCATOR_VALUE,
@@ -73,11 +73,11 @@ namespace AntWay.EFDAL
         }
 
 
-        private AW_WF_LOCATOR MapFromViewToDal<T>(T objectView)
+        private WF_LOCATOR MapFromViewToDal<T>(T objectView)
         {
-            var view = (AntWayWorkflowLocatorView)Convert.ChangeType(objectView, typeof(T));
+            var view = (WorkflowLocatorView)Convert.ChangeType(objectView, typeof(T));
 
-            var entity = new AW_WF_LOCATOR
+            var entity = new WF_LOCATOR
             {
                 ID_WFPROCESSINSTANCE = view.WFProcessGuid,
                 LOCATOR_VALUE = view.LocatorValue,

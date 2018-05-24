@@ -41,7 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AntWayView.cs" />
-    <Compile Include="AntWayWorflowLocatorView.cs" />
+    <Compile Include="WorkflowSchemaView.cs" />
+    <Compile Include="WorkflowLocatorView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

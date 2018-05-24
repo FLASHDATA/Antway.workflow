@@ -6,12 +6,10 @@ namespace AntWay.Data
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("PROCMNGR.AW_WF_LOCATOR")]
-    public partial class AW_WF_LOCATOR
+    [Table("PROCMNGR.WF_LOCATOR")]
+    public partial class WF_LOCATOR
     {
-        [Required]
         public Guid ID_WFPROCESSINSTANCE { get; set; }
-
 
         [StringLength(50)]
         public string LOCATOR_FIELD_NAME { get; set; }

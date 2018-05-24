@@ -39,3 +39,5 @@ C:\PROJECTS\AntWay\Client.ConsoleApp\bin\Debug\AntWay.Data.pdb
 C:\PROJECTS\AntWay\Client.ConsoleApp\bin\Debug\AntWay.Data.dll.config
 C:\PROJECTS\AntWay\Client.ConsoleApp\bin\Debug\AntWay.Views.pdb
 C:\PROJECTS\AntWay\Client.ConsoleApp\bin\Debug\EntityFramework.xml
+C:\PROJECTS\AntWay\Client.ConsoleApp\bin\Debug\Example.BLL.dll
+C:\PROJECTS\AntWay\Client.ConsoleApp\bin\Debug\Example.BLL.pdb

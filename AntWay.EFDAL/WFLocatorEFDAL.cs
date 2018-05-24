@@ -13,7 +13,7 @@ namespace AntWay.EFDAL
         public T Fetch<T>(object pk)
         {
             string id = Convert.ToString(pk ?? "");
-
+            
             using (var ctx = new Model1())
             {
                 var entity = ctx.WF_LOCATOR

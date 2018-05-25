@@ -86,15 +86,10 @@
         if (me.item.IsForSetState) {
             rectColor = WorkflowDesignerConstants.ActivityConditionColor;
             textColor = WorkflowDesignerConstants.ActivityConditionTextColor;
-            width = 80;
-            height = 80;
-            rotation = 50;
-            cornerRadius = 0;
-            xtext = 15;
-            xra = 0;
-            yra = 0;
-            offsetX = -18;
-            offsetY = 48;
+            width = this.graph.Settings.DefaultActivityWidth;
+            height = this.graph.Settings.DefaultActivityHeight;
+            //cornerRadius = 50;
+            xtext = 70;
             isNormal = false;
         }
 
@@ -116,29 +111,33 @@
 
         
         if (me.item.IsForSetState) {
-            me.rectangle = new Konva.RegularPolygon({
-                //x: xra,
-                //y: yra,
-                //width: width,
-                //height: height,
-                //offsetY: offsetY,
-                //offsetX: offsetX,
-                ////width: this.graph.Settings.DefaultActivityWidth,
-                ////height: this.graph.Settings.DefaultActivityHeight,
-                //// stroke: WorkflowDesignerConstants.ActivityShape,
-                //// strokeWidth: 0,
-                //rotation: rotation,
-                //fill: rectColor,
-                //cornerRadius: cornerRadius,
-
-                x: 150,
-                y: 275,
-                sides: 3,
-                radius: 100,
-                //scaleY: 1.6,
-                stroke: "black",
-                fill: "rgba(200,0,200, 1)",
+            me.rectangle = new Konva.Rect({
+                x: xra,
+                y: yra,
+                offsetY: offsetY,
+                offsetX: offsetX,
+                width: this.graph.Settings.DefaultActivityWidth,
+                height: this.graph.Settings.DefaultActivityHeight,
+                // stroke: WorkflowDesignerConstants.ActivityShape,
+                // strokeWidth: 0,
+                rotation: rotation,
+                fill: "#F4F4F4",
+                cornerRadius: 5,
             });
+            me.control.add(me.rectangle);
+               me.impImage  = new Konva.RegularPolygon({
+                    x: 100,
+                    y: 30,
+                    sides: 4,
+                    radius: 30,
+                    scaleX: 3.3,
+                   stroke: "#94948E",
+                   fill: "#FFE59E",
+                });
+            me.control.add(me.impImage);
+
+
+
         }
         else {
             me.rectangle = new Konva.Rect({
@@ -154,19 +153,21 @@
                 fill: rectColor,
                 cornerRadius: cornerRadius,
             });
-        }
-        
-        me.control.add(me.rectangle);
-        if(Array.isArray(me.item.Implementation) && me.item.Implementation.length > 0)
-        {
-            me.impImage = new Konva.Image({
-                x: me.rectangle.attrs.width - 20,
-                y: 38,
-                image: isNormal ? me.manager.ImageImplementation : me.manager.ImageImplementationWhite,
-                width: 15,
-                height: 15
-            });
-            me.control.add(me.impImage);
+            me.control.add(me.rectangle);
+
+            if (Array.isArray(me.item.Implementation) && me.item.Implementation.length > 0) {
+                me.impImage = new Konva.Image({
+                    x: me.rectangle.attrs.width - 20,
+                    y: 38,
+                    image: isNormal ? me.manager.ImageImplementation : me.manager.ImageImplementationWhite,
+                    width: 15,
+                    height: 15
+                });
+                me.control.add(me.impImage);
+            }
+
+
+
         }
 
         if(Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0)

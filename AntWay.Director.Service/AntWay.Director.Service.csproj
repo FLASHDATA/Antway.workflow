@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{883CE3FD-8366-4191-B84A-E3BFAAE949C3}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>AntWay.Director.Service</RootNamespace>
     <AssemblyName>AntWay.Director.Service</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -39,14 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Owin\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Web.Http">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,6 +56,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AntWay.Core\AntWay.Core.csproj">
+      <Project>{9FB295C0-E9E7-4B37-9120-D9DFCCA9A3F2}</Project>
+      <Name>AntWay.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AntWay.EFDAL\AntWay.EFDAL.csproj">
+      <Project>{d92a8f0f-7e8c-4d6f-b915-2032b7ee3147}</Project>
+      <Name>AntWay.EFDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AntWay.Views\AntWay.Views.csproj">
+      <Project>{aefd5703-a271-4f59-980a-e5f6db18835a}</Project>
+      <Name>AntWay.Views</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

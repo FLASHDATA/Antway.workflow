@@ -5,7 +5,9 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-
+using AntWay.BLL;
+using AntWay.EFDAL;
+using WorkFlowEngine;
 
 namespace AntWay.Director.Service
 {
@@ -53,6 +55,19 @@ namespace AntWay.Director.Service
 
         private static void Start(string[] args)
         {
+            var awBLL = new AntWayBLL { IDALSchema = new WFSchemaEFDAL(), IDALLocator = new WFLocatorEFDAL() };
+
+            var schemes = awBLL.GetSchemes();
+
+            var listWfs = schemes
+                          .Select(s => new Workflow(s.DBSchemeName))
+                          .ToList();
+
+            foreach(var wfs in listWfs)
+            {
+                wfs.Start();
+            }
+
             Console.WriteLine("Pulse enter para cerrar el servicio.");
             Console.ReadLine();
         }

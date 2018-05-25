@@ -46,6 +46,7 @@
       <HintPath>..\packages\odp.net.managed.121.1.2\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,6 +75,14 @@
     <ProjectReference Include="..\AntWay.Core\AntWay.Core.csproj">
       <Project>{9fb295c0-e9e7-4b37-9120-d9dfcca9a3f2}</Project>
       <Name>AntWay.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AntWay.EFDAL\AntWay.EFDAL.csproj">
+      <Project>{d92a8f0f-7e8c-4d6f-b915-2032b7ee3147}</Project>
+      <Name>AntWay.EFDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AntWay.Views\AntWay.Views.csproj">
+      <Project>{aefd5703-a271-4f59-980a-e5f6db18835a}</Project>
+      <Name>AntWay.Views</Name>
     </ProjectReference>
     <ProjectReference Include="..\Example.BLL\Example.BLL.csproj">
       <Project>{c2b353cb-d61b-41f2-bac3-999822942580}</Project>

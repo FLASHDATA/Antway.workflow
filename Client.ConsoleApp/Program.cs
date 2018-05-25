@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using WorkFlowEngine;
 using AntWay.Core;
 using System.Globalization;
+using AntWay.BLL;
+using AntWay.EFDAL;
+using System.Configuration;
 
 namespace Client.ConsoleApp
 {
@@ -23,16 +26,16 @@ namespace Client.ConsoleApp
         }
 
 
-        static string schemeCode = "SimpleWF2";
+        static string schemeCode = "SimpleWF";
         static Guid? processId = null;
         static void Main(string[] args)
         {
+            Workflow.SingleDataBaseScheme = ConfigurationManager.AppSettings["WFSchema"].ToString();
+
             //Workflow.ActionProvider = Workflow.ActionProvider ?? new ActionProvider();
-            Workflow.Start();
+            //Workflow.SingleDataBaseScheme = "XX";
 
-            //Console.WriteLine("Espera 5 segundos y saltará la action 'MyAction'");
             //Ejemplo1();
-
             //Ejemplo2();
 
             //PersistenceProviderSample();
@@ -57,25 +60,26 @@ namespace Client.ConsoleApp
         {
             Console.WriteLine("Ejemplo lamada al ProcesoX");
             CreateInstance();
-            var command = Workflow.Runtime
+            var command = Workflow.SingleRuntime
                             .GetAvailableCommands(processId.Value, string.Empty)
                             .Where(c => c.CommandName.Trim().ToLower() == "next")
                             .FirstOrDefault();
 
-            Workflow.Runtime.ExecuteCommand(command, string.Empty, string.Empty);
+            Workflow.SingleRuntime.ExecuteCommand(command, string.Empty, string.Empty);
             Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
                         processId,
-                        Workflow.Runtime.GetCurrentStateName(processId.Value),
-                        Workflow.Runtime.GetCurrentActivityName(processId.Value));
+                        Workflow.SingleRuntime.GetCurrentStateName(processId.Value),
+                        Workflow.SingleRuntime.GetCurrentActivityName(processId.Value));
             Console.WriteLine("Espera 5 segundos y saltará la action que llama a 'Example.OWIN.Service.HomeController.Get'");
 
             System.Threading.Thread.Sleep(5000);
             Console.WriteLine("Pulsa enter y consulta estado respuesta");
             Console.ReadLine();
-            var processInstance = Workflow.Runtime
-                                 .GetProcessInstanceAndFillProcessParameters(processId.Value);
 
-            var statusProcesoX = processInstance.GetParameter("httpResponse_ProcesoX").Value;
+            var processInstance = Workflow.SingleRuntime
+                                 .GetProcessInstanceAndFillProcessParameters(processId.Value);
+            
+            var statusProcesoX = processInstance.GetParameter("httpResponse_ProcesoX")?.Value;
             Console.WriteLine($"{statusProcesoX}");
         }
 
@@ -84,16 +88,16 @@ namespace Client.ConsoleApp
         {
             Console.WriteLine("EjemploMailing");
             CreateInstance();
-            var command = Workflow.Runtime
+            var command = Workflow.SingleRuntime
                             .GetAvailableCommands(processId.Value, string.Empty)
                             .Where(c => c.CommandName.Trim().ToLower() == "next")
                             .FirstOrDefault();
 
-            Workflow.Runtime.ExecuteCommand(command, string.Empty, string.Empty);
+            Workflow.SingleRuntime.ExecuteCommand(command, string.Empty, string.Empty);
             Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
                         processId,
-                        Workflow.Runtime.GetCurrentStateName(processId.Value),
-                        Workflow.Runtime.GetCurrentActivityName(processId.Value));
+                        Workflow.SingleRuntime.GetCurrentStateName(processId.Value),
+                        Workflow.SingleRuntime.GetCurrentActivityName(processId.Value));
             Console.WriteLine("Espera 5 segundos y saltará la action 'MyAction'");
             Console.WriteLine("Espera 12 segundos y saltará la action 'MyAction2'");
 
@@ -101,15 +105,15 @@ namespace Client.ConsoleApp
 
             Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
                        processId,
-                       Workflow.Runtime.GetCurrentStateName(processId.Value),
-                       Workflow.Runtime.GetCurrentActivityName(processId.Value));
+                       Workflow.SingleRuntime.GetCurrentStateName(processId.Value),
+                       Workflow.SingleRuntime.GetCurrentActivityName(processId.Value));
 
             ExecuteCommand();
         }
 
         private static void GetProcessDefinitionSample()
         {
-            var pd = WorkFlowEngine.Workflow.Runtime.GetProcessDefinition(schemeCode);
+            var pd = WorkFlowEngine.Workflow.SingleRuntime.GetProcessDefinition(schemeCode);
 
             var schemeParameters = pd.Parameters
                                    .Where(p => p.Purpose != OptimaJet.Workflow.Core.Model.ParameterPurpose.System)
@@ -144,8 +148,8 @@ namespace Client.ConsoleApp
                 {
                     Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
                         processId,
-                        Workflow.Runtime.GetCurrentStateName(processId.Value),
-                        Workflow.Runtime.GetCurrentActivityName(processId.Value));
+                        Workflow.SingleRuntime.GetCurrentStateName(processId.Value),
+                        Workflow.SingleRuntime.GetCurrentActivityName(processId.Value));
                 }
 
                 Console.Write("Enter code of operation:");
@@ -186,7 +190,7 @@ namespace Client.ConsoleApp
             processId = Guid.NewGuid();
             try
             {
-                Workflow.Runtime.CreateInstance(schemeCode, processId.Value);
+                Workflow.SingleRuntime.CreateInstance(schemeCode, processId.Value);
                 Console.WriteLine("CreateInstance - OK.", processId);
             }
             catch (Exception ex)
@@ -209,7 +213,7 @@ namespace Client.ConsoleApp
             //var activityname = WorkflowInit.Runtime.GetCurrentActivityName(processId.Value);
 
 
-            var commands = Workflow.Runtime.GetAvailableCommands(processId.Value, string.Empty);
+            var commands = Workflow.SingleRuntime.GetAvailableCommands(processId.Value, string.Empty);
 
             Console.WriteLine("Available commands:");
             if (commands.Count() == 0)
@@ -240,7 +244,7 @@ namespace Client.ConsoleApp
                 var commandName = Console.ReadLine().ToLower().Trim();
                 if (commandName == string.Empty)
                     return;
-                command = Workflow.Runtime.GetAvailableCommands(processId.Value, string.Empty)
+                command = Workflow.SingleRuntime.GetAvailableCommands(processId.Value, string.Empty)
                     .Where(c => c.CommandName.Trim().ToLower() == commandName).FirstOrDefault();
                 if (command == null)
                     Console.WriteLine("The command isn't found.");
@@ -273,7 +277,7 @@ namespace Client.ConsoleApp
                 }
             }
  
-            Workflow.Runtime.ExecuteCommand(command, string.Empty, string.Empty);
+            Workflow.SingleRuntime.ExecuteCommand(command, string.Empty, string.Empty);
 
             Console.WriteLine("ExecuteCommand - OK.", processId);
         }
@@ -285,7 +289,7 @@ namespace Client.ConsoleApp
                 Console.WriteLine("The process isn't created. Please, create process instance.");
                 return;
             }
-            var states = Workflow.Runtime.GetAvailableStateToSet(processId.Value, Thread.CurrentThread.CurrentCulture);
+            var states = Workflow.SingleRuntime.GetAvailableStateToSet(processId.Value, Thread.CurrentThread.CurrentCulture);
             Console.WriteLine("Available state to set:");
             if (states.Count() == 0)
             {
@@ -316,7 +320,7 @@ namespace Client.ConsoleApp
                 stateName = Console.ReadLine().ToLower().Trim();
                 if (stateName == string.Empty)
                     return;
-                state = Workflow.Runtime.GetAvailableStateToSet(processId.Value, Thread.CurrentThread.CurrentCulture)
+                state = Workflow.SingleRuntime.GetAvailableStateToSet(processId.Value, Thread.CurrentThread.CurrentCulture)
                     .Where(c => c.Name.Trim().ToLower() == stateName).FirstOrDefault();
                 if (state == null)
                     Console.WriteLine("The state isn't found.");
@@ -325,7 +329,7 @@ namespace Client.ConsoleApp
             } while (true);
             if (state != null)
             {
-                Workflow.Runtime.SetState(processId.Value, string.Empty, string.Empty, state.Name, new Dictionary<string, object>());
+                Workflow.SingleRuntime.SetState(processId.Value, string.Empty, string.Empty, state.Name, new Dictionary<string, object>());
                 Console.WriteLine("SetState - OK.", processId);
             }
         }
@@ -337,7 +341,7 @@ namespace Client.ConsoleApp
                 Console.WriteLine("The process isn't created. Please, create process instance.");
                 return;
             }
-            Workflow.Runtime.PersistenceProvider.DeleteProcess(processId.Value);
+            Workflow.SingleRuntime.PersistenceProvider.DeleteProcess(processId.Value);
             Console.WriteLine("DeleteProcess - OK.", processId);
             processId = null;
         }

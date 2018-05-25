@@ -10,23 +10,24 @@ namespace AntWay.BLL
 {
     public class AntWayBLL
     {
-        public IDALAntWay IDAL { get; set; }
+        public IDALLocator IDALLocator { get; set; }
+        public IDALSchema IDALSchema { get; set; }
 
-        public AntWayWorkflowLocatorView Fetch(string locator)
+        public List<WorkflowSchemaView> GetSchemes()
         {
-            var dataView = IDAL.Fetch<AntWayWorkflowLocatorView>(locator);
+            var schemes = IDALSchema.GetWorkflowSchemes();
+            return schemes;
+        }
+
+        public WorkflowLocatorView GetWorkflowLocator(string locator)
+        {
+            var dataView = IDALLocator.Fetch<WorkflowLocatorView>(locator);
             return dataView;
         }
 
-        public AntWayWorkflowLocatorView Update(AntWayWorkflowLocatorView view)
+        public WorkflowLocatorView AddWorkflowLocator(WorkflowLocatorView wfLocatorView)
         {
-            var result = IDAL.Update(view);
-            return result;
-        }
-
-        public AntWayWorkflowLocatorView Insert(AntWayWorkflowLocatorView view)
-        {
-            var result = IDAL.Insert(view);
+            var result = IDALLocator.Insert(wfLocatorView);
             return result;
         }
     }

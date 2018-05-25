@@ -8,29 +8,54 @@ using OptimaJet.Workflow.Oracle;
 
 namespace WorkFlowEngine
 {
-    public static class Workflow
+    public class Workflow
     {
-        public static string DataBaseScheme;
-        public static IWorkflowActionProvider ActionProvider;
-
-        private static readonly Lazy<WorkflowRuntime> LazyRuntime =
-                            new Lazy<WorkflowRuntime>(InitWorkflowRuntime);
-        public static WorkflowRuntime Runtime
+        public static string SingleDataBaseScheme;
+        private static WorkflowRuntime _SingleRuntime = null;
+        public static WorkflowRuntime SingleRuntime
         {
-            get { return LazyRuntime.Value; }
+            get
+            {
+                if (_SingleRuntime == null)
+                {
+                    _SingleRuntime = new Workflow(SingleDataBaseScheme)
+                               .InitWorkflowRuntime();
+                }
+                return _SingleRuntime;
+            }
         }
 
-        public static void Start()
+
+        public string DataBaseScheme;
+        public IWorkflowActionProvider ActionProvider;
+
+        public Workflow(string databaseScheme)
         {
-            Runtime.Start();
+            DataBaseScheme = databaseScheme;
         }
 
-        private static WorkflowRuntime InitWorkflowRuntime()
+        private WorkflowRuntime _RuntimeServer;
+        public WorkflowRuntime RuntimeServer
         {
-            //TODO If you have a license key, you have to register it here
+            get
+            {
+                if (_RuntimeServer == null)
+                {
+                    _RuntimeServer = InitWorkflowRuntime();
+                }
+                return _RuntimeServer;
+            }
+        }
+
+        public void Start()
+        {
+            RuntimeServer.Start();
+        }
+
+        private WorkflowRuntime InitWorkflowRuntime()
+        {
             WorkflowRuntime.RegisterLicense("Flash_Data,_S.L.U.-Rmxhc2hfRGF0YSxfUy5MLlUuOjA1LjA5LjIwMTk6ZXlKTllYaE9kVzFpWlhKUFprRmpkR2wyYVhScFpYTWlPaTB4TENKTllYaE9kVzFpWlhKUFpsUnlZVzV6YVhScGIyNXpJam90TVN3aVRXRjRUblZ0WW1WeVQyWlRZMmhsYldWeklqb3RNU3dpVFdGNFRuVnRZbVZ5VDJaVWFISmxZV1J6SWpvdE1Td2lUV0Y0VG5WdFltVnlUMlpEYjIxdFlXNWtjeUk2TFRGOTpnMGtTZzRGS0FSaGcrQ1ovVEh4NTVxTUVnb0FIbjZBUVpyR1FRTW1NaGVNeVVhTzVJUGJKQlpnRHJrSVpWcDlSd1hxVkhveW1CN1BidC9ScVd3UzFTeWNXbzM3WSsxd1psa0RWdlhvQ2tlZ2Y2SVVwTHM2aXJtaG5ncjFML2RYK1lmcU9OakdPMVdXa211eFJ4WHhPZ1daVXQwNGpadmNWRUoyck5TMFJSWDQ9");
 
-            //TODO If you are using database different from SQL Server you have to use different persistence provider here.
             var connectionString = System.Configuration.ConfigurationManager
                                    .ConnectionStrings["ConnectionString"].ConnectionString;
             var dbProvider = new OracleProvider(connectionString, DataBaseScheme);
@@ -46,8 +71,6 @@ namespace WorkFlowEngine
                 .WithPersistenceProvider(dbProvider)
                 .WithBus(new NullBus())
                 .WithTimerManager(new TimerManager())
-                //.WithActionProvider(new ActionProvider())
-                //.EnableCodeActions()
                 .SwitchAutoUpdateSchemeBeforeGetAvailableCommandsOn();
 
             if (ActionProvider != null)

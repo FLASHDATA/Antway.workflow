@@ -57,16 +57,19 @@
         var rectColor = WorkflowDesignerConstants.ActivityColor;
         var textColor = WorkflowDesignerConstants.ActivityTextColor;
         var cornerRadius = 5;
-        var width = 190;
-        var height = 60;
+        var width = undefined;
+        var height = undefined;
         var xtext = 10;
+        var rotation = 0;
+        var xra = 0;
+        var yra = 0;
+        var offsetX = 0;
+        var offsetY = 0;
 
         var isNormal = true;
         if (me.item.IsFinal){
             rectColor = WorkflowDesignerConstants.ActivityFinalColor;
             textColor = WorkflowDesignerConstants.ActivityFinalTextColor;
-            width = 190;
-            height = 60;
             cornerRadius = 50;
             xtext = 20;
             isNormal = false;
@@ -80,9 +83,26 @@
             isNormal = false;
         }
 
+        if (me.item.IsForSetState) {
+            rectColor = WorkflowDesignerConstants.ActivityConditionColor;
+            textColor = WorkflowDesignerConstants.ActivityConditionTextColor;
+            width = 80;
+            height = 80;
+            rotation = 50;
+            cornerRadius = 0;
+            xtext = 15;
+            xra = 0;
+            yra = 0;
+            offsetX = -18;
+            offsetY = 48;
+            isNormal = false;
+        }
+
         if (me.graph.GetCurrentActivity() == me.item.Name){
             rectColor = WorkflowDesignerConstants.SelectColor;
             textColor = WorkflowDesignerConstants.SelectTextColor;
+            width = this.graph.Settings.DefaultActivityWidth;
+            height = this.graph.Settings.DefaultActivityHeight;
             cornerRadius = 50;
             isNormal = false;
         }
@@ -95,19 +115,46 @@
         }
 
         
+        if (me.item.IsForSetState) {
+            me.rectangle = new Konva.RegularPolygon({
+                //x: xra,
+                //y: yra,
+                //width: width,
+                //height: height,
+                //offsetY: offsetY,
+                //offsetX: offsetX,
+                ////width: this.graph.Settings.DefaultActivityWidth,
+                ////height: this.graph.Settings.DefaultActivityHeight,
+                //// stroke: WorkflowDesignerConstants.ActivityShape,
+                //// strokeWidth: 0,
+                //rotation: rotation,
+                //fill: rectColor,
+                //cornerRadius: cornerRadius,
 
-        me.rectangle = new Konva.Rect({
-            x: 0,
-            y: 0,
-            width: width,
-            height: height,
-            //width: this.graph.Settings.DefaultActivityWidth,
-            //height: this.graph.Settings.DefaultActivityHeight,
-            // stroke: WorkflowDesignerConstants.ActivityShape,
-            // strokeWidth: 0,
-            fill: rectColor,
-            cornerRadius: cornerRadius,
-        });
+                x: 150,
+                y: 275,
+                sides: 3,
+                radius: 100,
+                //scaleY: 1.6,
+                stroke: "black",
+                fill: "rgba(200,0,200, 1)",
+            });
+        }
+        else {
+            me.rectangle = new Konva.Rect({
+                x: xra,
+                y: yra,
+                offsetY: offsetY,
+                offsetX: offsetX,
+                width: this.graph.Settings.DefaultActivityWidth,
+                height: this.graph.Settings.DefaultActivityHeight,
+                // stroke: WorkflowDesignerConstants.ActivityShape,
+                // strokeWidth: 0,
+                rotation: rotation,
+                fill: rectColor,
+                cornerRadius: cornerRadius,
+            });
+        }
         
         me.control.add(me.rectangle);
         if(Array.isArray(me.item.Implementation) && me.item.Implementation.length > 0)
@@ -447,7 +494,7 @@
                 {type: 'group', elements:[
                     { name: labels.IsInitial, field: "IsInitial", type: "checkbox" },
                     { name: labels.IsFinal, field: "IsFinal", type: "checkbox" },
-                    //{ name: labels.IsForSetState, field: "IsForSetState", type: "checkbox" },
+                    { name: labels.IsForSetState, field: "IsForSetState", type: "checkbox" },
                     { name: labels.IsAutoSchemeUpdate, field: "IsAutoSchemeUpdate", type: "checkbox" }
                 ]},
                 {

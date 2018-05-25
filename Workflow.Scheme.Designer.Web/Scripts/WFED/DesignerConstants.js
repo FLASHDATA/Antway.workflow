@@ -5,6 +5,8 @@
     ActivityInitialTextColor: '#FFFFFF',
     ActivityFinalColor: '#2980B9',
     ActivityFinalTextColor: '#FFFFFF',
+    ActivityConditionColor: '#2980B9',
+    ActivityConditionTextColor: '#FFFFFF',
     ActivityShape: '#CECECE',
     SelectColor: '#F39C12',
     SelectTextColor: '#FFFFFF',

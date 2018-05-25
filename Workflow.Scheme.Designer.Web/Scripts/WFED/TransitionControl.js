@@ -56,14 +56,25 @@
         fromy = Number(this.from.getY());
         tox = Number(this.to.getX());
         toy = Number(this.to.getY());
+        if (Number(fromRec.attrs.width == 80)) {
+            var w2 = Number(fromRec.attrs.width / 2); var h2 = Number(30);
+            var dsize = 25;
 
-        var w2 = Number(fromRec.attrs.width / 2); var h2 = Number(fromRec.attrs.height / 2);
-        var dsize = 25;
+            var ascx = fromx + w2;
+            var ascy = fromy + h2;
+            var aecx = tox + 100;
+            var aecy = toy + h2;
+        }
+        else {
+            var w2 = Number(fromRec.attrs.width / 2); var h2 = Number(fromRec.attrs.height / 2);
+            var dsize = 25;
 
-        var ascx = fromx + w2;
-        var ascy = fromy + h2;
-        var aecx = tox + w2;
-        var aecy = toy + h2;
+            var ascx = fromx + w2;
+            var ascy = fromy + h2;
+            var aecx = tox + w2;
+            var aecy = toy + h2;
+        }
+        w2 = 100;
         this.direction = { start: 0, end: 0 };
 
         if (this.from == this.to) {
@@ -80,8 +91,8 @@
                 this.middle = { x: (ascx + aecx) / 2, y: (ascy + aecy) / 2 };
             }
             var xs = ascx, ys = ascy, xe = aecx, ye = aecy;
-
-
+            
+           
             if (ascy - h2 - dsize > this.middle.y && aecy - h2 - dsize > this.middle.y) {
                 ys = ascy - h2;
                 ye = aecy - h2;
@@ -98,7 +109,8 @@
                 xs = ascx - w2;
                 xe = aecx - w2;
             }
-            else if (ascx + w2 + dsize < this.middle.x && aecx + w2 + dsize < this.middle.x) {
+            else
+            if (ascx + w2 + dsize < this.middle.x && aecx + w2 + dsize < this.middle.x) {
                 xs = ascx + w2;
                 xe = aecx + w2;
             }
@@ -123,7 +135,7 @@
                         //this.direction.start = 1;
                     }
                 }
-
+                
                 //calculate end point
                 if (aecx + w2 + dsize < this.middle.x) xe += w2;
                 else if (aecx - w2 - dsize > this.middle.x) xe -= w2;
@@ -579,19 +591,6 @@
             textvalue += 'O';
         }
 
-        if(Array.isArray(this.item.Restrictions) && this.item.Restrictions.length > 0){
-            textvalue += 'R';
-        }
-        if (textvalue == "AAR") { textvalue = "  ⚡⛔"; }
-        if (textvalue == "ACR") { textvalue = "⚡if⛔"; }
-        if (textvalue == "AOR") { textvalue = "⚡else⛔"; }
-        if (textvalue == "CAR") { textvalue = "  👨🏻‍💼⛔"; }
-        if (textvalue == "CCR") { textvalue = "👨🏻‍💼if⛔"; }
-        if (textvalue == "COR") { textvalue = "👨🏻‍💼else⛔"; }
-        if (textvalue == "TAR") { textvalue = "  ⏱⛔"; }
-        if (textvalue == "TCR") { textvalue = "⏱if⛔"; }
-        if (textvalue == "TOR") { textvalue = "⏱else⛔"; }
-
         if (textvalue == "AA") { textvalue = "    ⚡"; }
         if (textvalue == "CA") { textvalue = "    👨🏻‍💼"; }
         if (textvalue == "TA") { textvalue = "    ⏱"; }
@@ -603,6 +602,38 @@
         if (textvalue == "AO") { textvalue = "⚡else"; }
         if (textvalue == "CO") { textvalue = " 👨🏻‍💼else"; }
         if (textvalue == "TO") { textvalue = "⏱else"; }
+
+
+        if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command') {
+            if (Array.isArray(me.item.Restrictions) && me.item.Restrictions.length > 0) {
+                me.item.Restrictions.forEach(function (item) {
+                    if (item.Actor != undefined) {
+                        var str = item.Actor.Name;
+                        if (item.Type == "Restrict") {
+                            textvalue += '🔒';
+                        }
+                        else {
+                            textvalue += '🔓';
+                        }
+                        textvalue = textvalue.trim();
+                        
+                    }
+                });
+            }
+        }
+
+
+        if (textvalue == "AAR") { textvalue = "  ⚡⛔"; }
+        if (textvalue == "ACR") { textvalue = "⚡if⛔"; }
+        if (textvalue == "AOR") { textvalue = "⚡else⛔"; }
+        if (textvalue == "CAR") { textvalue = "  👨🏻‍💼⛔"; }
+        if (textvalue == "CCR") { textvalue = "👨🏻‍💼if⛔"; }
+        if (textvalue == "COR") { textvalue = "👨🏻‍💼else⛔"; }
+        if (textvalue == "TAR") { textvalue = "  ⏱⛔"; }
+        if (textvalue == "TCR") { textvalue = "⏱if⛔"; }
+        if (textvalue == "TOR") { textvalue = "⏱else⛔"; }
+
+
         
 
         //if (conditiontype == 'action' || conditiontype == 'otherwise' ) {

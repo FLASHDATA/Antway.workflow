@@ -60,7 +60,7 @@
         }
 
         if (item == undefined)
-            item = {IsAutoSchemeUpdate: true, IsForSetState: true};
+            item = {IsAutoSchemeUpdate: true, IsForSetState: false};
 
         if (item.Name == undefined)
             item.Name = this.GetDefaultName();

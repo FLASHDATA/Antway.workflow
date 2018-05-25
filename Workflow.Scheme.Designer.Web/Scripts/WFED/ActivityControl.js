@@ -56,28 +56,41 @@
 
         var rectColor = WorkflowDesignerConstants.ActivityColor;
         var textColor = WorkflowDesignerConstants.ActivityTextColor;
+        var cornerRadius = 5;
+        var width = 190;
+        var height = 60;
+        var xtext = 10;
+
         var isNormal = true;
         if (me.item.IsFinal){
             rectColor = WorkflowDesignerConstants.ActivityFinalColor;
             textColor = WorkflowDesignerConstants.ActivityFinalTextColor;
+            width = 190;
+            height = 60;
+            cornerRadius = 50;
+            xtext = 20;
             isNormal = false;
         }
 
         if (me.item.IsInitial){
             rectColor = WorkflowDesignerConstants.ActivityInitialColor;
             textColor = WorkflowDesignerConstants.ActivityInitialTextColor;
+            cornerRadius = 50;
+            xtext = 20;
             isNormal = false;
         }
 
         if (me.graph.GetCurrentActivity() == me.item.Name){
             rectColor = WorkflowDesignerConstants.SelectColor;
             textColor = WorkflowDesignerConstants.SelectTextColor;
+            cornerRadius = 50;
             isNormal = false;
         }
 
         if (me.graph.isCurrentActivityForSubprocess(me.item.Name)){
             rectColor = WorkflowDesignerConstants.SelectSubProcessColor;
             textColor = WorkflowDesignerConstants.SelectSubProcessTextColor;
+            cornerRadius = 50;
             isNormal = false;
         }
 
@@ -86,12 +99,14 @@
         me.rectangle = new Konva.Rect({
             x: 0,
             y: 0,
-            width: this.graph.Settings.DefaultActivityWidth,
-            height: this.graph.Settings.DefaultActivityHeight,
+            width: width,
+            height: height,
+            //width: this.graph.Settings.DefaultActivityWidth,
+            //height: this.graph.Settings.DefaultActivityHeight,
             // stroke: WorkflowDesignerConstants.ActivityShape,
             // strokeWidth: 0,
             fill: rectColor,
-            cornerRadius: 5
+            cornerRadius: cornerRadius,
         });
         
         me.control.add(me.rectangle);
@@ -120,7 +135,7 @@
         }
 
         me.text = new Konva.Text({
-            x: 10,
+            x: xtext,
             y: 10,
             text: this.GetName(),
             fontSize: 12,
@@ -133,7 +148,7 @@
             me.item.State = '';
 
         me.stateText = new Konva.Text({
-            x: 10,
+            x: xtext,
             y: 25,
             text: me.item.State,
             fontSize: 12,
@@ -165,7 +180,7 @@
 
         if(typeText != ""){
             me.typeText = new Konva.Text({
-                x: 10,
+                x: xtext,
                 y: 40,
                 text: typeText,
                 fontSize: 12,
@@ -432,7 +447,7 @@
                 {type: 'group', elements:[
                     { name: labels.IsInitial, field: "IsInitial", type: "checkbox" },
                     { name: labels.IsFinal, field: "IsFinal", type: "checkbox" },
-                    { name: labels.IsForSetState, field: "IsForSetState", type: "checkbox" },
+                    //{ name: labels.IsForSetState, field: "IsForSetState", type: "checkbox" },
                     { name: labels.IsAutoSchemeUpdate, field: "IsAutoSchemeUpdate", type: "checkbox" }
                 ]},
                 {

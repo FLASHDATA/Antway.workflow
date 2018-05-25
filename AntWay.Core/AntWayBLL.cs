@@ -13,15 +13,22 @@ namespace AntWay.BLL
         public IDALLocator IDALLocator { get; set; }
         public IDALSchema IDALSchema { get; set; }
 
+        public List<WorkflowSchemaView> GetSchemes()
+        {
+            var schemes = IDALSchema.GetWorkflowSchemes();
+            return schemes;
+        }
+
         public WorkflowLocatorView GetWorkflowLocator(string locator)
         {
             var dataView = IDALLocator.Fetch<WorkflowLocatorView>(locator);
             return dataView;
         }
 
-        //public WorkflowLocatorView AddWorkflowLocator(string locator)
-        //{
-        //    IDALLocator.Insert
-        //}
+        public WorkflowLocatorView AddWorkflowLocator(WorkflowLocatorView wfLocatorView)
+        {
+            var result = IDALLocator.Insert(wfLocatorView);
+            return result;
+        }
     }
 }

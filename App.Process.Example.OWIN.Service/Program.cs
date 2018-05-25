@@ -6,7 +6,6 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
-using Example.OWIN.Service;
 
 namespace Example.OWIN.Service
 {

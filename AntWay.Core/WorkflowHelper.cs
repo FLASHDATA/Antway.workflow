@@ -8,6 +8,8 @@ using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
 using OptimaJet.Workflow.Core.Subprocess;
 
+//NO SE UTILIZA DE MOMENTO
+//ALGUNAS PRUEBAS DE MODIFICACIONES (EXTENSIONES) DE FUNCIONES DEL CORE DEL WORKFLOWENGINE A MEMEDIA
 namespace AntWay.Core
 {
     public static class WorkflowHelper

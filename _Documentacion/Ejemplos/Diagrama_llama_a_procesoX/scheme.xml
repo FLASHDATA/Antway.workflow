@@ -1,0 +1,76 @@
+<Process>
+  <Designer />
+  <Parameters>
+    <Parameter Name="httpResponse_ProcesoX" Type="String" Purpose="Persistence" />
+  </Parameters>
+  <Commands>
+    <Command Name="Next" />
+  </Commands>
+  <Timers>
+    <Timer Name="5s" Type="Interval" Value="5s" NotOverrideIfExists="false" />
+    <Timer Name="12s" Type="Interval" Value="12s" NotOverrideIfExists="false" />
+  </Timers>
+  <Activities>
+    <Activity Name="Activity_1" State="Created" IsInitial="True" IsFinal="False" IsForSetState="True" IsAutoSchemeUpdate="True">
+      <Designer X="140" Y="20" />
+    </Activity>
+    <Activity Name="Activity_2" State="Signing" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Implementation>
+        <ActionRef Order="1" NameRef="ProcesoX" />
+      </Implementation>
+      <Designer X="500" Y="20" />
+    </Activity>
+    <Activity Name="Activity_3" State="Signed" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="510" Y="210" />
+    </Activity>
+    <Activity Name="FIN" IsInitial="False" IsFinal="True" IsForSetState="True" IsAutoSchemeUpdate="True">
+      <Designer X="140" Y="200" />
+    </Activity>
+  </Activities>
+  <Transitions>
+    <Transition Name="Activity_1_Activity_2_1" To="Activity_2" From="Activity_1" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Command" NameRef="Next" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Activity_2_Activity_3_1" To="Activity_3" From="Activity_2" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Command" NameRef="Next" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Activity_3_Activity_4_1" To="FIN" From="Activity_3" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+  </Transitions>
+  <CodeActions>
+    <CodeAction Name="StateEqualToSigning" Type="Condition" IsGlobal="False" IsAsync="False">
+      <ActionCode><![CDATA[return runtime.GetCurrentStateName(processInstance.RootProcessId) == "Signing";]]></ActionCode>
+      <Usings><![CDATA[System.Linq;System;OptimaJet.Workflow;System.Net.Http.Headers;OptimaJet.Workflow.Core.Model;System.Net.Http;System.Threading.Tasks;System.Threading;System.Collections;System.Collections.Generic;]]></Usings>
+    </CodeAction>
+    <CodeAction Name="ProcesoX" Type="Action" IsGlobal="False" IsAsync="False">
+      <ActionCode><![CDATA[string httpResponse = "200";
+try
+{
+    var response = new HttpClient().GetAsync("http://localhost:9000/api/home/5").Result;
+    httpResponse = Convert.ToInt16(response.StatusCode).ToString();
+} catch (Exception ex) { httpResponse = "404"; }
+processInstance.SetParameter("httpResponse_ProcesoX", httpResponse, ParameterPurpose.Persistence);
+runtime.PersistenceProvider.SavePersistenceParameters(processInstance);]]></ActionCode>
+      <Usings><![CDATA[System.Linq;System;OptimaJet.Workflow;System.Net.Http.Headers;OptimaJet.Workflow.Core.Model;System.Net.Http;System.Threading.Tasks;System.Threading;System.Collections;System.Collections.Generic;]]></Usings>
+    </CodeAction>
+  </CodeActions>
+</Process>

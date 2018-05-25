@@ -17,6 +17,7 @@ namespace AntWay.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+
         }
     }
 }

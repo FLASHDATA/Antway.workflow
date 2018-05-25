@@ -8,8 +8,23 @@ using AntWay.Views;
 
 namespace AntWay.EFDAL
 {
-    public class WFSchemaEFDAL : IDAL
+    public class WFSchemaEFDAL : IDALSchema
     {
+        public List<WorkflowSchemaView> GetWorkflowSchemes()
+        {
+            using (var ctx = new Model1())
+            {
+                var result = ctx.WF_SCHEMES
+                             .ToList()
+                             .Select(s => new WorkflowSchemaView { DBSchemeName = s.DB_SCHEME_NAME })
+                             .ToList();
+
+                return result;
+            }
+        }
+
+
+
         public T Fetch<T>(object pk)
         {
             string id = Convert.ToString(pk ?? "");
@@ -24,6 +39,7 @@ namespace AntWay.EFDAL
                 return (T)Convert.ChangeType(result, typeof(T));
             }
         }
+
 
         public T Insert<T>(T objectView)
         {

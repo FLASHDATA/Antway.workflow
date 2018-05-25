@@ -8,7 +8,7 @@ using AntWay.Views;
 
 namespace AntWay.EFDAL
 {
-    public class WFLocatorEFDAL : IDAL
+    public class WFLocatorEFDAL : IDALLocator
     {
         public T Fetch<T>(object pk)
         {

@@ -9,31 +9,25 @@
   </Timers>
   <Activities>
     <Activity Name="Activity_1" State="Created" IsInitial="True" IsFinal="False" IsForSetState="True" IsAutoSchemeUpdate="True">
-      <Designer X="-15" Y="-125" />
+      <Designer X="40" Y="120" />
     </Activity>
     <Activity Name="Activity_2" State="Signing" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
-      <Designer X="540" Y="-30" />
+      <Designer X="540" Y="110" />
     </Activity>
     <Activity Name="Activity_3" State="Signed" IsInitial="False" IsFinal="False" IsForSetState="True" IsAutoSchemeUpdate="True">
-      <Designer X="1290" Y="-40" />
+      <Designer X="1260" Y="100" />
     </Activity>
     <Activity Name="Email al funcionario" State="EF" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
-      <Implementation>
-        <ActionRef Order="1" NameRef="MyAction" />
-      </Implementation>
-      <Designer X="440" Y="350" />
+      <Designer X="400" Y="410" />
     </Activity>
     <Activity Name="Email al JEFE" State="EJ" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
-      <Implementation>
-        <ActionRef Order="1" NameRef="MyAction2" />
-      </Implementation>
-      <Designer X="910" Y="150" />
+      <Designer X="900" Y="240" />
     </Activity>
     <Activity Name="FIN" IsInitial="False" IsFinal="True" IsForSetState="True" IsAutoSchemeUpdate="True">
-      <Designer X="1570" Y="350" />
+      <Designer X="1270" Y="370" />
     </Activity>
     <Activity Name="Activity_4" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
-      <Designer X="850" Y="340" />
+      <Designer X="960" Y="440" />
     </Activity>
   </Activities>
   <Transitions>
@@ -80,7 +74,7 @@
       <Conditions>
         <Condition Type="Action" NameRef="StateEqualToSigning" ConditionInversion="false" />
       </Conditions>
-      <Designer X="727" Y="249" />
+      <Designer X="682" Y="298" />
     </Transition>
     <Transition Name="Activity_3_Activity_4_1" To="FIN" From="Activity_3" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
       <Triggers>

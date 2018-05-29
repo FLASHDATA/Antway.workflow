@@ -55,13 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AntWayBLL.cs" />
-    <Compile Include="IWorkflowConfiguration.cs" />
     <Compile Include="OracleProvider.cs" />
+    <Compile Include="SchemesPersistenceBLL.cs" />
     <Compile Include="Workflow.cs" />
     <Compile Include="WorkflowHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkflowBAK.cs" />
+    <Compile Include="WorkflowRunTimeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AntWay.EFDAL\AntWay.EFDAL.csproj">

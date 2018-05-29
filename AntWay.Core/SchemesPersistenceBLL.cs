@@ -8,7 +8,7 @@ using AntWay.Views;
 
 namespace AntWay.BLL
 {
-    public class AntWayBLL
+    public class SchemesPersistenceBLL
     {
         public IDALLocator IDALLocator { get; set; }
         public IDALSchema IDALSchema { get; set; }

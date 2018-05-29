@@ -39,7 +39,7 @@
 
     this.start = undefined;
     this.end = undefined;
-    
+
     this.angle = undefined;
 
     this.activePoint = undefined;
@@ -64,13 +64,14 @@
         var ascy = fromy + h2;
         var aecx = tox + w2;
         var aecy = toy + h2;
+
         this.direction = { start: 0, end: 0 };
 
         if (this.from == this.to) {
             this.start = { x: ascx + w2, y: ascy - h2 + 14 };
             this.end = { x: aecx + w2 - 25, y: aecy - h2 };
             this.direction.end = 1;
-            if(this.middle == undefined)
+            if (this.middle == undefined)
                 this.middle = { x: ascx + w2 + h2, y: ascy - 2 * h2 };
         }
         else {
@@ -98,52 +99,53 @@
                 xs = ascx - w2;
                 xe = aecx - w2;
             }
-            else if (ascx + w2 + dsize < this.middle.x && aecx + w2 + dsize < this.middle.x) {
-                xs = ascx + w2;
-                xe = aecx + w2;
-            }
-            else {
-                //calculate start point
-                
-                if (ascx + w2 + dsize < this.middle.x) xs += w2;
-                else if (ascx - w2 - dsize > this.middle.x) xs -= w2;
-                else if (ascy + h2 + dsize < this.middle.y) {
-                    ys += h2;
-                    this.direction.start = 1;
-                }
-                else if (ascy - h2 - dsize > this.middle.y) {
-                    ys -= h2;
-                    this.direction.start = 1;
+            else
+                if (ascx + w2 + dsize < this.middle.x && aecx + w2 + dsize < this.middle.x) {
+                    xs = ascx + w2;
+                    xe = aecx + w2;
                 }
                 else {
-                    if (xs <= this.middle.x)
-                        xs += w2;
-                    else {
-                        xs -= w2;
-                        //this.direction.start = 1;
-                    }
-                }
+                    //calculate start point
 
-                //calculate end point
-                if (aecx + w2 + dsize < this.middle.x) xe += w2;
-                else if (aecx - w2 - dsize > this.middle.x) xe -= w2;
-                else if (aecy + h2 + dsize < this.middle.y) {
-                    ye += h2;
-                    this.direction.end = 1;
-                }
-                else if (aecy - h2 - dsize > this.middle.y) {
-                    ye -= h2;
-                    this.direction.end = 1;
-                }
-                else {
-                    if (ys >= this.middle.y)
-                        ye += h2;
-                    else {
-                        ye -= h2;
+                    if (ascx + w2 + dsize < this.middle.x) xs += w2;
+                    else if (ascx - w2 - dsize > this.middle.x) xs -= w2;
+                    else if (ascy + h2 + dsize < this.middle.y) {
+                        ys += h2;
+                        this.direction.start = 1;
                     }
-                    this.direction.end = 1;
+                    else if (ascy - h2 - dsize > this.middle.y) {
+                        ys -= h2;
+                        this.direction.start = 1;
+                    }
+                    else {
+                        if (xs <= this.middle.x)
+                            xs += w2;
+                        else {
+                            xs -= w2;
+                            //this.direction.start = 1;
+                        }
+                    }
+
+                    //calculate end point
+                    if (aecx + w2 + dsize < this.middle.x) xe += w2;
+                    else if (aecx - w2 - dsize > this.middle.x) xe -= w2;
+                    else if (aecy + h2 + dsize < this.middle.y) {
+                        ye += h2;
+                        this.direction.end = 1;
+                    }
+                    else if (aecy - h2 - dsize > this.middle.y) {
+                        ye -= h2;
+                        this.direction.end = 1;
+                    }
+                    else {
+                        if (ys >= this.middle.y)
+                            ye += h2;
+                        else {
+                            ye -= h2;
+                        }
+                        this.direction.end = 1;
+                    }
                 }
-            }
 
             if (fixedstartpoit != undefined) {
                 xs = fixedstartpoit.x;
@@ -164,8 +166,7 @@
             if (recalcMiddle) {
                 this.middle = { x: (xs + xe) / 2, y: (ys + ye) / 2 };
 
-                for (var i = 0; i < me.manager.ItemControls.length; i++)
-                {
+                for (var i = 0; i < me.manager.ItemControls.length; i++) {
                     var item = me.manager.ItemControls[i];
                     if (item == me) continue;
 
@@ -223,7 +224,7 @@
 
         var color = this.GetColor();
         this.points = this.GetPoints([this.start.x, this.start.y, this.middle.x, this.middle.y, this.end.x, this.end.y], this.direction);
-        
+
         this.angle = Math.atan2(
             this.points[this.points.length - 1] - this.points[this.points.length - 3],
             this.points[this.points.length - 2] - this.points[this.points.length - 4]);
@@ -234,7 +235,7 @@
                 y: 0,
                 rotation: 0
             });
-            
+
             this.arrow = WorkflowDesignerCommon.createArrowByAngle(this.end.x, this.end.y, this.angle, 15, color);
             var lineConfig = {
                 points: this.points,
@@ -259,7 +260,7 @@
 
     this.GetPoints = function (points, direction) {
         // one line
-        if(points[0] == points[2] == points[4] || points[1] == points[3] == points[5])
+        if (points[0] == points[2] == points[4] || points[1] == points[3] == points[5])
             return points;
 
         var res = new Array();
@@ -278,25 +279,23 @@
             res.push(points[2], points[3]);
         }
 
-        if (direction.end == 0 && res[res.length - 2] != points[4])
-        {
+        if (direction.end == 0 && res[res.length - 2] != points[4]) {
             res.push(res[res.length - 2], points[5]);
         }
-        else if (direction.end == 1 && res[res.length - 1] != points[5])
-        {
+        else if (direction.end == 1 && res[res.length - 1] != points[5]) {
             res.push(points[4], res[res.length - 1]);
         }
         res.push(points[4], points[5]);
 
         return res;
     };
- 
+
     this.GetColor = function () {
         var classifier = this.item.Classifier == undefined ? 'notspecified' : this.item.Classifier.toLowerCase();
         return classifier == 'notspecified' ? '#7F8C8D' : classifier == 'direct' ? '#27AE60' : '#2980B9';
     };
 
-    this.DrawActivePoint = function () {       
+    this.DrawActivePoint = function () {
         if (this.activePoint) {
             this._moveActivePoint(this.middle.x, this.middle.y);
         }
@@ -330,7 +329,7 @@
     this.Draw = function (fixedstartpoit, fixedendpoint) {
         this.DrawTransition(fixedstartpoit, fixedendpoint);
         this.DrawActivePoint();
-        if (!this.graph.Settings.readonly){
+        if (!this.graph.Settings.readonly) {
             this.DrawTouchPoints();
         }
     };
@@ -367,37 +366,37 @@
     };
 
     this._onDelete = function () {
-        me.graph.confirm(WorkflowDesignerConstants.DeleteConfirmCurrent, function(){
+        me.graph.confirm(WorkflowDesignerConstants.DeleteConfirmCurrent, function () {
             me.Delete();
             me.graph.onSelectionChanged();
             me.graph.redrawAll();
             me.graph.StoreGraphData();
-            
+
         });
     };
 
     this.Select = function () {
-        if(this.selected == true)
+        if (this.selected == true)
             return;
 
         var me = this;
         me.oldstroke = this.line.getStroke();
         me.line.setStroke(WorkflowDesignerConstants.SelectColor);
         me.line.setStrokeWidth(3);
-        
 
-        if(me.bar == undefined){
+
+        if (me.bar == undefined) {
             var path = me.graph.Settings.imagefolder;
             var barX = -15;
-            var buttons = [{ img: path + 'wfe.settings.png', click: function () { me.ShowProperties()}}];
-            if (!me.graph.Settings.readonly){
-                buttons.push({ img: path + 'wfe.delete.png', click: function () { me._onDelete(); }});
+            var buttons = [{ img: path + 'wfe.settings.png', click: function () { me.ShowProperties() } }];
+            if (!me.graph.Settings.readonly) {
+                buttons.push({ img: path + 'wfe.delete.png', click: function () { me._onDelete(); } });
                 barX = -30;
             }
-            me.bar = WorkflowDesignerBar(me.manager.APLayer,buttons, { x: barX, y: -50});
+            me.bar = WorkflowDesignerBar(me.manager.APLayer, buttons, { x: barX, y: -50 });
             me.activePoint.add(me.bar);
         }
-        else{
+        else {
             this.bar.show();
         }
 
@@ -405,7 +404,7 @@
     };
 
     this.Deselect = function () {
-        if(this.selected == false)
+        if (this.selected == false)
             return;
 
         this.line.setStrokeWidth(2);
@@ -413,7 +412,7 @@
             this.line.setStroke(this.oldstroke);
         }
 
-        if(this.bar != undefined)
+        if (this.bar != undefined)
             this.bar.hide();
 
         this.selected = false;
@@ -449,7 +448,7 @@
 
     this._createTouchPoint = function (points, cTransition, isend) {
         var me = this;
-        
+
         var point = isend ?
             { x: points[points.length - 2], y: points[points.length - 1] } :
             { x: points[0], y: points[1] };
@@ -472,7 +471,7 @@
             else
                 offset.x = -offsetValue;
         }
-        
+
         var cTouchPoint = new Konva.Group({
             x: point.x,
             y: point.y,
@@ -539,9 +538,9 @@
         return cTouchPoint;
 
     };
-    
+
     this._moveActivePoint = function (x, y) {
-        this.activePoint.setPosition({x:x, y:y});
+        this.activePoint.setPosition({ x: x, y: y });
     };
 
     this._createActivePoint = function (x, y, cTransition) {
@@ -567,7 +566,7 @@
         else if (triggertype === 'timer') {
             textvalue += 'T';//'⏱ ⚡🚩 🚧';
         }
-        
+
         var conditiontype = this.item.Conditions[0].Type.toLowerCase();
         if (conditiontype === 'always') {
             textvalue += 'A';
@@ -578,19 +577,6 @@
         else if (conditiontype === 'otherwise') {
             textvalue += 'O';
         }
-
-        if(Array.isArray(this.item.Restrictions) && this.item.Restrictions.length > 0){
-            textvalue += 'R';
-        }
-        if (textvalue == "AAR") { textvalue = "  ⚡⛔"; }
-        if (textvalue == "ACR") { textvalue = "⚡if⛔"; }
-        if (textvalue == "AOR") { textvalue = "⚡else⛔"; }
-        if (textvalue == "CAR") { textvalue = "  👨🏻‍💼⛔"; }
-        if (textvalue == "CCR") { textvalue = "👨🏻‍💼if⛔"; }
-        if (textvalue == "COR") { textvalue = "👨🏻‍💼else⛔"; }
-        if (textvalue == "TAR") { textvalue = "  ⏱⛔"; }
-        if (textvalue == "TCR") { textvalue = "⏱if⛔"; }
-        if (textvalue == "TOR") { textvalue = "⏱else⛔"; }
 
         if (textvalue == "AA") { textvalue = "    ⚡"; }
         if (textvalue == "CA") { textvalue = "    👨🏻‍💼"; }
@@ -603,7 +589,39 @@
         if (textvalue == "AO") { textvalue = "⚡else"; }
         if (textvalue == "CO") { textvalue = " 👨🏻‍💼else"; }
         if (textvalue == "TO") { textvalue = "⏱else"; }
-        
+
+
+        if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command') {
+            if (Array.isArray(me.item.Restrictions) && me.item.Restrictions.length > 0) {
+                me.item.Restrictions.forEach(function (item) {
+                    if (item.Actor != undefined) {
+                        var str = item.Actor.Name;
+                        if (item.Type == "Restrict") {
+                            textvalue += '🔒';
+                        }
+                        else {
+                            textvalue += '🔓';
+                        }
+                        textvalue = textvalue.trim();
+
+                    }
+                });
+            }
+        }
+
+
+        if (textvalue == "AAR") { textvalue = "  ⚡⛔"; }
+        if (textvalue == "ACR") { textvalue = "⚡if⛔"; }
+        if (textvalue == "AOR") { textvalue = "⚡else⛔"; }
+        if (textvalue == "CAR") { textvalue = "  👨🏻‍💼⛔"; }
+        if (textvalue == "CCR") { textvalue = "👨🏻‍💼if⛔"; }
+        if (textvalue == "COR") { textvalue = "👨🏻‍💼else⛔"; }
+        if (textvalue == "TAR") { textvalue = "  ⏱⛔"; }
+        if (textvalue == "TCR") { textvalue = "⏱if⛔"; }
+        if (textvalue == "TOR") { textvalue = "⏱else⛔"; }
+
+
+
 
         //if (conditiontype == 'action' || conditiontype == 'otherwise' ) {
         //    var circle = new Konva.Rect({
@@ -617,17 +635,17 @@
 
         //}
         //else {
-            var circle = new Konva.Rect({
-                x: textvalue.length == 5 ? - 32 : -26,
-                y: -15,
-                width: 75,
-                height: 37,
-                fill: me.GetColor(),
-                cornerRadius: 15
-            });
+        var circle = new Konva.Rect({
+            x: textvalue.length == 5 ? - 32 : -26,
+            y: -15,
+            width: 75,
+            height: 37,
+            fill: me.GetColor(),
+            cornerRadius: 15
+        });
 
         //}
-        
+
 
 
 
@@ -648,10 +666,10 @@
         var redraw = function (d, r) {
             var point = me.graph.CorrectPossition(cActivePoint.getAbsolutePosition(), me.manager.Layer);
             me.middle = point;
-            
+
             me.DrawTransition();
 
-            if (!me.graph.Settings.readonly){
+            if (!me.graph.Settings.readonly) {
                 me.DrawTouchPoints();
             }
 
@@ -676,7 +694,7 @@
                 me.Deselect();
             else
                 me.Select();
-            
+
             if (me.activePoint.ToolTip != undefined) {
                 me.activePoint.ToolTip.hide();
             }
@@ -718,10 +736,10 @@
             redraw(true);
         });
 
-        if(me.graph.getParam("exinfo") == true){
+        if (me.graph.getParam("exinfo") == true) {
             me.createExInfo(cActivePoint);
         }
-        else{
+        else {
             var tooltiptext = this.item.Trigger.Type;
             if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command')
                 tooltiptext += ' ' + me.item.Trigger.Command.Name;
@@ -739,40 +757,40 @@
         return cActivePoint;
     };
 
-    this.createExInfo = function(cActivePoint){
+    this.createExInfo = function (cActivePoint) {
         var tooltiptext = "";
-        
-        if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command'){
-            if (Array.isArray(me.item.Restrictions) && me.item.Restrictions.length > 0){
-                me.item.Restrictions.forEach(function(item){
-                    if(item.Actor != undefined){
+
+        if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command') {
+            if (Array.isArray(me.item.Restrictions) && me.item.Restrictions.length > 0) {
+                me.item.Restrictions.forEach(function (item) {
+                    if (item.Actor != undefined) {
                         var str = item.Actor.Name;
-                        if(item.Type == "Restrict"){
+                        if (item.Type == "Restrict") {
                             str = "(" + str + ")";
                         }
-    
-                        if(tooltiptext.length > 0)
-                        tooltiptext += ", ";
+
+                        if (tooltiptext.length > 0)
+                            tooltiptext += ", ";
                         tooltiptext += str;
                     }
                 });
             }
-    
-            if(tooltiptext.length > 0)
+
+            if (tooltiptext.length > 0)
                 tooltiptext += " -> ";
 
             tooltiptext += me.item.Trigger.Command.Name;
         }
 
-        if (me.item.Trigger != undefined && me.item.Trigger.Timer != undefined && me.item.Trigger.Type === 'Timer'){
+        if (me.item.Trigger != undefined && me.item.Trigger.Timer != undefined && me.item.Trigger.Type === 'Timer') {
             tooltiptext += ' ' + me.item.Trigger.Timer.Name;
 
             var value = me.item.Trigger.Timer.Value;
-            if(value != undefined && value != "")
+            if (value != undefined && value != "")
                 tooltiptext += ' ' + value;
         }
 
-        if(tooltiptext.length > 0){
+        if (tooltiptext.length > 0) {
             var textctrl = new Konva.Text({
                 x: 0,
                 y: -30,
@@ -788,22 +806,22 @@
         }
 
         var tooltiptext2 = "";
-        if (Array.isArray(me.item.Conditions) && me.item.Conditions.length > 0){
-            me.item.Conditions.forEach(function(item){
-                if(item.Action != undefined){
+        if (Array.isArray(me.item.Conditions) && me.item.Conditions.length > 0) {
+            me.item.Conditions.forEach(function (item) {
+                if (item.Action != undefined) {
                     var str = item.Action.ActionName;
-                    if(item.ConditionInversion == true){
+                    if (item.ConditionInversion == true) {
                         str = "(" + str + ")";
                     }
 
-                    if(tooltiptext2.length > 0)
+                    if (tooltiptext2.length > 0)
                         tooltiptext2 += ", ";
                     tooltiptext2 += str;
                 }
             });
         }
 
-        if(tooltiptext2.length > 0){
+        if (tooltiptext2.length > 0) {
             var textctrl = new Konva.Text({
                 x: 0,
                 y: 25,
@@ -852,7 +870,7 @@
     this.getIntersectingRect = function (rect) {
         var point = this.activePoint.getAbsolutePosition();
         if (point.x >= rect.xl && point.x < rect.xr && point.y >= rect.yl && point.y < rect.yr)
-            return true;       
+            return true;
         return false;
     };
 
@@ -866,29 +884,37 @@
             data: this.item,
             readonly: this.graph.Settings.readonly,
             elements: [
-                { type: "group", elements: [
-                    { name: labels.Name, field: "Name", type: "input", width: "100%" },
-                    { name: labels.Classifier, field: "Classifier", type: "select", width: "100%", datasource: ['Direct', 'Reverse', 'NotSpecified'] }
-                ]},
-                { type: "group", elements:[
-                    { name: labels.From, field: "From.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Activities, width: "100%" },
-                    { name: labels.To, field: "To.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Activities, width: "100%" }]
-                },
-                {field: "Trigger", code: 'trigger', type: "form", datadefault: { Type: 'Command' }, elements: [
-                    {type: "group", elements: [
-                        { name: labels.Trigger, code: 'triggertype', field: "Type", type: "select", datasource: ['Auto', 'Command', 'Timer'] },
-                        { name: labels.TriggerCommand, code: 'triggercommand', field: "Command.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Commands },
-                        { name: labels.TriggerTimer, code: 'triggertimer', field: "Timer.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Timers }
-                    ]}
-                ]},{
-                    name: labels.Restrictions, field: "Restrictions", code: 'restrictions', type: "table", datadefault: { Type: 'Allow' }, elements: [
-                    { name: labels.RestrictionsType, code: 'resttype', field: "Type", type: "select", datasource: ['Allow', 'Restrict'] },
-                    { name: labels.RestrictionsActor, code: 'restactor', field: "Actor.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Actors }
+                {
+                    type: "group", elements: [
+                        { name: labels.Name, field: "Name", type: "input", width: "100%" },
+                        { name: labels.Classifier, field: "Classifier", type: "select", width: "100%", datasource: ['Direct', 'Reverse', 'NotSpecified'] }
                     ]
                 },
-                { type:"group", elements:[
-                    { name: labels.AllowConcatenationType, field: "AllowConcatenationType", type: "select", datasource: ['And', 'Or'] },
-                    { name: labels.RestrictConcatenationType, field: "RestrictConcatenationType", type: "select", datasource: ['And', 'Or'] }]
+                {
+                    type: "group", elements: [
+                        { name: labels.From, field: "From.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Activities, width: "100%" },
+                        { name: labels.To, field: "To.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Activities, width: "100%" }]
+                },
+                {
+                    field: "Trigger", code: 'trigger', type: "form", datadefault: { Type: 'Command' }, elements: [
+                        {
+                            type: "group", elements: [
+                                { name: labels.Trigger, code: 'triggertype', field: "Type", type: "select", datasource: ['Auto', 'Command', 'Timer'] },
+                                { name: labels.TriggerCommand, code: 'triggercommand', field: "Command.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Commands },
+                                { name: labels.TriggerTimer, code: 'triggertimer', field: "Timer.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Timers }
+                            ]
+                        }
+                    ]
+                }, {
+                    name: labels.Restrictions, field: "Restrictions", code: 'restrictions', type: "table", datadefault: { Type: 'Allow' }, elements: [
+                        { name: labels.RestrictionsType, code: 'resttype', field: "Type", type: "select", datasource: ['Allow', 'Restrict'] },
+                        { name: labels.RestrictionsActor, code: 'restactor', field: "Actor.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Actors }
+                    ]
+                },
+                {
+                    type: "group", elements: [
+                        { name: labels.AllowConcatenationType, field: "AllowConcatenationType", type: "select", datasource: ['And', 'Or'] },
+                        { name: labels.RestrictConcatenationType, field: "RestrictConcatenationType", type: "select", datasource: ['And', 'Or'] }]
                 },
                 {
                     name: labels.Condition, field: "Conditions", code: 'condition', type: "table", datadefault: { Type: 'Always', ResultOnPreExecution: 'Null' }, elements: [
@@ -900,13 +926,13 @@
                             field: "Action.ActionParameter",
                             type: "json",
                             openautocompleteonclick: true,
-                            datasource: function(request, response) {
+                            datasource: function (request, response) {
                                 var tr = $(this.element[0]).closest("tr");
                                 var conditionName = tr.find("[name=conditionaction]")[0].value;
                                 response(me.graph.getAutoCompleteSuggestions("conditionparameter", conditionName, request.term));
                             }
                         },
-                       { name: labels.ConditionInversion, code: 'conditioninversion', field: "ConditionInversion", type: "checkbox" },
+                        { name: labels.ConditionInversion, code: 'conditioninversion', field: "ConditionInversion", type: "checkbox" },
                         { name: labels.ResultOnPreExecution, code: 'conditionresult', field: "ResultOnPreExecution", type: "select", datasource: ['True', 'False'] }
                     ],
                     onrowadded: function (row) {
@@ -934,17 +960,21 @@
                         conditiontype.on('change', checkConditionType);
                         checkConditionType();
                     }
-                 
+
                 },
-                {type: "group", elements:[
-                    { name: labels.ConditionsConcatenationType, field: "ConditionsConcatenationType", type: "select", datasource: ['And', 'Or'] }
-                ]},
-                {type: "group", elements:[
-                    { name: labels.IsFork, field: "IsFork", code: 'isfork',type: "checkbox" },
-                    { name: labels.MergeViaSetState, field: "MergeViaSetState", code: 'mergeviasetstate', type: "checkbox" },
-                    { name: labels.DisableParentStateControl, field: "DisableParentStateControl", code:'disableparentstatecontrol', type: "checkbox" }
-                ]}
-                ],
+                {
+                    type: "group", elements: [
+                        { name: labels.ConditionsConcatenationType, field: "ConditionsConcatenationType", type: "select", datasource: ['And', 'Or'] }
+                    ]
+                },
+                {
+                    type: "group", elements: [
+                        { name: labels.IsFork, field: "IsFork", code: 'isfork', type: "checkbox" },
+                        { name: labels.MergeViaSetState, field: "MergeViaSetState", code: 'mergeviasetstate', type: "checkbox" },
+                        { name: labels.DisableParentStateControl, field: "DisableParentStateControl", code: 'disableparentstatecontrol', type: "checkbox" }
+                    ]
+                }
+            ],
 
             renderFinalFunc: function (control, f) {
                 var restrictions = control.find('[name=restrictions]').parent();
@@ -959,7 +989,7 @@
 
                 var checkTriggerType = function () {
 
-                    var getLabel = function(control){
+                    var getLabel = function (control) {
                         return control.prev();
                     };
 
@@ -999,7 +1029,7 @@
                 triggertype.on('change', checkTriggerType);
                 checkTriggerType();
 
-                var checkIsFork = function() {
+                var checkIsFork = function () {
                     var isFork = isfork[0].checked;
                     if (isFork) {
                         mergeviasetstaterow.show();
@@ -1016,14 +1046,14 @@
                 var restrictConcatenationType = concatenationtr.find('[name=RestrictConcatenationType]')[0].value.toLowerCase();
                 var conditionConcatenationType = conditionsconcatenationtr.find('[name=ConditionsConcatenationType]')[0].value.toLowerCase();
 
-                if (allowConcatenationType === 'and' && restrictConcatenationType === 'and'){ 
+                if (allowConcatenationType === 'and' && restrictConcatenationType === 'and') {
                     concatenationtr.hide();
                 }
 
                 var restrictionstd = control.find('[name=restrictions]').parent();
                 var restrictionsbtn = $('<a class="btnConcatParameters"></a>');
                 restrictionsbtn[0].innerText = WorkflowDesignerConstants.TransitionFormLabel.ShowConcatParameters;
-                restrictionsbtn.on('click',function() {
+                restrictionsbtn.on('click', function () {
                     if (concatenationtr.is(':visible')) {
                         concatenationtr.hide();
                         restrictionsbtn[0].innerText = WorkflowDesignerConstants.TransitionFormLabel.ShowConcatParameters;
@@ -1035,14 +1065,14 @@
                 });
                 restrictionstd.append('&nbsp;');
                 restrictionstd.append(restrictionsbtn);
-                
+
                 if (conditionConcatenationType === 'and')
                     conditionsconcatenationtr.hide();
 
                 var conditionstd = control.find('[name=condition]').parent();
                 var conditionsbtn = $('<a class="btnConcatParameters"></a>');
                 conditionsbtn[0].innerText = WorkflowDesignerConstants.TransitionFormLabel.ShowConcatParameters;
-                conditionsbtn.on('click',function() {
+                conditionsbtn.on('click', function () {
                     if (conditionsconcatenationtr.is(':visible')) {
                         conditionsconcatenationtr.hide();
                         conditionsbtn[0].innerText = WorkflowDesignerConstants.TransitionFormLabel.ShowConcatParameters;
@@ -1063,7 +1093,7 @@
 
         var validFunc = function (formControl, data) {
             var isValid = true;
-            
+
             isValid &= formControl.CheckRequired([data], ['Name'], WorkflowDesignerConstants.FieldIsRequired);
             isValid &= formControl.CheckRequired([data], ['Classifier'], WorkflowDesignerConstants.FieldIsRequired);
             var reqfields = ['Type'];
@@ -1086,7 +1116,7 @@
 
                 if (c.Type == 'Always' && data.Conditions.length > 1) {
                     isValid = false;
-                    formControl.ControlAddError(c['control_Type'],WorkflowDesignerConstants.AlwaysConditionShouldBeSingle);
+                    formControl.ControlAddError(c['control_Type'], WorkflowDesignerConstants.AlwaysConditionShouldBeSingle);
                 }
                 else if (c.Type == 'Otherwise' && data.Conditions.length > 1) {
                     isValid = false;
@@ -1094,7 +1124,7 @@
                 }
             });
             var c = data.control_Conditions.parent().children('label');//$(data.control_Conditions.parent().parent().children()[0]).children('label');
-            
+
             if (!data.Conditions.length > 0) {
                 c.attr('title', WorkflowDesignerConstants.TransitionFormLabel.ConditionsListShouldNotBeEmpty);
                 c.css("cssText", "color: red !important;");
@@ -1122,8 +1152,8 @@
             if (validFunc(form, data)) {
                 form.ClearTempField(data);
                 me.item.Name = data.Name;
-                me.item.From = {Name: data.From.Name};
-                me.item.To = {Name: data.To.Name};
+                me.item.From = { Name: data.From.Name };
+                me.item.To = { Name: data.To.Name };
                 me.item.Classifier = data.Classifier;
                 me.item.Restrictions = data.Restrictions;
                 me.item.Trigger = data.Trigger;
@@ -1157,8 +1187,8 @@
         this.control.destroy();
         this.activePoint.destroy();
         this.touchpoints.forEach(function (tp) { tp.destroy() });
-        
-        if(this.bar != undefined)
+
+        if (this.bar != undefined)
             this.bar.destroy();
     };
 }

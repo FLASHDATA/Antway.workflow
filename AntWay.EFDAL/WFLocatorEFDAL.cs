@@ -10,6 +10,18 @@ namespace AntWay.EFDAL
 {
     public class WFLocatorEFDAL : IDALLocator
     {
+        public WorkflowLocatorView GetLocatorFromGuid(Guid guid)
+        {
+            using (var ctx = new Model1())
+            {
+                var entity = ctx.WF_LOCATOR
+                             .FirstOrDefault(q => q.ID_WFPROCESSINSTANCE == guid);
+
+                var result = MapFromDalToView(entity);
+                return result;
+            }
+        }
+
         public T Fetch<T>(object pk)
         {
             string id = Convert.ToString(pk ?? "");

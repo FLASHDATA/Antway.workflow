@@ -19,6 +19,12 @@ namespace AntWay.BLL
             return schemes;
         }
 
+        public WorkflowLocatorView GetWorkflowSchemes(Guid guid)
+        {
+            var dataView = IDALLocator.GetLocatorFromGuid(guid);
+            return dataView;
+        }
+
         public WorkflowLocatorView GetWorkflowLocator(string locator)
         {
             var dataView = IDALLocator.Fetch<WorkflowLocatorView>(locator);

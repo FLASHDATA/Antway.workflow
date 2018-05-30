@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="OracleProvider.cs" />
     <Compile Include="SchemesPersistenceBLL.cs" />
+    <Compile Include="TimerClientManager.cs" />
     <Compile Include="Workflow.cs" />
     <Compile Include="WorkflowHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

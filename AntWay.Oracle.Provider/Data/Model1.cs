@@ -1,4 +1,4 @@
-namespace AntWay.Data
+namespace AntWay.Oracle.Provider.Data
 {
     using System;
     using System.Data.Entity;
@@ -17,7 +17,6 @@ namespace AntWay.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
         }
     }
 }

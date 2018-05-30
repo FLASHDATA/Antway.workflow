@@ -1,4 +1,4 @@
-namespace AntWay.Data
+namespace AntWay.Oracle.Provider.Data
 {
     using System;
     using System.Collections.Generic;

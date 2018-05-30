@@ -55,22 +55,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OracleProvider.cs" />
-    <Compile Include="SchemesPersistenceBLL.cs" />
-    <Compile Include="TimerClientManager.cs" />
-    <Compile Include="Workflow.cs" />
-    <Compile Include="WorkflowHelper.cs" />
+    <Compile Include="PersistenceObjectsFactory.cs" />
+    <Compile Include="Workflow\AntWayActionProvider.cs" />
+    <Compile Include="Workflow\TimerLazyManager.cs" />
+    <Compile Include="Workflow\Workflow.cs" />
+    <Compile Include="Workflow\WorkflowHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkflowRunTimeExtensions.cs" />
+    <Compile Include="Workflow\WorkflowRunTimeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AntWay.EFDAL\AntWay.EFDAL.csproj">
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AntWay.Oracle.Provider\AntWay.Oracle.Provider.csproj">
       <Project>{d92a8f0f-7e8c-4d6f-b915-2032b7ee3147}</Project>
-      <Name>AntWay.EFDAL</Name>
+      <Name>AntWay.Oracle.Provider</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AntWay.Views\AntWay.Views.csproj">
-      <Project>{aefd5703-a271-4f59-980a-e5f6db18835a}</Project>
-      <Name>AntWay.Views</Name>
+    <ProjectReference Include="..\Antway.Persistence.Provider\Antway.Persistence.Provider.csproj">
+      <Project>{14694484-9517-491f-a03f-4337459947ae}</Project>
+      <Name>Antway.Persistence.Provider</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

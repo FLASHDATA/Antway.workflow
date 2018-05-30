@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AntWay.EFDAL;
-using AntWay.Views;
+using AntWay.Persistence.Model;
 
-namespace AntWay.BLL
+namespace AntWay.Persistence.Provider
 {
-    public class SchemesPersistenceBLL
+    public class SchemesPersistence
     {
-        public IDALLocator IDALLocator { get; set; }
-        public IDALSchema IDALSchema { get; set; }
+        public IDALWFLocator IDALLocator { get; set; }
+        public IDALWFSchema IDALSchema { get; set; }
+
 
         public List<WorkflowSchemaView> GetSchemes()
         {

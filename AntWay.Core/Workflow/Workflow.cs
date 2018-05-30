@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Xml.Linq;
+using AntWay.Core.Workflow;
 using OptimaJet.Workflow.Core.Builder;
 using OptimaJet.Workflow.Core.Bus;
 using OptimaJet.Workflow.Core.Runtime;
@@ -10,8 +11,28 @@ namespace WorkFlowEngine
 {
     public class Workflow
     {
-        public static ITimerManager ITimerManager = null;
+        private static IWorkflowActionProvider IAntWayActionProvider = null;
+        private static ITimerManager ITimerManager = null;
         public static string SingleDataBaseScheme;
+
+        public static void InitWith(IWorkflowActionProvider _IAntWayActionProvider,
+                                    ITimerManager _ITimerManager)
+        {
+            WithActionProvider(_IAntWayActionProvider);
+            WithTimeManager(_ITimerManager);
+        }
+
+        public static void WithActionProvider(IWorkflowActionProvider _IAntWayActionProvider)
+                                
+        {
+            IAntWayActionProvider = _IAntWayActionProvider;
+        }
+
+        public static void WithTimeManager(ITimerManager _ITimerManager)
+        {
+            ITimerManager = _ITimerManager;
+        }
+
         private static WorkflowRuntime _SingleRuntime = null;
         public static WorkflowRuntime SingleRuntime
         {
@@ -20,7 +41,9 @@ namespace WorkFlowEngine
                 if (_SingleRuntime == null)
                 {
                     _SingleRuntime = new Workflow(SingleDataBaseScheme)
-                                    .InitWorkflowRuntime(Workflow.ITimerManager ?? new TimerClientManager());
+                                    .InitWorkflowRuntime(
+                                        ITimerManager ?? new TimerLazyManager(),
+                                        IAntWayActionProvider ?? new AntWayActionProvider());
                 }
                 return _SingleRuntime;
             }
@@ -28,7 +51,6 @@ namespace WorkFlowEngine
 
 
         public string DataBaseScheme;
-        public IWorkflowActionProvider ActionProvider;
 
         public Workflow(string databaseScheme)
         {
@@ -42,7 +64,9 @@ namespace WorkFlowEngine
             {
                 if (_RuntimeServer == null)
                 {
-                    _RuntimeServer = InitWorkflowRuntime(Workflow.ITimerManager ?? new TimerManager());
+                    _RuntimeServer = InitWorkflowRuntime(
+                                            ITimerManager ?? new TimerManager(),
+                                            IAntWayActionProvider ?? new AntWayActionProvider());
                 }
                 return _RuntimeServer;
             }
@@ -53,7 +77,8 @@ namespace WorkFlowEngine
             RuntimeServer.Start();
         }
 
-        private WorkflowRuntime InitWorkflowRuntime(ITimerManager timerManager)
+        private WorkflowRuntime InitWorkflowRuntime(ITimerManager timerManager,
+                                                    IWorkflowActionProvider actionProvider)
         {
             WorkflowRuntime.RegisterLicense("Flash_Data,_S.L.U.-Rmxhc2hfRGF0YSxfUy5MLlUuOjA1LjA5LjIwMTk6ZXlKTllYaE9kVzFpWlhKUFprRmpkR2wyYVhScFpYTWlPaTB4TENKTllYaE9kVzFpWlhKUFpsUnlZVzV6YVhScGIyNXpJam90TVN3aVRXRjRUblZ0WW1WeVQyWlRZMmhsYldWeklqb3RNU3dpVFdGNFRuVnRZbVZ5VDJaVWFISmxZV1J6SWpvdE1Td2lUV0Y0VG5WdFltVnlUMlpEYjIxdFlXNWtjeUk2TFRGOTpnMGtTZzRGS0FSaGcrQ1ovVEh4NTVxTUVnb0FIbjZBUVpyR1FRTW1NaGVNeVVhTzVJUGJKQlpnRHJrSVpWcDlSd1hxVkhveW1CN1BidC9ScVd3UzFTeWNXbzM3WSsxd1psa0RWdlhvQ2tlZ2Y2SVVwTHM2aXJtaG5ncjFML2RYK1lmcU9OakdPMVdXa211eFJ4WHhPZ1daVXQwNGpadmNWRUoyck5TMFJSWDQ9");
 
@@ -72,24 +97,21 @@ namespace WorkFlowEngine
                 .WithPersistenceProvider(dbProvider)
                 .WithTimerManager(timerManager)
                 .WithBus(new NullBus())
+                .WithActionProvider(actionProvider)
                 .SwitchAutoUpdateSchemeBeforeGetAvailableCommandsOn();
 
-            if (ActionProvider != null)
-            {
-                runtime.WithActionProvider(ActionProvider);
-            }
 
             //events subscription
-            runtime.ProcessActivityChanged += (sender, args) => { };
-            runtime.ProcessStatusChanged += (sender, args) => { };
+            //runtime.ProcessActivityChanged += (sender, args) => { };
+            //runtime.ProcessStatusChanged += (sender, args) => { };
 
             runtime.RegisterAssemblyForCodeActions(
                     Assembly.GetAssembly(typeof(System.Net.Http.HttpClient))
                 );
 
-            runtime.RegisterAssemblyForCodeActions(
-                    Assembly.GetAssembly(typeof(AntWay.Core.WorkflowRuntimeExtensions))
-                );
+            //runtime.RegisterAssemblyForCodeActions(
+            //        Assembly.GetAssembly(typeof(AntWay.Core.WorkflowRuntimeExtensions))
+            //    );
 
             runtime.Start();
 

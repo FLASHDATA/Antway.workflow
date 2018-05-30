@@ -5,9 +5,9 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-using AntWay.EFDAL;
 using WorkFlowEngine;
-using AntWay.BLL;
+using AntWay.Persistence.Provider;
+using Antway.Core;
 
 namespace AntWay.Director.Service
 {
@@ -57,13 +57,13 @@ namespace AntWay.Director.Service
 
         private static void Start(string[] args)
         {
-            var schemesPersistenceBLL = new SchemesPersistenceBLL
+            var schemesPersistence = new SchemesPersistence
             {
-                IDALSchema = new WFSchemaEFDAL(),
-                IDALLocator = new WFLocatorEFDAL()
+                IDALLocator = PersistenceObjectsFactory.GetIDALWFLocatorObject(),
+                IDALSchema = PersistenceObjectsFactory.GetIDALWFSchemaObject(),
             };
 
-            var schemes = schemesPersistenceBLL.GetSchemes();
+            var schemes = schemesPersistence.GetSchemes();
 
             var listWfs = schemes
                           .Select(s => new Workflow(s.DBSchemeName))

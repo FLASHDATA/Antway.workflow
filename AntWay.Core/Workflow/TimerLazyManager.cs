@@ -14,7 +14,7 @@ namespace OptimaJet.Workflow.Core.Runtime
     /// <summary>
     /// Default timer manager <see cref="ITimerManager"/>
     /// </summary>
-    public sealed class TimerClientManager : ITimerManager
+    public sealed class TimerLazyManager : ITimerManager
     {
         /// <summary>
         /// Value of Unspecified Timer which indicates that the timer transition will be executed immediately
@@ -46,7 +46,7 @@ namespace OptimaJet.Workflow.Core.Runtime
         /// <summary>
         /// Timer manager constructor
         /// </summary>
-        public TimerClientManager()
+        public TimerLazyManager()
         {
             DefaultWaitTimeout = 1000;
             _cancellationTokenSource.Cancel();

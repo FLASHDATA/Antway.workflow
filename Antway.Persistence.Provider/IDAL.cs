@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AntWay.EFDAL
+namespace AntWay.Persistence.Provider
 {
     public interface IDAL
     {

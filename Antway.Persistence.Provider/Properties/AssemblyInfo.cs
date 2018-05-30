@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AntWay.Data")]
+[assembly: AssemblyTitle("Antway.Core.Data.Provider")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AntWay.Data")]
+[assembly: AssemblyProduct("Antway.Core.Data.Provider")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("64ee37f1-16c1-40d2-8153-a237a01ceb54")]
+[assembly: Guid("14694484-9517-491f-a03f-4337459947ae")]
 
 // Version information for an assembly consists of the following four values:
 //

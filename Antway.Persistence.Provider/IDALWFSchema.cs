@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AntWay.Views;
+using AntWay.Persistence.Model;
 
-namespace AntWay.EFDAL
+namespace AntWay.Persistence.Provider
 {
-    public interface IDALSchema: IDAL
+    public interface IDALWFSchema: IDAL
     {
         List<WorkflowSchemaView> GetWorkflowSchemes();
     }

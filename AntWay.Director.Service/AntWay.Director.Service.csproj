@@ -35,10 +35,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AntWay.EFDAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Notificaciones\Packages\Antway\AntWay.EFDAL.dll</HintPath>
-    </Reference>
     <Reference Include="AntWay.Views, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Notificaciones\Packages\Antway\AntWay.Views.dll</HintPath>
@@ -69,6 +65,10 @@
     <ProjectReference Include="..\AntWay.Core\AntWay.Core.csproj">
       <Project>{9fb295c0-e9e7-4b37-9120-d9dfcca9a3f2}</Project>
       <Name>AntWay.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Antway.Persistence.Provider\Antway.Persistence.Provider.csproj">
+      <Project>{14694484-9517-491f-a03f-4337459947ae}</Project>
+      <Name>Antway.Persistence.Provider</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

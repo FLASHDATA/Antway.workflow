@@ -9,7 +9,7 @@ using AntWay.Persistence.Provider;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
 
-namespace AntWay.Core.Workflow
+namespace AntWay.Core.WorkflowObjects
 {
     public class AntWayActionProvider : IWorkflowActionProvider
     {

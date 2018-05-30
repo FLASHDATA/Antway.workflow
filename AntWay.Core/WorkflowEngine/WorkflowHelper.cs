@@ -10,7 +10,7 @@ using OptimaJet.Workflow.Core.Subprocess;
 
 //NO SE UTILIZA DE MOMENTO
 //ALGUNAS PRUEBAS DE MODIFICACIONES (EXTENSIONES) DE FUNCIONES DEL CORE DEL WORKFLOWENGINE A MEDIDA
-namespace AntWay.Core
+namespace WorkFlowEngine
 {
     public static class WorkflowHelper
     {

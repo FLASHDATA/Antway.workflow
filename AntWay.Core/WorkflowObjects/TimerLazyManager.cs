@@ -5,11 +5,10 @@ using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using OptimaJet.Workflow.Core.Fault;
 using OptimaJet.Workflow.Core.Model;
-using OptimaJet.Workflow.Core.Persistence;
+using OptimaJet.Workflow.Core.Runtime;
 
-namespace OptimaJet.Workflow.Core.Runtime
+namespace AntWay.Core.WorkflowObjects
 {
     /// <summary>
     /// Default timer manager <see cref="ITimerManager"/>

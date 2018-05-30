@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Xml.Linq;
-using AntWay.Core.Workflow;
+using AntWay.Core.WorkflowObjects;
 using OptimaJet.Workflow.Core.Builder;
 using OptimaJet.Workflow.Core.Bus;
 using OptimaJet.Workflow.Core.Runtime;

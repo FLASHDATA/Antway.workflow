@@ -7,8 +7,8 @@ using AntWay.Persistence.Model;
 
 namespace AntWay.Persistence.Provider
 {
-    public interface IDALWFLocator: IDAL
+    public interface IDALProcessPersistence: IDAL
     {
-        WorkflowLocatorView GetLocatorFromGuid(Guid guid);
+        ProcessPersistenceView GetLocatorFromGuid(Guid guid);
     }
 }

@@ -23,5 +23,11 @@ namespace AntWay.Oracle.Provider.Data
 
         [StringLength(50)]
         public string ALTERN_LOCATOR_FIELD_VALUE1 { get; set; }
+
+        [StringLength(50)]
+        public string SCHEME { get; set; }
+
+        [StringLength(50)]
+        public string APPLICATION { get; set; }
     }
 }

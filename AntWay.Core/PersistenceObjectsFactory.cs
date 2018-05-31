@@ -7,7 +7,7 @@ namespace Antway.Core
 {
     public static class PersistenceObjectsFactory
     {
-        public static IDALWFLocator GetIDALWFLocatorObject()
+        public static IDALProcessPersistence GetIDALWFLocatorObject()
         {
             return new WFLocatorEFDAL();
         }

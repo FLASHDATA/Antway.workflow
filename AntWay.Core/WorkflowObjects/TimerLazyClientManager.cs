@@ -10,10 +10,7 @@ using OptimaJet.Workflow.Core.Runtime;
 
 namespace AntWay.Core.WorkflowObjects
 {
-    /// <summary>
-    /// Default timer manager <see cref="ITimerManager"/>
-    /// </summary>
-    public sealed class TimerLazyManager : ITimerManager
+    public sealed class TimerLazyClientManager : ITimerManager
     {
         /// <summary>
         /// Value of Unspecified Timer which indicates that the timer transition will be executed immediately
@@ -45,7 +42,7 @@ namespace AntWay.Core.WorkflowObjects
         /// <summary>
         /// Timer manager constructor
         /// </summary>
-        public TimerLazyManager()
+        public TimerLazyClientManager()
         {
             DefaultWaitTimeout = 1000;
             _cancellationTokenSource.Cancel();

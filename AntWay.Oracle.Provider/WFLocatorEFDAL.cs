@@ -9,9 +9,9 @@ using AntWay.Persistence.Model;
 
 namespace AntWay.Oracle.Provider
 {
-    public class WFLocatorEFDAL : IDALWFLocator
+    public class WFLocatorEFDAL : IDALProcessPersistence
     {
-        public WorkflowLocatorView GetLocatorFromGuid(Guid guid)
+        public ProcessPersistenceView GetLocatorFromGuid(Guid guid)
         {
             using (var ctx = new Model1())
             {
@@ -72,14 +72,17 @@ namespace AntWay.Oracle.Provider
         }
 
 
-        private WorkflowLocatorView MapFromDalToView(WF_LOCATOR entity)
+        private ProcessPersistenceView MapFromDalToView(WF_LOCATOR entity)
         {
             if (entity == null) return null;
 
-            var view = new WorkflowLocatorView
+            var view = new ProcessPersistenceView
             {
                 WFProcessGuid = entity.ID_WFPROCESSINSTANCE,
+                LocatorFieldName = entity.LOCATOR_FIELD_NAME,
                 LocatorValue = entity.LOCATOR_VALUE,
+                Application = entity.APPLICATION,
+                Scheme = entity.SCHEME,
             };
 
             return view;
@@ -88,11 +91,14 @@ namespace AntWay.Oracle.Provider
 
         private WF_LOCATOR MapFromViewToDal<T>(T objectView)
         {
-            var view = (WorkflowLocatorView)Convert.ChangeType(objectView, typeof(T));
+            var view = (ProcessPersistenceView)Convert.ChangeType(objectView, typeof(T));
 
             var entity = new WF_LOCATOR
             {
                 ID_WFPROCESSINSTANCE = view.WFProcessGuid,
+                APPLICATION = view.Application,
+                SCHEME = view.Scheme,
+                LOCATOR_FIELD_NAME = view.LocatorFieldName,
                 LOCATOR_VALUE = view.LocatorValue,
             };
 

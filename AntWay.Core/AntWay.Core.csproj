@@ -56,12 +56,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PersistenceObjectsFactory.cs" />
-    <Compile Include="WorkflowObjects\AntWayActionProvider.cs" />
-    <Compile Include="WorkflowObjects\TimerLazyManager.cs" />
     <Compile Include="WorkflowEngine\Workflow.cs" />
-    <Compile Include="WorkflowEngine\WorkflowHelper.cs" />
+    <Compile Include="WorkflowEngine\WorkflowClient.cs" />
+    <Compile Include="WorkflowObjects\AntWayActionProvider.cs" />
+    <Compile Include="SamplesNotUsed\OracleExtensionsProvider.cs" />
+    <Compile Include="WorkflowObjects\TimerLazyClientManager.cs" />
+    <Compile Include="WorkflowEngine\WorkflowServer.cs" />
+    <Compile Include="SamplesNotUsed\WorkflowHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkflowEngine\WorkflowRunTimeExtensions.cs" />
+    <Compile Include="WorkflowRunTimeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

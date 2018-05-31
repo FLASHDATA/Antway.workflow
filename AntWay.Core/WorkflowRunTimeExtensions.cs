@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using OptimaJet.Workflow.Core.Runtime;
 
-namespace WorkFlowEngine
+namespace Antway.Core
 {
-    public static class WorkflowRuntimeExtensions
+    internal static class WorkflowRuntimeExtensions
     {
         public static bool ExecutecommandNext(WorkflowRuntime worklowRuntime, 
                                        Guid wfProcessGuid,

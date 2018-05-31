@@ -5,14 +5,19 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-using WorkFlowEngine;
 using AntWay.Persistence.Provider;
 using Antway.Core;
+using Notificaciones.BLL;
+using System.Configuration;
+using AntWay.Core.WorkflowEngine;
 
 namespace AntWay.Director.Service
 {
     class Program
     {
+        private static List<WorkflowServer> WorkflowRuntimesList;
+        //private static System.Timers.Timer TimerInitWorkflows;
+
         #region Nested classes to support running as service
         public const string ServiceName = "MyService";
 
@@ -48,8 +53,8 @@ namespace AntWay.Director.Service
                 // running as console app
                 Start(args);
 
-                Console.WriteLine("Press any key to stop...");
-                Console.ReadKey(true);
+                Console.WriteLine("Pulse enter para cerrar el servicio.");
+                Console.ReadLine();
 
                 Stop();
             }
@@ -57,26 +62,84 @@ namespace AntWay.Director.Service
 
         private static void Start(string[] args)
         {
-            var schemesPersistence = new SchemesPersistence
+            //InitRuntimes();
+            Task.Run(async () => await InitRuntimes());
+        }
+
+
+
+        private static Task InitRuntimes()
+        {
+            //TimerInitWorkflowsInit();
+            while (true)
             {
-                IDALLocator = PersistenceObjectsFactory.GetIDALWFLocatorObject(),
-                IDALSchema = PersistenceObjectsFactory.GetIDALWFSchemaObject(),
-            };
+                //Init All
+                WorkflowServer.WithActionProvider(new NotificacionesActionProvider());
+                var schemesPersistence = new SchemesPersistence
+                {
+                    IDALSchema = PersistenceObjectsFactory.GetIDALWFSchemaObject(),
+                };
+                var schemes = schemesPersistence.GetSchemes();
 
-            var schemes = schemesPersistence.GetSchemes();
+                WorkflowRuntimesList = schemes
+                                      .Select(s => new WorkflowServer(s.DBSchemeName))
+                                      .ToList();
 
-            var listWfs = schemes
-                          .Select(s => new Workflow(s.DBSchemeName))
-                          .ToList();
+                foreach (var wfs in WorkflowRuntimesList)
+                {
+                    wfs.Start();
+                }
+                ////
 
-            foreach (var wfs in listWfs)
-            {
-                wfs.Start();
+                //Wait before restart runtime.
+                //Sleeps for minutes in App.Config, RuntimeRefreshTimerInMinutes
+                var elapsedTime = Convert.ToInt16(ConfigurationManager.AppSettings["RuntimeRefreshTimerInMinutes"])
+                                    * 60 * 1000;
+                System.Threading.Thread.Sleep(elapsedTime);
             }
 
-            Console.WriteLine("Pulse enter para cerrar el servicio.");
-            Console.ReadLine();
+            //return Task.FromResult<object>(null);
         }
+
+
+
+        #region "Timers"
+
+        //private static void TimerInitWorkflowsInit()
+        //{
+        //    var elapsedTime = 600;
+        //    TimerInitWorkflows = new System.Timers.Timer(elapsedTime * 1000)
+        //    {
+        //        AutoReset = true
+        //    };  // in milliseconds
+        //    TimerInitWorkflows.Elapsed += new System.Timers.ElapsedEventHandler(TimerInitWorkflows_Elapsed);
+        //    TimerInitWorkflows.Start();
+
+        //    TimerInitWorkflows_Elapsed(null, null);
+        //}
+
+
+        //protected static void TimerInitWorkflows_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    Workflow.WithActionProvider(new NotificacionesActionProvider());
+        //    var schemesPersistence = new SchemesPersistence
+        //    {
+        //        IDALLocator = PersistenceObjectsFactory.GetIDALWFLocatorObject(),
+        //        IDALSchema = PersistenceObjectsFactory.GetIDALWFSchemaObject(),
+        //    };
+        //    var schemes = schemesPersistence.GetSchemes();
+
+        //    WorkflowRuntimesList = schemes
+        //                          .Select(s => new Workflow(s.DBSchemeName))
+        //                          .ToList();
+
+        //    foreach (var wfs in WorkflowRuntimesList)
+        //    {
+        //        wfs.Start();
+        //    }
+        //}
+
+        #endregion
 
         private static void Stop()
         {
@@ -84,3 +147,7 @@ namespace AntWay.Director.Service
 
     }
 }
+
+
+
+     

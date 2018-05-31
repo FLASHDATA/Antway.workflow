@@ -33,16 +33,13 @@ namespace AntWay.Core.WorkflowObjects
         {
             try
             {
-                var schemePersistence = new SchemesPersistence
+                var schemePersistence = new ProcessPersistence
                 {
-                  IDALLocator = PersistenceObjectsFactory.GetIDALWFLocatorObject(),
-                  IDALSchema = PersistenceObjectsFactory.GetIDALWFSchemaObject(),
+                  IDALProcessPersistence = PersistenceObjectsFactory.GetIDALWFLocatorObject(),
                 };
-                var wfScheme = schemePersistence.GetWorkflowSchemes(processInstance.ProcessId);
-
-                var scheme = processInstance.ProcessScheme.Name;
-
-                //TODO Insert your code for Notifications
+                var wfScheme = schemePersistence.GetWorkflowLocatorFromGuid(processInstance.ProcessId);
+                //TODO:
+                //Override this function, to Insert your code for Notifications
             }
             catch (Exception ex)
             {

@@ -2,7 +2,6 @@
 //Reference Data Provider
 using AntWay.Oracle.Provider;
 
-
 namespace Antway.Core
 {
     public static class PersistenceObjectsFactory

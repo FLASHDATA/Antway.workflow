@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AntWay.Persistence.Model
 {
-    public class AntWayView
+    public class AntWayProcessView
     {
-        public AntWayView()
+        public AntWayProcessView()
         {
             AvailableCommands = new List<string>();
         }

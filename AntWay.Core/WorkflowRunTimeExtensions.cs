@@ -4,33 +4,59 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using AntWay.Persistence.Model;
+using AntWay.Persistence.Provider;
 using OptimaJet.Workflow.Core.Runtime;
 
 namespace Antway.Core
 {
     internal static class WorkflowRuntimeExtensions
     {
-        public static bool ExecutecommandNext(WorkflowRuntime worklowRuntime, 
+        public static bool ExecutecommandNext(WorkflowRuntime runtime, 
                                        Guid wfProcessGuid,
                                        string identifyId = null)
         {
-            return Executecommand(worklowRuntime, wfProcessGuid, "next", identifyId);
+            return Executecommand(runtime, wfProcessGuid, "next", identifyId);
         }
 
 
-        public static bool Executecommand(WorkflowRuntime worklowRuntime,
+        public static bool Executecommand(WorkflowRuntime runtime,
                                           Guid wfProcessGuid, string commandName,
                                           string identifyId = null)
         {
-            WorkflowCommand command = worklowRuntime
+            WorkflowCommand command = runtime
                                       .GetAvailableCommands(wfProcessGuid, identifyId ?? string.Empty)
                                       .FirstOrDefault(c => c.CommandName.Trim().ToLower() == commandName.ToLower());
 
             if (command == null) return false;
 
-            var cmdExecResult = worklowRuntime.ExecuteCommand(command, identifyId ?? string.Empty, string.Empty);
+            var cmdExecResult = runtime.ExecuteCommand(command, identifyId ?? string.Empty, string.Empty);
 
             return cmdExecResult.WasExecuted;
+        }
+
+        public static AntWayProcessView GetAntWayProcess(WorkflowRuntime runtime, 
+                                                   string localizador, string identifyId = null)
+        {
+            var result = new AntWayProcessView();
+
+            var processPersistence = new ProcessPersistence
+            {
+                IDALProcessPersistence = PersistenceObjectsFactory.GetIDALWFLocatorObject(),
+            };
+            var wfInstance = processPersistence.GetWorkflowLocator(localizador);
+
+            if (wfInstance == null) return result;
+
+            var commands1 = runtime.GetAvailableCommands(wfInstance.WFProcessGuid, identifyId ?? string.Empty);
+
+            result.AvailableCommands = commands1
+                                        .Select(c => c.CommandName.ToLower().Replace(" ", ""))
+                                        .ToList();
+            result.CurrentActivityName = runtime.GetCurrentActivityName(wfInstance.WFProcessGuid);
+            result.CurrentActivityState = runtime.GetCurrentStateName(wfInstance.WFProcessGuid);
+
+            return result;
         }
     }
 }

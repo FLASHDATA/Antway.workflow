@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Antway.Core;
@@ -45,12 +46,18 @@ namespace AntWay.Core.WorkflowEngine
             WorkflowRuntimeExtensions.ExecutecommandNext(Runtime, processId);
         }
 
-
         public static bool Executecommand(Guid processId, string commandName, string identifyId = null)
         {
             bool result = WorkflowRuntimeExtensions.Executecommand(Runtime, processId, commandName, identifyId);
             return result;
         }
+
+        public static AntWayProcessView GetAntWayProcess(string localizador, string identifyId = null)
+        {
+            AntWayProcessView result = WorkflowRuntimeExtensions.GetAntWayProcess(Runtime, localizador, identifyId);
+            return result;
+        }
+
 
         private static WorkflowRuntime _Runtime = null;
         public static WorkflowRuntime Runtime

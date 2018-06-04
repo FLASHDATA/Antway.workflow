@@ -16,6 +16,11 @@
         /// <summary>
         /// Reverse transition
         /// </summary>
-        Reverse
+        Reverse,
+        /// <summary>
+        /// Added from AntWay 
+        /// Save: Para monitorizar el estado.
+        /// </summary>
+        SaveState
     }
 }

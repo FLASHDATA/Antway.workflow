@@ -35,13 +35,6 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OptimaJet.Workflow.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WorkflowEngine.NET-Core.3.0.2\lib\net45\OptimaJet.Workflow.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="OptimaJet.Workflow.Oracle, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3d29392dccd464d7, processorArchitecture=MSIL">
-      <HintPath>..\packages\WorkflowEngine.NET-ProviderForOracle.3.0.2\lib\net45\OptimaJet.Workflow.Oracle.dll</HintPath>
-    </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\odp.net.managed.121.1.2\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
@@ -79,6 +72,14 @@
     <ProjectReference Include="..\Example.BLL\Example.BLL.csproj">
       <Project>{c2b353cb-d61b-41f2-bac3-999822942580}</Project>
       <Name>Example.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
+      <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
+      <Name>OptimaJet.Workflow.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimaJet.Workflow.Oracle\OptimaJet.Workflow.Oracle.csproj">
+      <Project>{b5ec37ad-83e1-4bea-912c-5fbd4d39d9c4}</Project>
+      <Name>OptimaJet.Workflow.Oracle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

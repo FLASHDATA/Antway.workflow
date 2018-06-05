@@ -6,11 +6,51 @@ using System.Threading.Tasks;
 using AntWay.Oracle.Provider.Data;
 using AntWay.Persistence.Provider;
 using AntWay.Persistence.Model;
+using Devart.Data.Oracle;
 
 namespace AntWay.Oracle.Provider
 {
     public class WFLocatorEFDAL : IDALProcessPersistence
     {
+
+        public List<ProcessHistoryDataTableView> GeProccessHistoryDataTableView(ProcessHistoryFilter filter)
+        {
+            var result = new List<ProcessHistoryDataTableView>();
+            using (var ctx = new Model1())
+            {
+                string sql = "SELECT LOC.APPLICATION AS Aplicacion, LOC.ID_WFPROCESSINSTANCE as ID, LOC.LOCATOR_VALUE AS Localizador " +
+                             " , PH.STATENAME as EstadoActual, PH.TAGS AS Tags " +
+                             " , PH.LASTTRANSITION AS UltimaActualizacion " +
+                             " FROM WF_LOCATOR LOC " +
+                             " INNER JOIN( " +
+                             "      SELECT pi.ID, pi.STATENAME, pth.Tags, pth.LastTransition " +
+                             $"     FROM {filter.DatabaseSchema}.WORKFLOWPROCESSINSTANCE pi " +
+                             "      LEFT JOIN ( " +
+                             "        select PROCESSID " +
+                             "          , listagg(TOSTATENAME,', ') within group(order by TRANSITIONTIME) Tags " +
+                             "          , MAX(TransitionTime) AS LastTransition " +
+                             "        from WFSCHEMA1.WORKFLOWPROCESSTRANSITIONH " +
+                             "        WHERE TRANSITIONCLASSIFIER = 'SaveState' " +
+                             "        GROUP BY PROCESSID " +
+                             "       )  pth " +
+                             "      ON pi.ID = pth.PROCESSID " +
+                             " ) PH " +
+                             " ON LOC.ID_WFPROCESSINSTANCE = PH.Id " +
+                             " WHERE APPLICATION = :Aplicacion ";
+
+
+                var parameters = new object[]
+                                    {
+                                        new OracleParameter("Aplicacion", filter.Application),
+                                    };
+
+                result = ctx.Database.SqlQuery<ProcessHistoryDataTableView>(sql, parameters).ToList();
+            }
+
+
+            return result;
+        }
+
         public ProcessPersistenceView GetLocatorFromGuid(Guid guid)
         {
             using (var ctx = new Model1())
@@ -104,5 +144,6 @@ namespace AntWay.Oracle.Provider
 
             return entity;
         }
+
     }
 }

@@ -14,6 +14,7 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using WorkflowRuntime = OptimaJet.Workflow.Core.Runtime.WorkflowRuntime;
 using WorkFlowEngine;
+using AntWay.Core.WorkflowEngine;
 
 namespace WF.Sample.Controllers
 {
@@ -22,7 +23,7 @@ namespace WF.Sample.Controllers
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             //Workflow.ActionProvider = Workflow.ActionProvider??new ActionProvider();
-            Workflow.SingleDataBaseScheme = ConfigurationManager.AppSettings["WFSchema"].ToString();
+            WorkflowClient.SingleDataBaseScheme = ConfigurationManager.AppSettings["WFSchema"].ToString();
             base.OnActionExecuted(filterContext);
         }
 
@@ -57,7 +58,7 @@ namespace WF.Sample.Controllers
                 }
             }
 
-            var res = Workflow.SingleRuntime.DesignerAPI(pars, filestream, true);
+            var res = WorkflowClient.Runtime.DesignerAPI(pars, filestream, true);
             var operation = pars["operation"].ToLower();
             if (operation == "downloadscheme")
                 return File(Encoding.UTF8.GetBytes(res), "text/xml", "scheme.xml");

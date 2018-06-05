@@ -11,6 +11,12 @@ namespace AntWay.Persistence.Provider
     {
         public IDALProcessPersistence IDALProcessPersistence { get; set; }
 
+        public List<ProcessHistoryDataTableView> GeProccessHistoryDataTableView(ProcessHistoryFilter filter)
+        {
+            var result = IDALProcessPersistence.GeProccessHistoryDataTableView(filter);
+            return result;
+        }
+
         public ProcessPersistenceView GetWorkflowLocatorFromGuid(Guid guid)
         {
             var dataView = IDALProcessPersistence.GetLocatorFromGuid(guid);

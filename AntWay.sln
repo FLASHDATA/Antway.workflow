@@ -19,7 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.Scheme.Designer.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntWay.Oracle.Provider", "AntWay.Oracle.Provider\AntWay.Oracle.Provider.csproj", "{D92A8F0F-7E8C-4D6F-B915-2032B7EE3147}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antway.Persistence.Provider", "Antway.Core.Data.Provider\Antway.Persistence.Provider.csproj", "{14694484-9517-491F-A03F-4337459947AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antway.Persistence.Provider", "Antway.Persistence.Provider\Antway.Persistence.Provider.csproj", "{14694484-9517-491F-A03F-4337459947AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimaJet.Workflow.Oracle", "OptimaJet.Workflow.Oracle\OptimaJet.Workflow.Oracle.csproj", "{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,18 @@ Global
 		{14694484-9517-491F-A03F-4337459947AE}.Release|x64.Build.0 = Release|Any CPU
 		{14694484-9517-491F-A03F-4337459947AE}.Release|x86.ActiveCfg = Release|Any CPU
 		{14694484-9517-491F-A03F-4337459947AE}.Release|x86.Build.0 = Release|Any CPU
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Debug|x64.ActiveCfg = Debug|x64
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Debug|x64.Build.0 = Debug|x64
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Debug|x86.ActiveCfg = Debug|x86
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Debug|x86.Build.0 = Debug|x86
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Release|x64.ActiveCfg = Release|x64
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Release|x64.Build.0 = Release|x64
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Release|x86.ActiveCfg = Release|x86
+		{B5EC37AD-83E1-4BEA-912C-5FBD4D39D9C4}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

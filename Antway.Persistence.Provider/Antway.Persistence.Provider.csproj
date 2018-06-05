@@ -41,8 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDAL.cs" />
-    <Compile Include="IDALWFLocator.cs" />
+    <Compile Include="IDALWFProcessPersitence.cs" />
     <Compile Include="IDALWFSchema.cs" />
+    <Compile Include="Model\ProcessHistoryDataTableView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProcessPersistence.cs" />
     <Compile Include="SchemesPersistence.cs" />

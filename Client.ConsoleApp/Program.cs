@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Configuration;
 using AntWay.Core.WorkflowEngine;
-
+using AntWay.Core.Model;
 
 namespace Client.ConsoleApp
 {
@@ -222,9 +222,9 @@ namespace Client.ConsoleApp
                 if (command == null)
                     Console.WriteLine("The command isn't found.");
             } while (command == null);
-            
 
-            
+
+
             //foreach(var cp in command.Parameters??new List<CommandParameter>())
             //{
             //    Console.Write($"{cp.ParameterName}:");
@@ -250,9 +250,11 @@ namespace Client.ConsoleApp
             //    }
             //}
 
-            var result = WorkflowClient.AntWayRunTime.ExecuteCommand(command, string.Empty, string.Empty);
+            var result = WorkflowClient
+                            .AntWayRunTime
+                            .ExecuteCommand(processId.Value, command.CommandName);
 
-            Console.WriteLine("ExecuteCommand - OK.", processId);
+                        Console.WriteLine("ExecuteCommand - OK.", processId);
         }
 
         private static void GetAvailableState()

@@ -56,8 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Runtime\AntWayCommand.cs" />
+    <Compile Include="Model\AntWayProcessInstance.cs" />
     <Compile Include="PersistenceObjectsFactory.cs" />
-    <Compile Include="WorkflowEngine\AntWayRuntime.cs" />
+    <Compile Include="Runtime\AntWayRuntime.cs" />
     <Compile Include="WorkflowEngine\Workflow.cs" />
     <Compile Include="WorkflowEngine\WorkflowClient.cs" />
     <Compile Include="WorkflowObjects\AntWayActionProvider.cs" />
@@ -66,7 +68,7 @@
     <Compile Include="WorkflowEngine\WorkflowServer.cs" />
     <Compile Include="SamplesNotUsed\WorkflowHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkflowRunTimeExtensions.cs" />
+    <Compile Include="Runtime\WorkflowRunTimeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

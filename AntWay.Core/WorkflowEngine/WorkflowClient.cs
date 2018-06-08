@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Antway.Core;
+using AntWay.Core.RunTime;
 using AntWay.Core.WorkflowObjects;
 using AntWay.Persistence.Model;
 using OptimaJet.Workflow.Core.Runtime;
@@ -40,17 +40,6 @@ namespace AntWay.Core.WorkflowEngine
             return result;
         }
 
-        public static void ExecutecommandNext(Guid processId)
-        {
-            WorkflowRuntimeExtensions.ExecutecommandNext(Runtime, processId);
-        }
-
-        public static bool Executecommand(Guid processId, string commandName, string identifyId = null)
-        {
-            bool result = WorkflowRuntimeExtensions.Executecommand(Runtime, processId, commandName, identifyId);
-            return result;
-        }
-
         public static AntWayProcessView GetAntWayProcess(string localizador, string identifyId = null)
         {
             AntWayProcessView result = WorkflowRuntimeExtensions.GetAntWayProcess(Runtime, localizador, identifyId);
@@ -78,11 +67,7 @@ namespace AntWay.Core.WorkflowEngine
         {
             get
             {
-                var result = new AntWayRuntime
-                {
-                    WorkflowRuntime = Runtime
-                };
-
+                var result = new AntWayRuntime(Runtime);
                 return result;
             }
         }

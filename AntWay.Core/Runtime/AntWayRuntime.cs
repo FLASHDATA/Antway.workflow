@@ -7,51 +7,20 @@ using OptimaJet.Workflow.Core.Runtime;
 using OptimaJet.Workflow;
 using System.Collections.Specialized;
 using System.IO;
-using Antway.Core;
-using OptimaJet.Workflow.Core.Model;
+using AntWay.Core.Model;
 
-namespace AntWay.Core.WorkflowEngine
+namespace AntWay.Core.RunTime
 {
-    public class AntWayCommandExeutionResult: CommandExeutionResult
-    {
-
-    }
-
-    public class AntWayProcessInstance
-    {
-        protected ProcessInstance ProcessInstance { get; set; }
-
-        public AntWayProcessInstance(ProcessInstance processInstance)
-        {
-            ProcessInstance = processInstance;
-        }
-
-        public KeyValuePair<string, object>? GetParameter(string name)
-        {
-            var pd = ProcessInstance.GetParameter(name);
-            if (pd == null) return null;
-
-            var result = new KeyValuePair<string, object>(pd.Name, pd.Value);
-            return result;
-        }
-    }
-
-    public class AntWayCommand
-    {
-        public WorkflowCommand WorkflowCommand { get; set; }
-
-        public AntWayCommand(WorkflowCommand workflowCommand)
-        {
-            workflowCommand = WorkflowCommand;
-        }
-
-        public string CommandName => WorkflowCommand.CommandName;
-    }
-
     public class AntWayRuntime
     {
-        public WorkflowRuntime WorkflowRuntime { get; set; }
-        
+        protected WorkflowRuntime WorkflowRuntime { get; set; }
+
+
+        public AntWayRuntime(WorkflowRuntime workflowRuntime)
+        {
+            WorkflowRuntime = workflowRuntime;
+        }
+
         public void CreateInstance(string schemeCode, Guid processId)
         {
             WorkflowRuntime.CreateInstance(schemeCode, processId);
@@ -89,19 +58,12 @@ namespace AntWay.Core.WorkflowEngine
             WorkflowRuntimeExtensions.ExecutecommandNext(WorkflowRuntime, processId);
         }
 
-        public AntWayCommandExeutionResult ExecuteCommand(AntWayCommand command, string identityId, string impersonatedIdentityId)
+        public bool ExecuteCommand(Guid processId, string commandName,
+                                   string impersonatedIdentityId = null)
         {
-            var commandExeutionResult =  WorkflowRuntime
-                                            .ExecuteCommand(command.WorkflowCommand, identityId, impersonatedIdentityId);
-
-            var result = new AntWayCommandExeutionResult
-            {
-                ProcessInstance = commandExeutionResult.ProcessInstance,
-                WasExecuted = commandExeutionResult.WasExecuted
-            };
-
-            return result;
+            return WorkflowRuntimeExtensions.Executecommand(WorkflowRuntime, processId, commandName); 
         }
+
 
         public AntWayProcessInstance GetProcessInstanceAndFillProcessParameters(Guid processId)
         {

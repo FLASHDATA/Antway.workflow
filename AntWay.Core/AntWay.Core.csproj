@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PersistenceObjectsFactory.cs" />
+    <Compile Include="WorkflowEngine\AntWayRuntime.cs" />
     <Compile Include="WorkflowEngine\Workflow.cs" />
     <Compile Include="WorkflowEngine\WorkflowClient.cs" />
     <Compile Include="WorkflowObjects\AntWayActionProvider.cs" />

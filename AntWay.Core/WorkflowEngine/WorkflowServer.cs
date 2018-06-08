@@ -40,6 +40,20 @@ namespace AntWay.Core.WorkflowEngine
             }
         }
 
+        //public AntWayRuntime AntWayRunTime
+        //{
+        //    get
+        //    {
+        //        var result = new AntWayRuntime
+        //        {
+        //            WorkflowRuntime = Runtime
+        //        };
+
+        //        return result;
+        //    }
+        //}
+
+
         public void Start()
         {
             Runtime.Start();

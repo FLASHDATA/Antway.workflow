@@ -25,7 +25,7 @@ namespace AntWay.Core.WorkflowEngine
         }
 
         private WorkflowRuntime _Runtime;
-        public WorkflowRuntime Runtime
+        private WorkflowRuntime Runtime
         {
             get
             {

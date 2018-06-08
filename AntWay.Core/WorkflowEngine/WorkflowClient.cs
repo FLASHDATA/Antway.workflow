@@ -6,7 +6,6 @@ using Antway.Core;
 using AntWay.Core.WorkflowObjects;
 using AntWay.Persistence.Model;
 using OptimaJet.Workflow.Core.Runtime;
-using OptimaJet.Workflow;
 
 namespace AntWay.Core.WorkflowEngine
 {
@@ -60,7 +59,7 @@ namespace AntWay.Core.WorkflowEngine
 
 
         private static WorkflowRuntime _Runtime = null;
-        public static WorkflowRuntime Runtime
+        private static WorkflowRuntime Runtime
         {
             get
             {

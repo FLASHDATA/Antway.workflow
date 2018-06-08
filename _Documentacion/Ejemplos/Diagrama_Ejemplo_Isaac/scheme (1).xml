@@ -1,0 +1,207 @@
+<Process>
+  <Designer />
+  <Actors>
+    <Actor Name="actor" Rule="rulke" Value="" />
+  </Actors>
+  <Commands>
+    <Command Name="Next" />
+  </Commands>
+  <Timers>
+    <Timer Name="5s" Type="Interval" Value="5s" NotOverrideIfExists="false" />
+    <Timer Name="12s" Type="Interval" Value="12s" NotOverrideIfExists="false" />
+  </Timers>
+  <Activities>
+    <Activity Name="Comienzo" State="Start" IsInitial="True" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="10" Y="90" />
+    </Activity>
+    <Activity Name="Recogida doc" State="Signing" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="340" Y="100" />
+    </Activity>
+    <Activity Name="Aprovacion" IsInitial="False" IsFinal="False" IsForSetState="True" IsAutoSchemeUpdate="True">
+      <Designer X="1080" Y="160" />
+    </Activity>
+    <Activity Name="Email al funcionario" State="EF" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="320" Y="450" />
+    </Activity>
+    <Activity Name="Email al JEFE" State="EJ" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="380" Y="300" />
+    </Activity>
+    <Activity Name="FIN" IsInitial="False" IsFinal="True" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="1380" Y="620" />
+    </Activity>
+    <Activity Name="Activity_4" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="310" Y="590" />
+    </Activity>
+    <Activity Name="Presupuesto aprovado" State="&gt;1000" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="1330" Y="310" />
+    </Activity>
+    <Activity Name="Necesita Autorizacion" State="&lt;1000" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="1080" Y="310" />
+    </Activity>
+    <Activity Name="Exp Completo" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="720" Y="100" />
+    </Activity>
+    <Activity Name="Aprovado" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="1030" Y="480" />
+    </Activity>
+    <Activity Name="Denegada" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True">
+      <Designer X="750" Y="710" />
+    </Activity>
+    <Activity Name="Valoracion Jefe" IsInitial="False" IsFinal="False" IsForSetState="True" IsAutoSchemeUpdate="True">
+      <Designer X="720" Y="380" />
+    </Activity>
+  </Activities>
+  <Transitions>
+    <Transition Name="Activity_1_Activity_2_1" To="Recogida doc" From="Comienzo" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Activity_2_Activity_3_1" To="Aprovacion" From="Exp Completo" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="1180" Y="89" />
+    </Transition>
+    <Transition Name="Activity_2_Email al funcionario_1" To="Email al funcionario" From="Recogida doc" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="true" MergeViaSetState="false" DisableParentStateControl="true">
+      <Triggers>
+        <Trigger Type="Timer" NameRef="5s" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="359" Y="238" />
+    </Transition>
+    <Transition Name="Activity_2_Email al JEFE_1" To="Email al JEFE" From="Recogida doc" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="true" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Timer" NameRef="12s" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="450" Y="237" />
+    </Transition>
+    <Transition Name="Email al funcionario_Email al funcionario_1" To="Email al funcionario" From="Email al funcionario" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Timer" NameRef="5s" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Action" NameRef="StateEqualToSigning" ConditionInversion="false" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Email al funcionario_Activity_4_1" To="Activity_4" From="Email al funcionario" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Timer" NameRef="5s" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Otherwise" />
+      </Conditions>
+      <Designer X="415" Y="544" />
+    </Transition>
+    <Transition Name="Mayor 1000" To="Presupuesto aprovado" From="Aprovacion" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Action" NameRef="StateEqualToSigning" ConditionInversion="false" />
+      </Conditions>
+      <Designer X="1419" Y="190" />
+    </Transition>
+    <Transition Name="Activity_1_FIN_1" To="FIN" From="Aprovado" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="1176" Y="637" />
+    </Transition>
+    <Transition Name="Aprovacion_Activity_2_1" To="Necesita Autorizacion" From="Aprovacion" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Otherwise" />
+      </Conditions>
+      <Designer X="1181" Y="253" />
+    </Transition>
+    <Transition Name="Recogida doc_Activity_3_1" To="Exp Completo" From="Recogida doc" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Command" NameRef="Next" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Necesita Autorizacion_Activity_1_1" To="Aprovado" From="Valoracion Jefe" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Restrictions>
+        <Restriction Type="Allow" NameRef="actor" />
+      </Restrictions>
+      <Triggers>
+        <Trigger Type="Command" NameRef="Next" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Action" NameRef="StateEqualToSigning" ConditionInversion="false" />
+      </Conditions>
+      <Designer X="1122" Y="410" />
+    </Transition>
+    <Transition Name="Presupuesto aprovado_Activity_1_1" To="Aprovado" From="Presupuesto aprovado" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="1437" Y="507" />
+    </Transition>
+    <Transition Name="Denegada_FIN_1" To="FIN" From="Denegada" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="1177" Y="679" />
+    </Transition>
+    <Transition Name="Necesita Autorizacion_Denegada_1" To="Denegada" From="Valoracion Jefe" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Restrictions>
+        <Restriction Type="Allow" NameRef="actor" />
+      </Restrictions>
+      <Triggers>
+        <Trigger Type="Command" NameRef="Next" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Otherwise" />
+      </Conditions>
+      <Designer X="820" Y="563" />
+    </Transition>
+    <Transition Name="Necesita Autorizacion_Activity_2_1" To="Valoracion Jefe" From="Necesita Autorizacion" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="821" Y="323" />
+    </Transition>
+  </Transitions>
+  <CodeActions>
+    <CodeAction Name="StateEqualToSigning" Type="Condition" IsGlobal="False" IsAsync="False">
+      <ActionCode><![CDATA[return runtime.GetCurrentStateName(processInstance.RootProcessId) == "Signing";]]></ActionCode>
+      <Usings><![CDATA[System.Linq;System;OptimaJet.Workflow;System.Net.Http.Headers;OptimaJet.Workflow.Core.Model;System.Net.Http;System.Threading.Tasks;System.Threading;System.Collections;System.Collections.Generic;]]></Usings>
+    </CodeAction>
+    <CodeAction Name="rulke" Type="RuleGet" IsGlobal="False" IsAsync="False">
+      <ActionCode><![CDATA[return new List<string>();]]></ActionCode>
+      <Usings><![CDATA[System.Linq;System;OptimaJet.Workflow;System.Net.Http.Headers;OptimaJet.Workflow.Core.Model;System.Net.Http;System.Threading.Tasks;System.Threading;System.Collections;System.Collections.Generic;]]></Usings>
+    </CodeAction>
+  </CodeActions>
+</Process>

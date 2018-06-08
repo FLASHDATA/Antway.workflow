@@ -53,7 +53,7 @@
         Implementation: 'Implementación',
         PreExecutionImplementation: 'PreEjecutar Implementación',
         ImpOrder: 'Orden',
-        ImpAction: 'Acción',
+        ImpAction: 'Condición',
         ImpActionParameter: 'Parámetro de acción',
         AlwaysConditionShouldBeSingle: 'La condición siempre debe ser única',
         OtherwiseConditionShouldBeSingle: 'De lo contrario, la condición debería ser única'
@@ -70,7 +70,7 @@
         RestrictionsActor: 'Actor',
         Condition: 'Condición',
         ConditionType: 'Tipo',
-        ConditionAction: 'Acción',
+        ConditionAction: 'Condición',
         ResultOnPreExecution: 'Resultado en preejecución',
         Trigger: 'Trigger',
         TriggerType: 'Tipo',
@@ -144,9 +144,9 @@
     },
     
     CodeActionsFormLabel: {
-        Title: 'Code actions',
+        Title: 'Códigos de acciones y condiciones',
         Name: 'Name',
-        ActionCode: 'Action code',
+        ActionCode: 'Código Accion/Condicion',
         IsGlobal: 'Is global',
         IsAsync: 'Async',
         Type: 'Type',
@@ -172,7 +172,7 @@
         Localization: 'Localization',
         Timers: 'Timers',
         AdditionalParameters: 'Additional Parameters',
-        CodeActions: 'Code actions',
+        CodeActions: 'Acciones y Condiciones',
         Info: "Extended info",
         Delete: "Delete",
         Clone: "Clone",

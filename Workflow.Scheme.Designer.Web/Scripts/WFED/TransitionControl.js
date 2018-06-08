@@ -561,7 +561,13 @@
             textvalue += 'A';//'⚡ 🚀 🚦';
         }
         else if (triggertype === 'command') {
-            textvalue += 'C'; //👨🏻‍💼
+            if (this.item.Trigger.Command.Name == "Next") {
+                textvalue += 'N'; //👨🏻‍💼
+            }
+            else {
+                textvalue += 'C'; //👨🏻‍💼
+            }
+            
         }
         else if (triggertype === 'timer') {
             textvalue += 'T';//'⏱ ⚡🚩 🚧';
@@ -580,16 +586,20 @@
 
         if (textvalue == "AA") { textvalue = "    ⚡"; }
         if (textvalue == "CA") { textvalue = "    👨🏻‍💼"; }
+        if (textvalue == "NA") { textvalue = "    💻"; }
         if (textvalue == "TA") { textvalue = "    ⏱"; }
 
         if (textvalue == "AC") { textvalue = " ⚡ if"; }
         if (textvalue == "CC") { textvalue = "  👨🏻‍💼 if"; }
+        if (textvalue == "NC") { textvalue = "  💻 if"; }
         if (textvalue == "TC") { textvalue = "  ⏱ if"; }
 
         if (textvalue == "AO") { textvalue = "⚡else"; }
         if (textvalue == "CO") { textvalue = " 👨🏻‍💼else"; }
+        if (textvalue == "NO") { textvalue = " 💻else"; }
         if (textvalue == "TO") { textvalue = "⏱else"; }
 
+ 
 
         if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command') {
             if (Array.isArray(me.item.Restrictions) && me.item.Restrictions.length > 0) {
@@ -742,14 +752,14 @@
         else {
             var tooltiptext = this.item.Trigger.Type;
             if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command')
-                tooltiptext += ' ' + me.item.Trigger.Command.Name;
+                tooltiptext = 'Comando: ' + me.item.Trigger.Command.Name;
 
             if (me.item.Trigger != undefined && me.item.Trigger.Timer != undefined && me.item.Trigger.Type === 'Timer')
                 tooltiptext += ' ' + me.item.Trigger.Timer.Name;
 
             tooltiptext += '\r\n' + this.item.Conditions[0].Type;
             if (me.item.Conditions[0] != undefined && me.item.Conditions[0].Type === 'Action') {
-                tooltiptext += ' ' + me.item.Conditions[0].Action.ActionName;
+                tooltiptext = 'Condición: ' + me.item.Conditions[0].Action.ActionName;
             }
 
             WorkflowDesignerTooltip(me.manager.APLayer, cActivePoint, tooltiptext, 17);

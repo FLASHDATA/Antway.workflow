@@ -25,7 +25,7 @@ namespace AntWay.Core.WorkflowEngine
         }
 
         private WorkflowRuntime _Runtime;
-        public WorkflowRuntime Runtime
+        private WorkflowRuntime Runtime
         {
             get
             {
@@ -39,6 +39,20 @@ namespace AntWay.Core.WorkflowEngine
                 return _Runtime;
             }
         }
+
+        //public AntWayRuntime AntWayRunTime
+        //{
+        //    get
+        //    {
+        //        var result = new AntWayRuntime
+        //        {
+        //            WorkflowRuntime = Runtime
+        //        };
+
+        //        return result;
+        //    }
+        //}
+
 
         public void Start()
         {

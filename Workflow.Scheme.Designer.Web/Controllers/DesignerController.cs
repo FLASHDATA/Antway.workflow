@@ -1,9 +1,4 @@
-﻿using OptimaJet.Workflow;
-using OptimaJet.Workflow.Core.Builder;
-using OptimaJet.Workflow.Core.Bus;
-using OptimaJet.Workflow.Core.Runtime;
-using OptimaJet.Workflow.Core.Parser;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -12,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Xml.Linq;
-using WorkflowRuntime = OptimaJet.Workflow.Core.Runtime.WorkflowRuntime;
-using WorkFlowEngine;
 using AntWay.Core.WorkflowEngine;
 
 namespace WF.Sample.Controllers
@@ -58,7 +51,7 @@ namespace WF.Sample.Controllers
                 }
             }
 
-            var res = WorkflowClient.Runtime.DesignerAPI(pars, filestream, true);
+            var res = WorkflowClient.AntWayRunTime.DesignerAPI(pars, filestream);
             var operation = pars["operation"].ToLower();
             if (operation == "downloadscheme")
                 return File(Encoding.UTF8.GetBytes(res), "text/xml", "scheme.xml");

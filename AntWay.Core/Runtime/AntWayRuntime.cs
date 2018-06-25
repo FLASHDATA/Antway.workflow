@@ -59,9 +59,11 @@ namespace AntWay.Core.RunTime
         }
 
         public bool ExecuteCommand(Guid processId, string commandName,
-                                   string impersonatedIdentityId = null)
+                                   string identifyId = null)
         {
-            return WorkflowRuntimeExtensions.Executecommand(WorkflowRuntime, processId, commandName); 
+            return WorkflowRuntimeExtensions.Executecommand(WorkflowRuntime, processId, 
+                                                            commandName,
+                                                            identifyId); 
         }
 
 

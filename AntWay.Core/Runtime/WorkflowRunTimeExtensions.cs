@@ -14,15 +14,17 @@ namespace AntWay.Core.RunTime
     {
         public static bool ExecutecommandNext(WorkflowRuntime runtime, 
                                        Guid wfProcessGuid,
-                                       string identifyId = null)
+                                       string identifyId = null,
+                                       string impersonatedIdentifyId = null)
         {
-            return Executecommand(runtime, wfProcessGuid, "next", identifyId);
+            return Executecommand(runtime, wfProcessGuid, "next", identifyId, impersonatedIdentifyId);
         }
 
 
         public static bool Executecommand(WorkflowRuntime runtime,
                                           Guid wfProcessGuid, string commandName,
-                                          string identifyId = null)
+                                          string identifyId = null,
+                                          string impersonatedIdentifyId = null)
         {
             WorkflowCommand command = runtime
                                       .GetAvailableCommands(wfProcessGuid, identifyId ?? string.Empty)
@@ -30,7 +32,9 @@ namespace AntWay.Core.RunTime
 
             if (command == null) return false;
 
-            var cmdExecResult = runtime.ExecuteCommand(command, identifyId ?? string.Empty, string.Empty);
+            var cmdExecResult = runtime.ExecuteCommand(command,
+                                                       identifyId ?? string.Empty,
+                                                       impersonatedIdentifyId ?? string.Empty);
 
             return cmdExecResult.WasExecuted;
         }

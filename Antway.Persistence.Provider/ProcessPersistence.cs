@@ -11,11 +11,30 @@ namespace AntWay.Persistence.Provider
     {
         public IDALProcessPersistence IDALProcessPersistence { get; set; }
 
+        public int GeProccessHistoryTotalRegistros(ProcessHistoryFilter filter)
+        {
+            var result = IDALProcessPersistence.GeProccessHistoryTotalRegistros(filter);
+            return result;
+        }
+
         public List<ProcessHistoryDataTableView> GeProccessHistoryDataTableView(ProcessHistoryFilter filter)
         {
             var result = IDALProcessPersistence.GeProccessHistoryDataTableView(filter);
             return result;
         }
+
+        public int GeProccessHistoryDetailTotalRegistros(ProcessHistoryDetailFilter filter)
+        {
+            var result = IDALProcessPersistence.GeProccessHistoryDetailTotalRegistros(filter);
+            return result;
+        }
+
+        public List<ProcessHistoryDetailDataTableView> GeProccessHistoryDetailDataTableView(ProcessHistoryDetailFilter filter)
+        {
+            var result = IDALProcessPersistence.GetProcessHistorryDetailTableView(filter);
+            return result;
+        }
+
 
         public ProcessPersistenceView GetWorkflowLocatorFromGuid(Guid guid)
         {

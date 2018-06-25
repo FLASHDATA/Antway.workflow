@@ -10,6 +10,12 @@ namespace AntWay.Persistence.Provider
     public interface IDALProcessPersistence: IDAL
     {
         ProcessPersistenceView GetLocatorFromGuid(Guid guid);
+
         List<ProcessHistoryDataTableView> GeProccessHistoryDataTableView(ProcessHistoryFilter filter);
+        int GeProccessHistoryTotalRegistros(ProcessHistoryFilter filter);
+
+        List<ProcessHistoryDetailDataTableView>
+            GetProcessHistorryDetailTableView(ProcessHistoryDetailFilter filter);
+        int GeProccessHistoryDetailTotalRegistros(ProcessHistoryDetailFilter filter);
     }
 }

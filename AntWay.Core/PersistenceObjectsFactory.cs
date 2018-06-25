@@ -8,7 +8,7 @@ namespace Antway.Core
     {
         public static IDALProcessPersistence GetIDALWFLocatorObject()
         {
-            return new WFLocatorEFDAL();
+            return new ProcessEFDAL();
         }
 
         public static IDALWFSchema GetIDALWFSchemaObject()

@@ -58,7 +58,7 @@
     <Compile Include="Data\WF_LOCATOR.cs" />
     <Compile Include="Data\WF_SCHEMES.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WFLocatorEFDAL.cs" />
+    <Compile Include="ProcessEFDAL.cs" />
     <Compile Include="WFSchemaEFDAL.cs" />
   </ItemGroup>
   <ItemGroup>

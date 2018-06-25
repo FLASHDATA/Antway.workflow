@@ -19,24 +19,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntWay.Oracle.Provider", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antway.Persistence.Provider", "Antway.Persistence.Provider\Antway.Persistence.Provider.csproj", "{14694484-9517-491F-A03F-4337459947AE}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AntWay.Server.Demo.Web", "AntWay.Server.Demo.Web\", "{257C7E4D-4009-4717-B516-C894D1BC7EBB}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AntWay.Dashboard.Demo.Web", "AntWay.Dashboard.Demo.Web\", "{0BEECB5D-3E21-4F79-9047-09121C54BE85}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_53351"
-		Debug.AspNetCompiler.PhysicalPath = "AntWay.Server.Demo.Web\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53351\"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_63270"
+		Debug.AspNetCompiler.PhysicalPath = "AntWay.Dashboard.Demo.Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_63270\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_53351"
-		Release.AspNetCompiler.PhysicalPath = "AntWay.Server.Demo.Web\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53351\"
+		Release.AspNetCompiler.VirtualPath = "/localhost_63270"
+		Release.AspNetCompiler.PhysicalPath = "AntWay.Dashboard.Demo.Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_63270\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "53351"
+		VWDPort = "63270"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
@@ -146,18 +146,18 @@ Global
 		{14694484-9517-491F-A03F-4337459947AE}.Release|x64.Build.0 = Release|Any CPU
 		{14694484-9517-491F-A03F-4337459947AE}.Release|x86.ActiveCfg = Release|Any CPU
 		{14694484-9517-491F-A03F-4337459947AE}.Release|x86.Build.0 = Release|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Debug|x64.Build.0 = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Debug|x86.Build.0 = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Release|x64.ActiveCfg = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Release|x64.Build.0 = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Release|x86.ActiveCfg = Debug|Any CPU
-		{257C7E4D-4009-4717-B516-C894D1BC7EBB}.Release|x86.Build.0 = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Debug|x64.Build.0 = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Debug|x86.Build.0 = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Release|x64.ActiveCfg = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Release|x64.Build.0 = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Release|x86.ActiveCfg = Debug|Any CPU
+		{0BEECB5D-3E21-4F79-9047-09121C54BE85}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

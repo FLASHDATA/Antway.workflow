@@ -1,0 +1,68 @@
+﻿
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<style>
+    .dataTables_length, .dataTables_filter, .dataTables_info {
+        display: none;
+    }
+
+    tr.odd {
+        background-color: #fbf9f9 !important;
+    }
+
+    tfoot {
+        display: table-header-group;
+    }
+
+    tfoot tr {
+        background-color: #d1cece;
+    }
+
+
+    table.dataTable tr.clickeable:hover,
+    table.dataTable tr.clickeable td.sorting_1:hover {
+        background-color: antiquewhite !important;
+        cursor: pointer;
+    }
+</style>
+
+
+<div id="html_daterangepicker" style="visibility:hidden;">
+    <span class="m-subheader__daterange" id="{id}">
+        <span class="m-subheader__daterange-label">
+            <span class="m-subheader__daterange-title"></span>
+            <span class="m-subheader__daterange-date m--font-brand"></span>
+        </span>
+        <a href="#" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill">
+            <i class="la la-angle-down"></i>
+        </a>
+    </span>
+</div>
+
+<script>
+    customDataTableLangES = {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+    };
+</script>

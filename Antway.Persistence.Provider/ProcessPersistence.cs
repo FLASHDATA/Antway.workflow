@@ -3,54 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AntWay.Persistence.Model;
+using AntWay.Persistence.Provider.Model.DataTable;
 
-namespace AntWay.Persistence.Provider
+namespace AntWay.Persistence.Provider.Model
 {
     public class ProcessPersistence
     {
         public IDALProcessPersistence IDALProcessPersistence { get; set; }
 
-        public int GeProccessHistoryTotalRegistros(ProcessHistoryFilter filter)
+
+        public List<WorkFlowDataTableView> GetWorkFlowsDataTableView(DataTableFilters filter)
         {
-            var result = IDALProcessPersistence.GeProccessHistoryTotalRegistros(filter);
+            var result = IDALProcessPersistence.GetWorkFlowsDataTableView(filter);
             return result;
         }
 
-        public List<ProcessHistoryDataTableView> GeProccessHistoryDataTableView(ProcessHistoryFilter filter)
+        public int GetProccessesHistoryTotalRegistros(DataTableFilters filter)
         {
-            var result = IDALProcessPersistence.GeProccessHistoryDataTableView(filter);
+            var result = IDALProcessPersistence.GetProccessesHistoryTotalRegistros(filter);
             return result;
         }
 
-        public int GeProccessHistoryDetailTotalRegistros(ProcessHistoryDetailFilter filter)
+        public List<ProcessHistoryDataTableView> GetProccessesHistoryDataTableView(DataTableFilters filter)
         {
-            var result = IDALProcessPersistence.GeProccessHistoryDetailTotalRegistros(filter);
+            var result = IDALProcessPersistence.GetProccessesHistoryDataTableView(filter);
             return result;
         }
 
-        public List<ProcessHistoryDetailDataTableView> GeProccessHistoryDetailDataTableView(ProcessHistoryDetailFilter filter)
+        public int GetProccessHistoryDetailTotalRegistros(ProcessHistoryDetailFilter filter)
         {
-            var result = IDALProcessPersistence.GetProcessHistorryDetailTableView(filter);
+            var result = IDALProcessPersistence.GetProccessHistoryDetailTotalRegistros(filter);
             return result;
         }
 
-
-        public ProcessPersistenceView GetWorkflowLocatorFromGuid(Guid guid)
+        public List<ProcessHistoryDetailDataTableView> GetProccessHistoryDetailDataTableView(ProcessHistoryDetailFilter filter)
         {
-            var dataView = IDALProcessPersistence.GetLocatorFromGuid(guid);
-            return dataView;
-        }
-
-        public ProcessPersistenceView GetWorkflowLocator(string locator)
-        {
-            var dataView = IDALProcessPersistence.Fetch<ProcessPersistenceView>(locator);
-            return dataView;
-        }
-
-        public ProcessPersistenceView AddWorkflowLocator(ProcessPersistenceView wfLocatorView)
-        {
-            var result = IDALProcessPersistence.Insert(wfLocatorView);
+            var result = IDALProcessPersistence.GetProcessHistoryDetailTableView(filter);
             return result;
         }
     }

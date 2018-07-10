@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AntWay.Persistence.Model
+namespace AntWay.Persistence.Provider.Model.DataTable
 {
     public class ProcessHistoryDetailDataTableView
     {

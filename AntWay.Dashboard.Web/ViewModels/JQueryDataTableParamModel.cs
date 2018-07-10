@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Workflow.Designer.Web.ViewModels
+namespace AntWay.Dashboard.Web.ViewModels
 {
     public class JQueryDataTableParamModel
     {
@@ -37,6 +37,9 @@ namespace Workflow.Designer.Web.ViewModels
         /// Number of columns that are used in sorting
         /// </summary>
         public int iSortingCols { get; set; }
+
+        public int iSortCol_0 { get; set; }
+        public string sSortDir_0 { get; set; }
 
         /// <summary>
         /// Comma separated list of column names

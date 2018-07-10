@@ -16,7 +16,7 @@ using Oracle.ManagedDataAccess.Client;
 
 namespace OptimaJet.Workflow.Oracle
 {
-    public class OracleProvider : IPersistenceProvider, ISchemePersistenceProvider<XElement>, IWorkflowGenerator<XElement>
+    public partial class OracleProvider : IPersistenceProvider, ISchemePersistenceProvider<XElement>, IWorkflowGenerator<XElement>
     {
         public string ConnectionString { get; set; }
         public string Schema { get; set; }

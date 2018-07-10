@@ -66,9 +66,13 @@
       <Project>{9fb295c0-e9e7-4b37-9120-d9dfcca9a3f2}</Project>
       <Name>AntWay.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Example.BLL\Example.BLL.csproj">
-      <Project>{c2b353cb-d61b-41f2-bac3-999822942580}</Project>
-      <Name>Example.BLL</Name>
+    <ProjectReference Include="..\Antway.Persistence.Provider\Antway.Persistence.Provider.csproj">
+      <Project>{14694484-9517-491f-a03f-4337459947ae}</Project>
+      <Name>Antway.Persistence.Provider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
+      <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
+      <Name>OptimaJet.Workflow.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

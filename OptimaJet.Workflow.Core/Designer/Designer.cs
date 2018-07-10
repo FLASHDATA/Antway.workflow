@@ -24,7 +24,7 @@ namespace OptimaJet.Workflow
     /// <summary>
     /// Extension which provides API for HTML5 Workflow Designer
     /// </summary>
-    public static class Designer
+    public static partial class Designer
     {
         /// <summary>
         /// API for HTML5 Workflow Designer. Contains following operations:
@@ -177,6 +177,11 @@ namespace OptimaJet.Workflow
 
         private static string Load(WorkflowRuntime runtime, string schemecode, string schemeid, string processid)
         {
+            if (schemecode == null)
+            {
+                return NewScheme(runtime, schemeid, processid);
+            }
+
             List<CodeActionDefinition> globalActions;
             ProcessDefinition pd;
             globalActions =

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace AntWay.Persistence.Model
+namespace AntWay.Persistence.Provider.Model
 {
     public class AntWayProcessView
     {

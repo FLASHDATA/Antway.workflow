@@ -3,18 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AntWay.Persistence.Model;
+using AntWay.Persistence.Provider.Model.DataTable;
 
-namespace AntWay.Persistence.Provider
+namespace AntWay.Persistence.Provider.Model
 {
     public class SchemesPersistence
     {
-        public IDALWFSchema IDALSchema { get; set; }
+        public IDALWFSchemes IDALSchemes { get; set; }
 
-        public List<WorkflowSchemaView> GetSchemes()
+
+        public List<SchemeDataTableView> GetSchemesDataTableView(DataTableFilters filter)
         {
-            var schemes = IDALSchema.GetWorkflowSchemes();
+            var result = IDALSchemes.GetSchemesDataTableView(filter);
+            return result;
+        }
+
+        public WorkflowSchemeView InsertScheme(WorkflowSchemeView schemeView)
+        {
+            var result = IDALSchemes.Insert(schemeView);
+            return result;
+        }            
+
+
+        public List<WorkflowSchemeView> GetSchemes()
+        {
+            var schemes = IDALSchemes.GetWorkflowSchemes();
             return schemes;
+        }
+
+        public WorkflowSchemeView GetScheme(string id)
+        {
+            var scheme = IDALSchemes.Fetch<WorkflowSchemeView>(id);
+            return scheme;
         }
     }
 }

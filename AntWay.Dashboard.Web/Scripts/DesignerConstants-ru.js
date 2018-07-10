@@ -25,6 +25,8 @@
         IsInitial: 'Начальный',
         IsFinal: 'Конечный',
         IsForSetState: 'Доступно для установки состояния',
+        IsCondition: 'Доступно для установки состояния',
+        IsScheme: 'Доступно для установки состояния',
         IsAutoSchemeUpdate: 'Автоматическое обновление схемы',
         Implementation: 'Выполнение',
         PreExecutionImplementation: 'PreExecution реализация',

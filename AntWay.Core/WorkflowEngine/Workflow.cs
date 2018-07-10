@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Antway.Core;
-using AntWay.Persistence.Model;
 using AntWay.Persistence.Provider;
 using OptimaJet.Workflow.Core.Builder;
 using OptimaJet.Workflow.Core.Bus;
@@ -63,25 +62,5 @@ namespace AntWay.Core.WorkflowEngine
 
             return runtime;
         }
-
-
-        public static Guid CreateInstance(WorkflowRuntime runtime,
-                                          ProcessPersistenceView wfScheme)
-        {
-            var processId = Guid.NewGuid();
-
-            runtime.CreateInstance("SimpleWF", processId);
-
-            var processPersistence = new ProcessPersistence
-            {
-                IDALProcessPersistence = PersistenceObjectsFactory.GetIDALWFLocatorObject(),
-            };
-            wfScheme.WFProcessGuid = processId;
-                
-            processPersistence.AddWorkflowLocator(wfScheme);
-
-            return processId;
-        }
-
     }
 }

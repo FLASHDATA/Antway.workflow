@@ -12,7 +12,7 @@ namespace AntWay.Oracle.Provider.Data
         {
         }
 
-        public virtual DbSet<WF_LOCATOR> WF_LOCATOR { get; set; }
+        public virtual DbSet<LOCATORS> LOCATORS { get; set; }
         public virtual DbSet<WF_SCHEMES> WF_SCHEMES { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

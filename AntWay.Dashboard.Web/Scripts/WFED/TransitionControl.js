@@ -291,12 +291,16 @@
     };
 
     this.GetColor = function () {
-        var classifier = this.item.Classifier == undefined ? 'notspecified'
-                        : this.item.Classifier.toLowerCase();
+        var classifier = this.item.Classifier == undefined
+                            ? 'notspecified'
+            : this.item.Classifier.toLowerCase();
 
-        if (classifier == 'notspecified') return '#7F8C8D';
+        console.log(classifier);
+        if (classifier == 'AntWay') return '#3F8C8D';
 
-        return (classifier == 'direct' ? '#27AE60' : 'red');
+        return classifier == 'notspecified'
+            ? '#7F8C8D'
+            : (classifier == 'direct') ? '#27AE60' : '#2980B9';
     };
 
     this.DrawActivePoint = function () {
@@ -756,14 +760,14 @@
         else {
             var tooltiptext = this.item.Trigger.Type;
             if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command')
-                tooltiptext += ' ' + me.item.Trigger.Command.Name;
+                tooltiptext = 'Comando: ' + me.item.Trigger.Command.Name;
 
             if (me.item.Trigger != undefined && me.item.Trigger.Timer != undefined && me.item.Trigger.Type === 'Timer')
                 tooltiptext += ' ' + me.item.Trigger.Timer.Name;
 
             tooltiptext += '\r\n' + this.item.Conditions[0].Type;
             if (me.item.Conditions[0] != undefined && me.item.Conditions[0].Type === 'Action') {
-                tooltiptext += ' ' + me.item.Conditions[0].Action.ActionName;
+                tooltiptext = 'Condición: ' + me.item.Conditions[0].Action.ActionName;
             }
 
             WorkflowDesignerTooltip(me.manager.APLayer, cActivePoint, tooltiptext, 17);
@@ -901,8 +905,8 @@
                 {
                     type: "group", elements: [
                         { name: labels.Name, field: "Name", type: "input", width: "100%" },
-                        { name: labels.Classifier, field: "Classifier", type: "select", width: "100%", datasource: ['NotSpecified', 'Direct', 'Reverse'] }
-                    ]
+                        { name: labels.Classifier, field: "Classifier", type: "select", width: "100%", datasource: ['NotSpecified', 'AntWay', 'Direct', 'Reverse'] }
+                     ]
                 },
                 {
                     type: "group", elements: [

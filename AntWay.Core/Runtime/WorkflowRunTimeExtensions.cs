@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antway.Core;
-using AntWay.Persistence.Model;
-using AntWay.Persistence.Provider;
+using AntWay.Persistence.Provider.Model;
 using OptimaJet.Workflow.Core.Runtime;
 
 namespace AntWay.Core.RunTime
@@ -13,28 +12,26 @@ namespace AntWay.Core.RunTime
     internal static class WorkflowRuntimeExtensions
     {
         public static bool ExecutecommandNext(WorkflowRuntime runtime, 
-                                       Guid wfProcessGuid,
+                                       Guid processId,
                                        string identifyId = null,
                                        string impersonatedIdentifyId = null)
         {
-            return Executecommand(runtime, wfProcessGuid, "next", identifyId, impersonatedIdentifyId);
+            WorkflowCommand command = runtime
+                                         .GetAvailableCommands(processId, identifyId ?? string.Empty)
+                                        .FirstOrDefault(c => c.CommandName.Trim().ToLower() == "next");
+
+
+            return ExecuteCommand(runtime, command, identifyId, impersonatedIdentifyId);
         }
 
-
-        public static bool Executecommand(WorkflowRuntime runtime,
-                                          Guid wfProcessGuid, string commandName,
+        public static bool ExecuteCommand(WorkflowRuntime runtime,
+                                          WorkflowCommand command,
                                           string identifyId = null,
                                           string impersonatedIdentifyId = null)
         {
-            WorkflowCommand command = runtime
-                                      .GetAvailableCommands(wfProcessGuid, identifyId ?? string.Empty)
-                                      .FirstOrDefault(c => c.CommandName.Trim().ToLower() == commandName.ToLower());
-
-            if (command == null) return false;
-
             var cmdExecResult = runtime.ExecuteCommand(command,
-                                                       identifyId ?? string.Empty,
-                                                       impersonatedIdentifyId ?? string.Empty);
+                                           identifyId ?? string.Empty,
+                                           impersonatedIdentifyId ?? string.Empty);
 
             return cmdExecResult.WasExecuted;
         }
@@ -44,11 +41,11 @@ namespace AntWay.Core.RunTime
         {
             var result = new AntWayProcessView();
 
-            var processPersistence = new ProcessPersistence
+            var locatorPersistence = new LocatorPersistence
             {
-                IDALProcessPersistence = PersistenceObjectsFactory.GetIDALWFLocatorObject(),
+                IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject(),
             };
-            var wfInstance = processPersistence.GetWorkflowLocator(localizador);
+            var wfInstance = locatorPersistence.GetWorkflowLocator(localizador);
 
             if (wfInstance == null) return result;
 

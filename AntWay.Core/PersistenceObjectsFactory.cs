@@ -1,19 +1,24 @@
 ﻿using AntWay.Persistence.Provider;
-//Reference Data Provider
 using AntWay.Oracle.Provider;
+using AntWay.Persistence.Provider.Model;
 
 namespace Antway.Core
 {
     public static class PersistenceObjectsFactory
     {
-        public static IDALProcessPersistence GetIDALWFLocatorObject()
+        public static IDALProcessPersistence GetIDALProcessObject()
         {
             return new ProcessEFDAL();
         }
 
-        public static IDALWFSchema GetIDALWFSchemaObject()
+        public static IDALWFSchemes GetIDALWFSchemaObject()
         {
-            return new WFSchemaEFDAL();
+            return new WFSchemesEFDAL();
+        }
+
+        public static IDALLocators GetIDALLocatorsObject()
+        {
+            return new LocatorsEFDAL();
         }
     }
 }

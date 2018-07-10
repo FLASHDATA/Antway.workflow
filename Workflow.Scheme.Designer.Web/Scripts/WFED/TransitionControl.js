@@ -291,8 +291,16 @@
     };
 
     this.GetColor = function () {
-        var classifier = this.item.Classifier == undefined ? 'notspecified' : this.item.Classifier.toLowerCase();
-        return classifier == 'notspecified' ? '#7F8C8D' : classifier == 'direct' ? '#27AE60' : '#2980B9';
+        var classifier = this.item.Classifier == undefined
+                            ? 'notspecified'
+            : this.item.Classifier.toLowerCase();
+
+        console.log(classifier);
+        if (classifier == 'AntWay') return '#3F8C8D';
+
+        return classifier == 'notspecified'
+            ? '#7F8C8D'
+            : (classifier == 'direct') ? '#27AE60' : '#2980B9';
     };
 
     this.DrawActivePoint = function () {
@@ -897,8 +905,8 @@
                 {
                     type: "group", elements: [
                         { name: labels.Name, field: "Name", type: "input", width: "100%" },
-                        { name: labels.Classifier, field: "Classifier", type: "select", width: "100%", datasource: ['Direct', 'Reverse', 'NotSpecified'] }
-                    ]
+                        { name: labels.Classifier, field: "Classifier", type: "select", width: "100%", datasource: ['NotSpecified', 'AntWay', 'Direct', 'Reverse'] }
+                     ]
                 },
                 {
                     type: "group", elements: [

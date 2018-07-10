@@ -5,6 +5,7 @@
     /// </summary>
     public enum TransitionClassifier
     {
+        AntWay,
         /// <summary>
         /// Direction not specified
         /// </summary>

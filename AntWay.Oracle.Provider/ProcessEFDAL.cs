@@ -3,25 +3,147 @@ using System.Collections.Generic;
 using System.Linq;
 using AntWay.Oracle.Provider.Data;
 using AntWay.Persistence.Provider;
-using AntWay.Persistence.Model;
 using Devart.Data.Oracle;
-
+using AntWay.Persistence.Provider.Model.DataTable;
 
 namespace AntWay.Oracle.Provider
 {
     public class ProcessEFDAL : IDALProcessPersistence
     {
+        public List<WorkFlowDataTableView> GetWorkFlowsDataTableView(DataTableFilters filter)
+        {
+            var result = new List<WorkFlowDataTableView>();
 
-        public int GeProccessHistoryTotalRegistros(ProcessHistoryFilter filter)
+            using (var ctx = new Model1())
+            {
+                List<string> schemesDB = GetDBSchemes();
+
+                //SELECT DISTINCT DB_SCHEME_NAME
+                //FROM WF_SCHEMES
+                string sql = "SELECT WorkFlow" +
+                             ", TotalProcesos" +
+                             ", TotalProcesosEstadoEnProceso" +
+                             ", TotalProcesosEstadoFinalizado" +
+                             ", TotalProcesosEstadoError" +
+                             ", ROWNUM AS NumFila" +
+                             " FROM (";
+
+                int idx = 0;
+                foreach (string schemeDBName in schemesDB)
+                {
+                    if (idx > 0)
+                    {
+                        sql += " UNION ";
+                    }
+
+                    sql += " SELECT wps.SCHEMECODE AS WorkFlow, " +
+                            " SUM(1) TotalProcesos, " +
+                            " SUM(CASE WHEN wfps.STATUS <= 2 then 1 ELSE 0 end) TotalProcesosEstadoEnProceso," +
+                            " SUM(CASE WHEN wfps.STATUS = 3 then 1 ELSE 0 end) TotalProcesosEstadoFinalizado," +
+                            " SUM(CASE WHEN wfps.STATUS = 4 OR wfps.STATUS = 5 then 1 ELSE 0 end) TotalProcesosEstadoError" +
+                            $" FROM {schemeDBName}.WORKFLOWPROCESSINSTANCES wfps" +
+                             " INNER JOIN " +
+                             " (" +
+                             " SELECT PROCESSID, MAX(TRANSITIONTIME) AS LAST_TRANSITION " +
+                            $" FROM {schemeDBName}.WORKFLOWPROCESSTRANSITIONH " +
+                             " GROUP BY PROCESSID " +
+                             " ) PH " +
+                             " ON wfps.ID = PH.PROCESSID " +
+                            $" INNER JOIN {schemeDBName}.WORKFLOWPROCESSINSTANCE wpi ON wfps.ID = wpi.ID" +
+                            $" INNER JOIN {schemeDBName}.WORKFLOWPROCESSSCHEME wps ON wpi.SCHEMEID = wps.ID" +
+                             " WHERE LAST_TRANSITION>=:DateFrom" +
+                             " AND LAST_TRANSITION<=:DateTo";
+
+                    filter.FilteredStringFields
+                        .ForEach(f => sql += $" AND {f.Field} like '%' || :{f.Field} || '%'");
+
+                    sql += " GROUP BY wps.SCHEMECODE";
+
+                    idx++;
+                }
+
+                sql += $" ORDER BY {filter.OrderBySQLQueryColIndex} {filter.OrderByDirection}";
+
+                sql += ") qry";
+
+                var parameters = new List<OracleParameter>
+                {
+                    new OracleParameter("DateFrom", filter.FilterFrom.Value),
+                    new OracleParameter("DateTo", filter.FilterTo.Value),
+                };
+
+                filter.FilteredStringFields
+                .ForEach(f => parameters.Add(new OracleParameter(f.Field, f.Value)));
+
+                result = ctx.Database.SqlQuery<WorkFlowDataTableView>(sql, parameters.ToArray())
+                         .ToList();
+            }
+
+            return result;
+        }
+
+
+        // Processes History
+        protected string SQLProcessesHistory
+        {
+            get
+            {
+                List<string> schemesDB = GetDBSchemes();
+
+                string sql = "SELECT ROWNUM AS NUM_FILA" +
+                            " , QRY.WorkFlow, QRY.EsquemaBD" +
+                            " ,QRY.LOCALIZADOR, QRY.ESTADOACTUAL, QRY.TAGS, QRY.ULTIMAACTUALIZACION" +
+                            " FROM" +
+                            " (" +
+                            "  SELECT LOC.SCHEME_CODE AS WorkFlow" +
+                            "  , LOC.SCHEME_DATABASE AS EsquemaBD" +
+                            "  , LOC.LOCATOR_VALUE AS Localizador" +
+                            "  , PH.STATENAME as EstadoActual, PH.TAGS AS Tags" +
+                            "  , PH.LASTTRANSITION AS UltimaActualizacion" +
+                            " FROM LOCATORS LOC" +
+                            " INNER JOIN(";
+
+                string sqlSubquery = "";
+                foreach (string schemeDBName in schemesDB)
+                {
+                    if (sqlSubquery.Length > 1)
+                    {
+                        sqlSubquery += " UNION ";
+                    }
+                    sqlSubquery += 
+                              " SELECT pi.ID, pi.STATENAME, pth.Tags, pth.LastTransition" +
+                              $" FROM {schemeDBName}.WORKFLOWPROCESSINSTANCE pi" +
+                              " LEFT JOIN(" +
+                              "           select PROCESSID" +
+                              "            , listagg(TOSTATENAME, ', ') within group(order by TRANSITIONTIME) Tags" +
+                              "            , MAX(TransitionTime) AS LastTransition" +
+                              $"           from {schemeDBName}.WORKFLOWPROCESSTRANSITIONH" +
+                              "           GROUP BY PROCESSID" +
+                              " )  pth" +
+                              " ON pi.ID = pth.PROCESSID";
+                }
+
+                sql +=   sqlSubquery +
+                       " ) PH" +
+                       " ON LOC.ID_WFPROCESSINSTANCE = PH.Id" +
+                       " ) QRY" +
+                       " WHERE UltimaActualizacion>=:DateFrom" +
+                       " AND UltimaActualizacion<=:DateTo";
+
+                return sql;
+            }
+        }
+
+        public int GetProccessesHistoryTotalRegistros(DataTableFilters filter)
         {
             int result = 0;
             using (var ctx = new Model1())
             {
-                string sql = "SELECT distinct(Localizador)" +
-                             " FROM VW_PROCESS_HISTORY" +
-                             " WHERE 1=1" +
-                             " AND UltimaActualizacion>=:DateFrom" +
-                             " AND UltimaActualizacion<=:DateTo";  
+                string sql = "SELECT 1" +
+                              " FROM (" +
+                                 SQLProcessesHistory +
+                              ") sq" +
+                              " WHERE 1 = 1 ";
 
                 filter.FilteredStringFields
                     .ForEach(f => sql += $" AND {f.Field} like '%' || :{f.Field} || '%'");
@@ -47,28 +169,30 @@ namespace AntWay.Oracle.Provider
         }
 
         public List<ProcessHistoryDataTableView>
-                        GeProccessHistoryDataTableView(ProcessHistoryFilter filter)
+                        GetProccessesHistoryDataTableView(DataTableFilters filter)
         {
             var result = new List<ProcessHistoryDataTableView>();
             using (var ctx = new Model1())
             {
-                string sql = "SELECT Aplicacion, Localizador" +
-                             ", EstadoActual, Tags, UltimaActualizacion" +
-                             " FROM VW_PROCESS_HISTORY" +
-                             " WHERE NUM_FILA >=:FromRecord AND NUM_FILA <=:ToRecord" +
-                             " AND UltimaActualizacion>=:DateFrom " +
-                             " AND UltimaActualizacion<=:DateTo ";
-
+                string sql = " SELECT NUM_FILA, sq.WorkFlow, sq.EsquemaBD ,sq.LOCALIZADOR " +
+                             " , sq.ESTADOACTUAL, sq.TAGS, sq.ULTIMAACTUALIZACION " +
+                             " FROM( " +
+                                     SQLProcessesHistory +
+                             " ) sq" +
+                             " WHERE NUM_FILA >=:FromRecord AND NUM_FILA <=:ToRecord";
+                             
                 filter.FilteredStringFields
                     .ForEach(f => sql += $" AND {f.Field} like '%' || :{f.Field} || '%'");
+
+                sql += $" ORDER BY {filter.OrderByColumnName} {filter.OrderByDirection}";
 
 
                 var parameters = new List<OracleParameter>
                                     {
                                         new OracleParameter("DateFrom", filter.FilterFrom.Value),
                                         new OracleParameter("DateTo", filter.FilterTo.Value),
-                                        new OracleParameter("FromRecord", filter.PaginatioFromRecord),
-                                        new OracleParameter("ToRecord", filter.PaginatioToRecord),
+                                        new OracleParameter("FromRecord", filter.PaginationFromRecord),
+                                        new OracleParameter("ToRecord", filter.PaginationToRecord),
                                     };
 
                 filter.FilteredStringFields
@@ -83,8 +207,9 @@ namespace AntWay.Oracle.Provider
             return result;
         }
 
-
-        public int GeProccessHistoryDetailTotalRegistros(ProcessHistoryDetailFilter filter)
+        
+        //Process History Detail
+        public int GetProccessHistoryDetailTotalRegistros(ProcessHistoryDetailFilter filter)
         {
             int result = 0;
             using (var ctx = new Model1())
@@ -110,7 +235,7 @@ namespace AntWay.Oracle.Provider
 
 
         public List<ProcessHistoryDetailDataTableView> 
-                    GetProcessHistorryDetailTableView(ProcessHistoryDetailFilter filter)
+                    GetProcessHistoryDetailTableView(ProcessHistoryDetailFilter filter)
         {
             var result = new List<ProcessHistoryDetailDataTableView>();
             using (var ctx = new Model1())
@@ -136,99 +261,31 @@ namespace AntWay.Oracle.Provider
             return result;
         }
 
-        public ProcessPersistenceView GetLocatorFromGuid(Guid guid)
+        public List<string> GetDBSchemes()
         {
+            List<string> schemesDB;
             using (var ctx = new Model1())
             {
-                var entity = ctx.WF_LOCATOR
-                             .FirstOrDefault(q => q.ID_WFPROCESSINSTANCE == guid);
-
-                var result = MapFromDalToView(entity);
-                return result;
+                schemesDB = ctx.WF_SCHEMES
+                          .Select(s => s.DB_SCHEME_NAME)
+                          .Distinct()
+                          .ToList();
             }
+
+            return schemesDB;
         }
 
-        public T Fetch<T>(object pk)
+        public List<string> GetSchemes()
         {
-            string id = Convert.ToString(pk ?? "");
-            
+            List<string> schemes;
             using (var ctx = new Model1())
             {
-                var entity = ctx.WF_LOCATOR
-                             .FirstOrDefault(q => q.LOCATOR_VALUE.ToUpper() == id.ToUpper());
-
-                var result = MapFromDalToView(entity);
-
-                return (T)Convert.ChangeType(result, typeof(T));
+                schemes = ctx.WF_SCHEMES
+                          .Select(s => s.SCHEME_NAME)
+                          .ToList();
             }
+
+            return schemes;
         }
-
-        public T Insert<T>(T objectView)
-        {
-            var value = MapFromViewToDal(objectView);
-
-            using (var ctx = new Model1())
-            {
-                ctx.WF_LOCATOR.Attach(value);
-                ctx.Entry(value).State = System.Data.Entity.EntityState.Added;
-                int i = ctx.SaveChanges();
-
-                var result = MapFromDalToView(value);
-
-                return (T)Convert.ChangeType(result, typeof(T));
-            }
-        }
-
-
-        public T Update<T>(T objectView)
-        {
-            var value = MapFromViewToDal(objectView);
-
-            using (var ctx = new Model1())
-            {
-                ctx.WF_LOCATOR.Attach(value);
-                ctx.Entry(value).State = System.Data.Entity.EntityState.Modified;
-                int i = ctx.SaveChanges();
-
-                var result = MapFromDalToView(value);
-
-                return (T)Convert.ChangeType(result, typeof(T));
-            }
-        }
-
-
-        private ProcessPersistenceView MapFromDalToView(WF_LOCATOR entity)
-        {
-            if (entity == null) return null;
-
-            var view = new ProcessPersistenceView
-            {
-                WFProcessGuid = entity.ID_WFPROCESSINSTANCE,
-                LocatorFieldName = entity.LOCATOR_FIELD_NAME,
-                LocatorValue = entity.LOCATOR_VALUE,
-                Application = entity.APPLICATION,
-                Scheme = entity.SCHEME,
-            };
-
-            return view;
-        }
-
-
-        private WF_LOCATOR MapFromViewToDal<T>(T objectView)
-        {
-            var view = (ProcessPersistenceView)Convert.ChangeType(objectView, typeof(T));
-
-            var entity = new WF_LOCATOR
-            {
-                ID_WFPROCESSINSTANCE = view.WFProcessGuid,
-                APPLICATION = view.Application,
-                SCHEME = view.Scheme,
-                LOCATOR_FIELD_NAME = view.LocatorFieldName,
-                LOCATOR_VALUE = view.LocatorValue,
-            };
-
-            return entity;
-        }
-
     }
 }

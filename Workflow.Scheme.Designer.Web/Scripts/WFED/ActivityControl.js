@@ -83,7 +83,7 @@
             isNormal = false;
         }
 
-        if (me.item.IsForSetState) {
+        if (me.item.IsCondition) {
             rectColor = WorkflowDesignerConstants.ActivityConditionColor;
             textColor = WorkflowDesignerConstants.ActivityConditionTextColor;
             width = this.graph.Settings.DefaultActivityWidth;
@@ -116,7 +116,7 @@
 
 
         //if (me.item.ImpAction == "InsertarNotificacionAction") {
-        if (me.item.IsForSetState) {
+        if (me.item.IsCondition) {
             me.rectangle = new Konva.Rect({
                 x: xra,
                 y: yra,
@@ -141,9 +141,31 @@
                 fill: "#FFE59E",
             });
             me.control.add(me.impImage);
+        }
+        else if (me.item.IsScheme) {
+            me.rectangle = new Konva.Rect({
+                x: xra,
+                y: yra,
+                offsetY: offsetY,
+                offsetX: offsetX,
+                width: this.graph.Settings.DefaultActivityWidth,
+                height: this.graph.Settings.DefaultActivityHeight,
+                // stroke: WorkflowDesignerConstants.ActivityShape,
+                // strokeWidth: 0,
+                rotation: rotation,
+                fill: rectColor,
+                cornerRadius: cornerRadius,
+            });
+            me.control.add(me.rectangle);
 
-
-
+            me.impImage = new Konva.Image({
+                x: me.rectangle.attrs.width - 40,
+                y: 10,
+                image: me.manager.ImageScheme,
+                width: 25,
+                height: 25
+            });
+            me.control.add(me.impImage);
         }
         else {
             me.rectangle = new Konva.Rect({
@@ -171,9 +193,6 @@
                 });
                 me.control.add(me.impImage);
             }
-
-
-
         }
 
         if (Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0) {
@@ -225,10 +244,10 @@
             typeText += WorkflowDesignerConstants.ActivityFormLabel.IsFinal;
         }
 
-        if (me.item.IsForSetState == true) {
+        if (me.item.IsCondition == true) {
             if (typeText.length > 0)
                 typeText += " - ";
-            typeText += WorkflowDesignerConstants.ActivityFormLabel.IsForSetState;
+            typeText += WorkflowDesignerConstants.ActivityFormLabel.IsCondition;
         }
 
         if (typeText != "") {
@@ -498,12 +517,15 @@
             elements: [
                 { name: labels.Name, field: "Name", type: "input" },
                 { name: labels.State, field: "State", type: "input" },
+                //{ name: "Field1", field: "Field1", type: "input" },
+                //{ name: "Field2", field: "Field2", type: "input" },
                 {
                     type: 'group', elements: [
                         { name: labels.IsInitial, field: "IsInitial", type: "checkbox" },
                         { name: labels.IsFinal, field: "IsFinal", type: "checkbox" },
-                        { name: labels.IsForSetState, field: "IsForSetState", type: "checkbox" },
-                        { name: labels.IsAutoSchemeUpdate, field: "IsAutoSchemeUpdate", type: "checkbox" }
+                        { name: labels.IsCondition, field: "IsCondition", type: "checkbox" },
+                        //{ name: labels.IsAutoSchemeUpdate, field: "IsAutoSchemeUpdate", type: "checkbox" },
+                        { name: labels.IsScheme, field: "IsScheme", type: "checkbox" }
                     ]
                 },
                 {
@@ -557,8 +579,10 @@
                 me.item.State = data.State;
                 me.item.IsInitial = data.IsInitial;
                 me.item.IsFinal = data.IsFinal;
-                me.item.IsForSetState = data.IsForSetState;
-                me.item.IsAutoSchemeUpdate = data.IsAutoSchemeUpdate;
+                me.item.IsForSetState = false;
+                me.item.IsAutoSchemeUpdate = true; // data.IsAutoSchemeUpdate;
+                me.item.IsScheme = data.IsScheme;
+                me.item.IsCondition = data.IsCondition;
 
                 me.item.Implementation = data.Implementation;
                 me.item.PreExecutionImplementation = data.PreExecutionImplementation;
@@ -587,6 +611,7 @@
     };
 
     this.createIconNotify = function (obj) {
+
         var textNotify = "";
         if (Array.isArray(me.item.Implementation) && me.item.Implementation.length > 0) {
             me.item.Implementation.forEach(function (item) {
@@ -607,7 +632,7 @@
                 fill: '#4A4A4A',
                 fontStyle: 'bold'
             });
-
+            
             obj.add(Notify);
         }
     };

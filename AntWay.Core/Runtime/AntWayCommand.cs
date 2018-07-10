@@ -12,7 +12,7 @@ namespace AntWay.Core.Model
 
         public AntWayCommand(WorkflowCommand workflowCommand)
         {
-            workflowCommand = WorkflowCommand;
+            WorkflowCommand = workflowCommand;
         }
 
         public void SetParameter(string name, object value)
@@ -21,5 +21,30 @@ namespace AntWay.Core.Model
         }
 
         public string CommandName => WorkflowCommand.CommandName;
+    }
+
+    public class AntWayCommandParameter
+    {
+        public AntWayCommandParameter(string parameterName, object value)
+        {
+            ParameterName = parameterName;
+            Value = value;
+        }
+
+        public AntWayCommandParameter(string parameterName, object value,
+                                      bool isRequired, Type type)
+        {
+            ParameterName = parameterName;
+            Value = value;
+            IsRequired = isRequired;
+            Type = type;
+        }
+
+        public string ParameterName { get; set; }
+        public bool IsRequired { get; set; }
+        public object Value { get; set; }
+        //public object DefaultValue { get; set; }
+        public Type Type { get; }
+        //public string TypeName { get; set; }
     }
 }

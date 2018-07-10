@@ -6,22 +6,18 @@ using System.Globalization;
 using System.Configuration;
 using AntWay.Core.WorkflowEngine;
 using AntWay.Core.Model;
+using AntWay.Persistence.Provider.Model;
 
 namespace Client.ConsoleApp
 {
     class Program
     {
-        static string schemeCode = "SimpleWF";
-        static Guid? processId = null;
+        static Guid ProcessId;
         static void Main(string[] args)
         {
-            WorkflowClient.SingleDataBaseScheme = ConfigurationManager.AppSettings["WFSchema"].ToString();
-
-            //Workflow.ActionProvider = Workflow.ActionProvider ?? new ActionProvider();
-            //Workflow.SingleDataBaseScheme = "XX";
+            EjemploCallWorkFlow();
 
             //Ejemplo1();
-            //Ejemplo2();
 
             //PersistenceProviderSample();
             //GetProcessDefinitionSample();
@@ -40,18 +36,63 @@ namespace Client.ConsoleApp
             Console.ReadLine();
         }
 
+        private static void EjemploCallWorkFlow()
+        {
+            var processPersistenceViewNew = new ProcessPersistenceView
+            {
+                WFProcessGuid = ProcessId,
+                LocatorFieldName = "Expedients.NUM_EXPEDIENT",
+                LocatorValue = System.Guid.NewGuid().ToString(),
+                SchemeCode = "SEPBLAC",
+                SchemeDatabase = "WFSCHEMA1",
+            };
+
+            ProcessId = WorkflowClient.GetAntWayRunTime("SEPBLAC")
+                        .CreateInstanceAndPersist(processPersistenceViewNew);
+
+            bool wfCmdAvailable = WorkflowClient.AntWayRunTime.WorkflowCommandAvailable(ProcessId);
+
+            if (!wfCmdAvailable)
+            {
+                Console.WriteLine("No hay ningun comando workflow habilitado");
+                return;
+            }
+
+            List<AntWayCommandParameter> awCmdParameters = new List<AntWayCommandParameter>
+            {
+                new AntWayCommandParameter("EsPRG", false),
+                new AntWayCommandParameter("IndiciosActuaCuentaAjena", false),
+                new AntWayCommandParameter("EsPJAsociacionSinAnimoLucro", false),
+                new AntWayCommandParameter("EsPFMenorDeEdad", true),
+                new AntWayCommandParameter("EsPFDiscapacitado", false),
+                new AntWayCommandParameter("ExisteRepresentante", true),
+                new AntWayCommandParameter("EsRepPRG", false),
+                new AntWayCommandParameter("RepIndiciosActuaCuentaAjena", false),
+                new AntWayCommandParameter("PaisEsParaisoFiscal", false),
+                new AntWayCommandParameter("RepPaisEsParaisoFiscal", false),
+                new AntWayCommandParameter("EsPJInversionInmuebles", false),
+                new AntWayCommandParameter("EsPFSinActividadEconomica", false),
+                new AntWayCommandParameter("EsPFActividadCuentaPropia", false),
+                new AntWayCommandParameter("EsRepActividadCuentaPropia", true),
+                new AntWayCommandParameter("EsRepSinActividadEconomica", false),
+            };
+
+            var result = WorkflowClient.AntWayRunTime
+                         .CallWorkflowCommand(ProcessId, awCmdParameters);
+        }
+
 
         private static void EjemploLlamadaAlProcesoX()
         {
             Console.WriteLine("Ejemplo lamada al ProcesoX");
-            CreateInstance();
+            //ProcessId = CreateInstance("FOO");
 
-            WorkflowClient.AntWayRunTime.ExecuteCommandNext(processId.Value);
+            WorkflowClient.AntWayRunTime.ExecuteCommandNext(ProcessId);
 
             Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
-                        processId,
-                        WorkflowClient.AntWayRunTime.GetCurrentStateName(processId.Value),
-                        WorkflowClient.AntWayRunTime.GetCurrentActivityName(processId.Value));
+                        ProcessId,
+                        WorkflowClient.AntWayRunTime.GetCurrentStateName(ProcessId),
+                        WorkflowClient.AntWayRunTime.GetCurrentActivityName(ProcessId));
             Console.WriteLine("Espera 5 segundos y saltará la action que llama a 'Example.OWIN.Service.HomeController.Get'");
 
             System.Threading.Thread.Sleep(5000);
@@ -59,7 +100,7 @@ namespace Client.ConsoleApp
             Console.ReadLine();
 
             var processInstance = WorkflowClient.AntWayRunTime
-                                 .GetProcessInstanceAndFillProcessParameters(processId.Value);
+                                 .GetProcessInstance(ProcessId);
             
             var statusProcesoX = processInstance.GetParameter("httpResponse_ProcesoX")?.Value;
             Console.WriteLine($"{statusProcesoX}");
@@ -69,48 +110,29 @@ namespace Client.ConsoleApp
         private static void EjemploMailing()
         {
             Console.WriteLine("EjemploMailing");
-            CreateInstance();
-            WorkflowClient.AntWayRunTime.ExecuteCommandNext(processId.Value);
+            //CreateInstance("FOO");
+            WorkflowClient.AntWayRunTime.ExecuteCommandNext(ProcessId);
 
             Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
-                        processId,
-                        WorkflowClient.AntWayRunTime.GetCurrentStateName(processId.Value),
-                        WorkflowClient.AntWayRunTime.GetCurrentActivityName(processId.Value));
+                        ProcessId,
+                        WorkflowClient.AntWayRunTime.GetCurrentStateName(ProcessId),
+                        WorkflowClient.AntWayRunTime.GetCurrentActivityName(ProcessId));
             Console.WriteLine("Espera 5 segundos y saltará la action 'MyAction'");
             Console.WriteLine("Espera 12 segundos y saltará la action 'MyAction2'");
 
             //System.Threading.Thread.Sleep(5200);
 
             Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
-                       processId,
-                       WorkflowClient.AntWayRunTime.GetCurrentStateName(processId.Value),
-                       WorkflowClient.AntWayRunTime.GetCurrentActivityName(processId.Value));
+                       ProcessId,
+                       WorkflowClient.AntWayRunTime.GetCurrentStateName(ProcessId),
+                       WorkflowClient.AntWayRunTime.GetCurrentActivityName(ProcessId));
 
             ExecuteCommand();
-        }
-
-        private static void GetProcessDefinitionSample()
-        {
-            //var pd = WorkflowClient.Runtime.GetProcessDefinition(schemeCode);
-
-            //var schemeParameters = pd.Parameters
-            //                       .Where(p => p.Purpose != OptimaJet.Workflow.Core.Model.ParameterPurpose.System)
-            //                       .ToList();
-
-            //var schemeCommands = pd.Commands;
-            //TODO: Implementar una clase por cada comando
-            //Ejemplo:
-            //public class cmdGO : ICmd
-            //{
-            //    public string Name { get; set; }
-            //    public List<Parameter> Parameters { }
-            //}
         }
 
         private static void WorkflowSample()
         {
             Console.WriteLine("Operation:");
-            Console.WriteLine("0 - CreateInstance");
             Console.WriteLine("1 - GetAvailableCommands");
             Console.WriteLine("2 - ExecuteCommand");
             Console.WriteLine("3 - GetAvailableState");
@@ -118,26 +140,15 @@ namespace Client.ConsoleApp
             Console.WriteLine("5 - DeleteProcess");
             Console.WriteLine("9 - Exit");
             Console.WriteLine("The process isn't created.");
-            CreateInstance();
+            //CreateInstance("FOO");
 
             do
             {
-                if (processId.HasValue)
-                {
-                    Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
-                        processId,
-                        WorkflowClient.AntWayRunTime.GetCurrentStateName(processId.Value),
-                        WorkflowClient.AntWayRunTime.GetCurrentActivityName(processId.Value));
-                }
-
                 Console.Write("Enter code of operation:");
                 char operation = Console.ReadLine().FirstOrDefault();
 
                 switch (operation)
                 {
-                    case '0':
-                        CreateInstance();
-                        break;
                     case '1':
                         GetAvailableCommands();
                         break;
@@ -163,30 +174,15 @@ namespace Client.ConsoleApp
             } while (true);
         }
 
-        private static void CreateInstance()
-        {
-            processId = Guid.NewGuid();
-            try
-            {
-                WorkflowClient.AntWayRunTime.CreateInstance(schemeCode, processId.Value);
-                Console.WriteLine("CreateInstance - OK.", processId);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("CreateInstance - Exception: {0}", ex.Message);
-                processId = null;
-            }
-        }
-
         private static void GetAvailableCommands()
         {
-            if (processId == null)
+            if (ProcessId == null)
             {
                 Console.WriteLine("The process isn't created. Please, create process instance.");
                 return;
             }
 
-            var commands = WorkflowClient.AntWayRunTime.GetAvailableCommands(processId.Value, string.Empty);
+            var commands = WorkflowClient.AntWayRunTime.GetAvailableCommands(ProcessId, string.Empty);
 
             Console.WriteLine("Available commands:");
             if (commands.Count() == 0)
@@ -204,7 +200,7 @@ namespace Client.ConsoleApp
 
         private static void ExecuteCommand()
         {
-            if (processId == null)
+            if (ProcessId == null)
             {
                 Console.WriteLine("The process isn't created. Please, create process instance.");
                 return;
@@ -217,7 +213,7 @@ namespace Client.ConsoleApp
                 var commandName = Console.ReadLine().ToLower().Trim();
                 if (commandName == string.Empty)
                     return;
-                command = WorkflowClient.AntWayRunTime.GetAvailableCommands(processId.Value, string.Empty)
+                command = WorkflowClient.AntWayRunTime.GetAvailableCommands(ProcessId, string.Empty)
                     .Where(c => c.CommandName.Trim().ToLower() == commandName).FirstOrDefault();
                 if (command == null)
                     Console.WriteLine("The command isn't found.");
@@ -252,9 +248,9 @@ namespace Client.ConsoleApp
 
             var result = WorkflowClient
                             .AntWayRunTime
-                            .ExecuteCommand(processId.Value, command.CommandName);
+                            .ExecuteCommand(ProcessId, command);
 
-                        Console.WriteLine("ExecuteCommand - OK.", processId);
+                        Console.WriteLine("ExecuteCommand - OK.", ProcessId);
         }
 
         private static void GetAvailableState()

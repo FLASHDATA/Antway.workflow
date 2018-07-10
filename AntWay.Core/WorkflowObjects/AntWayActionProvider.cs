@@ -5,7 +5,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Antway.Core;
+using AntWay.Core.Model;
+using AntWay.Core.WorkflowEngine;
 using AntWay.Persistence.Provider;
+using AntWay.Persistence.Provider.Model;
+using Newtonsoft.Json;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
 
@@ -24,8 +28,29 @@ namespace AntWay.Core.WorkflowObjects
         public AntWayActionProvider()
         {
             //Register your actions in _actions
+            //_actions.Add("CallWorkflow", CallWorkflow); //sync
             _actions.Add("InsertarNotificacionAction", InsertarNotificationAction); //sync
         }
+
+
+        //protected virtual void CallWorkflow(ProcessInstance processInstance,
+        //                                    WorkflowRuntime runtime,
+        //                                        string actionParameter)
+        //{
+        //    dynamic actionParameterObject = JsonConvert.DeserializeObject(actionParameter);
+
+        //    var awPi = new AntWayProcessInstance(processInstance);
+
+        //    WorkflowClient
+        //      .AntWayRunTime.CallWorkFlowService(actionParameterObject.schemeName,
+        //                                         awPi,
+        //                                         null);
+
+
+        //    //processInstance.CurrentState = WorkflowClient.AntWayRunTime
+        //    //                                .GetCurrentStateName(guid);
+        //}
+
 
         protected virtual void InsertarNotificationAction(ProcessInstance processInstance,
                                                 WorkflowRuntime runtime,
@@ -33,11 +58,11 @@ namespace AntWay.Core.WorkflowObjects
         {
             try
             {
-                var schemePersistence = new ProcessPersistence
+                var locatorPersistence = new LocatorPersistence
                 {
-                  IDALProcessPersistence = PersistenceObjectsFactory.GetIDALWFLocatorObject(),
+                  IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject()
                 };
-                var wfScheme = schemePersistence.GetWorkflowLocatorFromGuid(processInstance.ProcessId);
+                var locatorView = locatorPersistence.GetWorkflowLocatorFromGuid(processInstance.ProcessId);
                 //TODO:
                 //Override this function, to Insert your code for Notifications
             }

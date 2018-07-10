@@ -6,8 +6,8 @@ namespace AntWay.Oracle.Provider.Data
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("PROCMNGR.WF_LOCATOR")]
-    public partial class WF_LOCATOR
+    [Table("PROCMNGR.LOCATORS")]
+    public partial class LOCATORS
     {
         public Guid ID_WFPROCESSINSTANCE { get; set; }
 
@@ -25,9 +25,9 @@ namespace AntWay.Oracle.Provider.Data
         public string ALTERN_LOCATOR_FIELD_VALUE1 { get; set; }
 
         [StringLength(50)]
-        public string SCHEME { get; set; }
+        public string SCHEME_DATABASE { get; set; }
 
         [StringLength(50)]
-        public string APPLICATION { get; set; }
+        public string SCHEME_CODE { get; set; }
     }
 }

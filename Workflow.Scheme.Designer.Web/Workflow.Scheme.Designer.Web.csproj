@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Client.Web</RootNamespace>
-    <AssemblyName>Client.Web</AssemblyName>
+    <RootNamespace>Workflow.Scheme.Designer.Web</RootNamespace>
+    <AssemblyName>Workflow.Scheme.Designer.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -143,9 +143,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DesignerController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DesignerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +159,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\callworkflow.png" />
     <Content Include="Images\wfe.activity.png" />
     <Content Include="Images\wfe.actors.png" />
     <Content Include="Images\wfe.add.png" />
@@ -242,7 +245,9 @@
     <Content Include="SQL\update_1_4_3_to_1_4_4.sql" />
     <Content Include="SQL\update_1_4_4_to_1_5.sql" />
     <Content Include="SQL\update_1_5_to_2_0.sql" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -253,15 +258,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Designer\Index.cshtml" />
-    <Content Include="Views\Designer\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -283,9 +283,9 @@
       <Project>{9FB295C0-E9E7-4B37-9120-D9DFCCA9A3F2}</Project>
       <Name>AntWay.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Example.BLL\Example.BLL.csproj">
-      <Project>{c2b353cb-d61b-41f2-bac3-999822942580}</Project>
-      <Name>Example.BLL</Name>
+    <ProjectReference Include="..\Antway.Persistence.Provider\Antway.Persistence.Provider.csproj">
+      <Project>{14694484-9517-491f-a03f-4337459947ae}</Project>
+      <Name>Antway.Persistence.Provider</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -310,6 +310,8 @@
           <DevelopmentServerPort>57675</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:57675/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:57675/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

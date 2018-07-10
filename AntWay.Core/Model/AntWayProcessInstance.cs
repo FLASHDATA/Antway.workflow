@@ -6,7 +6,7 @@ namespace AntWay.Core.Model
 {
     public class AntWayProcessInstance
     {
-        protected ProcessInstance ProcessInstance { get; set; }
+        public ProcessInstance ProcessInstance { get; set; }
 
         public AntWayProcessInstance(ProcessInstance processInstance)
         {

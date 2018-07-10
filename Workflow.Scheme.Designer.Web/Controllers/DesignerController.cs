@@ -8,27 +8,34 @@ using System.Text;
 using System.Web.Mvc;
 using System.Xml.Linq;
 using AntWay.Core.WorkflowEngine;
+using Workflow.Scheme.Designer.Web.Models;
+using AntWay.Persistence.Provider;
+using Antway.Core;
 
 namespace WF.Sample.Controllers
 {
     public class DesignerController : Controller
     {
-        protected override void OnActionExecuted(ActionExecutedContext filterContext)
+        public ActionResult Index(string id=null)
         {
-            //Workflow.ActionProvider = Workflow.ActionProvider??new ActionProvider();
-            WorkflowClient.SingleDataBaseScheme = ConfigurationManager.AppSettings["WFSchema"].ToString();
-            base.OnActionExecuted(filterContext);
+            var schemesPersistence = new SchemesPersistence
+            {
+                IDALSchemes = PersistenceObjectsFactory.GetIDALWFSchemaObject()
+            };
+
+            var scheme = schemesPersistence.GetScheme(id);
+            if (scheme == null)
+            {
+                 throw new NotImplementedException("Esquema inexistente");
+            }
+
+            WorkflowClient.DataBaseScheme = scheme?.DBSchemeName
+                                               ?? ConfigurationManager.AppSettings["WFSchema"].ToString();
+
+            var vm = new DesignerViewModel { SchemeName = id??"SimpleWF" };
+            return View(vm);
         }
 
-        public ActionResult Index(string schemeName)
-        {
-            return View();
-        }
-
-        public ActionResult Index2(string schemeName)
-        {
-            return View();
-        }
 
         public ActionResult API()
         {

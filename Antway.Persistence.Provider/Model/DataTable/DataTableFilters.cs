@@ -4,21 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AntWay.Persistence.Model
+namespace AntWay.Persistence.Provider.Model.DataTable
 {
-    public class ProcessHistoryDataTableView
+    public class DataTableFilters
     {
-        public string Aplicacion { get; set; }
-        public string Localizador { get; set; }
-        public string EstadoActual { get; set; }
-        public string Tags { get; set; }
-        public string UltimaActualizacion { get; set; }
-    }
+        public int PaginationFromRecord { get; set; }
+        public int PaginationToRecord { get; set; }
 
-    public class ProcessHistoryFilter
-    {
-        public int PaginatioFromRecord { get; set; }
-        public int PaginatioToRecord { get; set; }
+        public int OrderBySQLQueryColIndex { get; set; }
+        public string OrderByColumnName { get; set; }
+        public string OrderByDirection { get; set; }
 
         public List<DataTableFilterFields> FilterFields { get; set; }
 
@@ -33,12 +28,12 @@ namespace AntWay.Persistence.Model
                                             ? Convert.ToDateTime(dateFrom.Value)
                                                 .AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours)
                                             : DateTime.Now;
-                
+
                 var result = new DataTableFilterFields
-                               {
-                                   Field = "From",
-                                   Value = dateTimeFrom.Date
-                               };
+                {
+                    Field = "From",
+                    Value = dateTimeFrom.Date
+                };
 
                 return result;
             }
@@ -71,8 +66,8 @@ namespace AntWay.Persistence.Model
             get
             {
                 var result = FilteredFields
-                                .Where(f => (f.Type ==null || f.Type?.ToLower() == "string"))
-                                .ToList();
+                                    .Where(f => f.Type == null || f.Type == "string")
+                                    .ToList();
                 return result;
             }
         }
@@ -88,12 +83,5 @@ namespace AntWay.Persistence.Model
                 return result;
             }
         }
-    }
-
-    public class DataTableFilterFields
-    {
-        public string Field { get; set; }
-        public object Value { get; set; }
-        public string Type { get; set; }
     }
 }

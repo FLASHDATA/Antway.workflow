@@ -185,10 +185,12 @@ namespace OptimaJet.Workflow.Core.Parser
             foreach (var element in activitiesElements.Elements().ToList())
             {
                 var activity = ActivityDefinition.Create(GetName(element), GetState(element), GetIsInitial(element),
-                    GetIsFinal(element), GetIsForSetState(element), GetIsAutoSchemeUpdate(element));
+                    GetIsFinal(element), GetIsForSetState(element), GetIsAutoSchemeUpdate(element),
+                    GetSingleValue(element, "IsScheme"),
+                    GetSingleValue(element, "IsCondition")
+                    );
 
                 activity.DesignerSettings = GetDesignerSettings(element);
-
 
                 var implementation = element.Elements("Implementation").ToList();
 

@@ -11,6 +11,14 @@ namespace AntWay.Oracle.Provider.Data
     {
         [Key]
         [StringLength(50)]
+        public string SCHEME_NAME { get; set; }
+
+        [StringLength(50)]
         public string DB_SCHEME_NAME { get; set; }
+
+        [StringLength(50)]
+        public string DESCRIPTION { get; set; }
+
+        public decimal WORKFLOW_SERVICE { get; set; }
     }
 }

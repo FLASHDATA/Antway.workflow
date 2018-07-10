@@ -11,11 +11,11 @@
     this.createTransitionAndActivityButton = undefined;
     this.createTransitionButton = undefined;
     this.selected = false;
-    
+
     this.dependentTransitions = new Array();
     this.getX = function () {
         return this.rectangle.attrs.x + this.control.attrs.x;
-    };    
+    };
     this.getY = function () {
         return this.rectangle.attrs.y + this.control.attrs.y;
     };
@@ -67,7 +67,7 @@
         var offsetY = 0;
 
         var isNormal = true;
-        if (me.item.IsFinal){
+        if (me.item.IsFinal) {
             rectColor = WorkflowDesignerConstants.ActivityFinalColor;
             textColor = WorkflowDesignerConstants.ActivityFinalTextColor;
             cornerRadius = 50;
@@ -75,7 +75,7 @@
             isNormal = false;
         }
 
-        if (me.item.IsInitial){
+        if (me.item.IsInitial) {
             rectColor = WorkflowDesignerConstants.ActivityInitialColor;
             textColor = WorkflowDesignerConstants.ActivityInitialTextColor;
             cornerRadius = 50;
@@ -83,7 +83,7 @@
             isNormal = false;
         }
 
-        if (me.item.IsForSetState) {
+        if (me.item.IsCondition) {
             rectColor = WorkflowDesignerConstants.ActivityConditionColor;
             textColor = WorkflowDesignerConstants.ActivityConditionTextColor;
             width = this.graph.Settings.DefaultActivityWidth;
@@ -93,7 +93,7 @@
             isNormal = false;
         }
 
-        if (me.graph.GetCurrentActivity() == me.item.Name){
+        if (me.graph.GetCurrentActivity() == me.item.Name) {
             rectColor = WorkflowDesignerConstants.SelectColor;
             textColor = WorkflowDesignerConstants.SelectTextColor;
             width = this.graph.Settings.DefaultActivityWidth;
@@ -102,15 +102,21 @@
             isNormal = false;
         }
 
-        if (me.graph.isCurrentActivityForSubprocess(me.item.Name)){
+        if (me.graph.isCurrentActivityForSubprocess(me.item.Name)) {
             rectColor = WorkflowDesignerConstants.SelectSubProcessColor;
             textColor = WorkflowDesignerConstants.SelectSubProcessTextColor;
             cornerRadius = 50;
             isNormal = false;
         }
+        //if (){
+        // || 
+        //}
+        //var nose = me.item.Implementation;
+        //alert(nose);
 
-        
-        if (me.item.IsForSetState) {
+
+        //if (me.item.ImpAction == "InsertarNotificacionAction") {
+        if (me.item.IsCondition) {
             me.rectangle = new Konva.Rect({
                 x: xra,
                 y: yra,
@@ -125,19 +131,41 @@
                 cornerRadius: 5,
             });
             me.control.add(me.rectangle);
-               me.impImage  = new Konva.RegularPolygon({
-                    x: 100,
-                    y: 30,
-                    sides: 4,
-                    radius: 30,
-                    scaleX: 3.3,
-                   stroke: "#94948E",
-                   fill: "#FFE59E",
-                });
+            me.impImage = new Konva.RegularPolygon({
+                x: 100,
+                y: 30,
+                sides: 4,
+                radius: 30,
+                scaleX: 3.3,
+                stroke: "#94948E",
+                fill: "#FFE59E",
+            });
             me.control.add(me.impImage);
+        }
+        else if (me.item.IsScheme) {
+            me.rectangle = new Konva.Rect({
+                x: xra,
+                y: yra,
+                offsetY: offsetY,
+                offsetX: offsetX,
+                width: this.graph.Settings.DefaultActivityWidth,
+                height: this.graph.Settings.DefaultActivityHeight,
+                // stroke: WorkflowDesignerConstants.ActivityShape,
+                // strokeWidth: 0,
+                rotation: rotation,
+                fill: rectColor,
+                cornerRadius: cornerRadius,
+            });
+            me.control.add(me.rectangle);
 
-
-
+            me.impImage = new Konva.Image({
+                x: me.rectangle.attrs.width - 40,
+                y: 10,
+                image: me.manager.ImageScheme,
+                width: 25,
+                height: 25
+            });
+            me.control.add(me.impImage);
         }
         else {
             me.rectangle = new Konva.Rect({
@@ -165,13 +193,9 @@
                 });
                 me.control.add(me.impImage);
             }
-
-
-
         }
 
-        if(Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0)
-        {
+        if (Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0) {
             me.impImage2 = new Konva.Image({
                 x: me.rectangle.attrs.width - 35,
                 y: 38,
@@ -203,30 +227,30 @@
             fontFamily: 'Arial',
             fill: textColor
         });
-        
+
         me.control.add(me.text);
         me.control.add(me.stateText);
 
         var typeText = "";
-        if(me.item.IsInitial == true){
-            if(typeText.length > 0)
+        if (me.item.IsInitial == true) {
+            if (typeText.length > 0)
                 typeText += " ";
             typeText += WorkflowDesignerConstants.ActivityFormLabel.IsInitial;
         }
-        
-        if(me.item.IsFinal == true){
-            if(typeText.length > 0)
+
+        if (me.item.IsFinal == true) {
+            if (typeText.length > 0)
                 typeText += " ";
             typeText += WorkflowDesignerConstants.ActivityFormLabel.IsFinal;
         }
 
-        if(me.item.IsForSetState == true){
-            if(typeText.length > 0)
+        if (me.item.IsCondition == true) {
+            if (typeText.length > 0)
                 typeText += " - ";
-            typeText += WorkflowDesignerConstants.ActivityFormLabel.IsForSetState;
+            typeText += WorkflowDesignerConstants.ActivityFormLabel.IsCondition;
         }
 
-        if(typeText != ""){
+        if (typeText != "") {
             me.typeText = new Konva.Text({
                 x: xtext,
                 y: 40,
@@ -237,13 +261,14 @@
             });
             me.control.add(me.typeText);
         }
-        
-        if(me.graph.getParam("exinfo") == true){
+
+        if (me.graph.getParam("exinfo") == true) {
             me.createExInfo(me.control);
         }
 
-        if (!me.graph.Settings.disableobjectmovements)
-        {
+        me.createIconNotify(me.control);
+
+        if (!me.graph.Settings.disableobjectmovements) {
             this.control.on('dragend', this.Sync);
             this.control.on('dragmove', this._onMove);
             this.control.on('click', this._onClick);
@@ -253,16 +278,16 @@
 
 
         var path = me.graph.Settings.imagefolder;
-        var buttons =  [
-            { img: path + 'wfe.settings.png', click: function () { me.ShowProperties();}}];
+        var buttons = [
+            { img: path + 'wfe.settings.png', click: function () { me.ShowProperties(); } }];
 
-        if (!me.graph.Settings.readonly){
-            buttons.push({ img: path + 'wfe.transition.png', click: function () { me._onCreateTransition(); }});
-            buttons.push({ img: path + 'wfe.activity.png', click: function () { me._onCreateTransitionAndActivity(); }});
-            buttons.push({ img: path + 'wfe.clone.png', click: function () { me.manager.Clone(me); }});
-            buttons.push({ img: path + 'wfe.delete.png', click: function () { me._onDelete() }});
+        if (!me.graph.Settings.readonly) {
+            buttons.push({ img: path + 'wfe.transition.png', click: function () { me._onCreateTransition(); } });
+            buttons.push({ img: path + 'wfe.activity.png', click: function () { me._onCreateTransitionAndActivity(); } });
+            buttons.push({ img: path + 'wfe.clone.png', click: function () { me.manager.Clone(me); } });
+            buttons.push({ img: path + 'wfe.delete.png', click: function () { me._onDelete() } });
         }
-        var pos = { x: me.rectangle.getWidth() - buttons.length * 30, y: -40};
+        var pos = { x: me.rectangle.getWidth() - buttons.length * 30, y: -40 };
         me.bar = WorkflowDesignerBar(me.manager.Layer, buttons, pos);
         me.control.add(me.bar);
         me.bar.hide();
@@ -285,27 +310,27 @@
         }
     };
     this.Select = function () {
-        if(this.selected == true)
+        if (this.selected == true)
             return;
 
         var me = this;
         this.rectangle.setStrokeWidth(4);
         this.rectangle.setStroke(WorkflowDesignerConstants.SelectColor);
 
-        if(me.bar != unescape){
+        if (me.bar != unescape) {
             me.bar.show();
         }
 
         this.selected = true;
     };
     this.Deselect = function () {
-        if(this.selected == false)
+        if (this.selected == false)
             return;
 
         this.rectangle.setStrokeWidth(0);
         this.rectangle.setStroke(this.rectangle.fill());
 
-        if(me.bar != undefined)
+        if (me.bar != undefined)
             me.bar.hide();
 
         this.selected = false;
@@ -320,7 +345,7 @@
 
         if (me.dependentTransitions.length < 1)
             return;
-        
+
         for (var i = 0; i < me.dependentTransitions.length; i++) {
             var t = me.dependentTransitions[i];
             t.middle = undefined;
@@ -344,7 +369,7 @@
 
         for (var i = 0; i < me.dependentTransitions.length; i++) {
             var t = me.dependentTransitions[i];
-            if (resetTransitionPoints){
+            if (resetTransitionPoints) {
                 t.middle = undefined;
                 t.item.DesignerSettings = {};
             }
@@ -358,12 +383,12 @@
 
         if (!e.evt.ctrlKey)
             me.graph.DeselectAll();
-        
+
         if (tmpSelect)
             me.Deselect();
         else
             me.Select();
-        
+
         me.graph.onSelectionChanged(!tmpSelect);
         me.manager.batchDraw();
     };
@@ -379,7 +404,7 @@
     };
     this._onDelete = function () {
         var me = this;
-        me.graph.confirm(WorkflowDesignerConstants.DeleteConfirmCurrent, function(){
+        me.graph.confirm(WorkflowDesignerConstants.DeleteConfirmCurrent, function () {
             me.Delete();
             me.graph.onSelectionChanged();
             me.graph.redrawAll();
@@ -476,7 +501,7 @@
                 field: "ActionParameter",
                 type: "json",
                 openautocompleteonclick: true,
-                datasource: function(request, response) {
+                datasource: function (request, response) {
                     var tr = $(this.element[0]).closest("tr");
                     var actionName = tr.find("[name=impAction]")[0].value;
                     response(me.graph.getAutoCompleteSuggestions("actionparameter", actionName, request.term));
@@ -492,12 +517,17 @@
             elements: [
                 { name: labels.Name, field: "Name", type: "input" },
                 { name: labels.State, field: "State", type: "input" },
-                {type: 'group', elements:[
-                    { name: labels.IsInitial, field: "IsInitial", type: "checkbox" },
-                    { name: labels.IsFinal, field: "IsFinal", type: "checkbox" },
-                    { name: labels.IsForSetState, field: "IsForSetState", type: "checkbox" },
-                    { name: labels.IsAutoSchemeUpdate, field: "IsAutoSchemeUpdate", type: "checkbox" }
-                ]},
+                //{ name: "Field1", field: "Field1", type: "input" },
+                //{ name: "Field2", field: "Field2", type: "input" },
+                {
+                    type: 'group', elements: [
+                        { name: labels.IsInitial, field: "IsInitial", type: "checkbox" },
+                        { name: labels.IsFinal, field: "IsFinal", type: "checkbox" },
+                        { name: labels.IsCondition, field: "IsCondition", type: "checkbox" },
+                        //{ name: labels.IsAutoSchemeUpdate, field: "IsAutoSchemeUpdate", type: "checkbox" },
+                        { name: labels.IsScheme, field: "IsScheme", type: "checkbox" }
+                    ]
+                },
                 {
                     name: labels.Implementation, field: "Implementation", type: "table", elements: impparam,
                     onrowadded: function (row) {
@@ -508,7 +538,7 @@
                 },
                 {
                     name: labels.PreExecutionImplementation, field: "PreExecutionImplementation", type: "table", elements: impparam,
-                    onrowadded: function(row) {
+                    onrowadded: function (row) {
                         var order = row.find('[name=impOrder]');
                         if (order[0].value === "")
                             order[0].value = row.parent().children().length;
@@ -549,8 +579,10 @@
                 me.item.State = data.State;
                 me.item.IsInitial = data.IsInitial;
                 me.item.IsFinal = data.IsFinal;
-                me.item.IsForSetState = data.IsForSetState;
-                me.item.IsAutoSchemeUpdate = data.IsAutoSchemeUpdate;
+                me.item.IsForSetState = false;
+                me.item.IsAutoSchemeUpdate = true; // data.IsAutoSchemeUpdate;
+                me.item.IsScheme = data.IsScheme;
+                me.item.IsCondition = data.IsCondition;
 
                 me.item.Implementation = data.Implementation;
                 me.item.PreExecutionImplementation = data.PreExecutionImplementation;
@@ -578,31 +610,58 @@
         me.oldpos = undefined;
     };
 
-    this.createExInfo = function(obj){
+    this.createIconNotify = function (obj) {
+
+        var textNotify = "";
+        if (Array.isArray(me.item.Implementation) && me.item.Implementation.length > 0) {
+            me.item.Implementation.forEach(function (item) {
+                if (textNotify.length > 0)
+                    textNotify += ", ";
+
+                textNotify += item.ActionName;
+            });
+        }
+
+        if (textNotify.includes("InsertarNotificacionAction")) {
+            var Notify = new Konva.Text({
+                x: 170,
+                y: this.graph.Settings.DefaultActivityHeight - 50,
+                text: "🔔",
+                fontFamily: 'Arial',
+                fontSize: 20,
+                fill: '#4A4A4A',
+                fontStyle: 'bold'
+            });
+            
+            obj.add(Notify);
+        }
+    };
+
+    this.createExInfo = function (obj) {
         var tooltiptext = "";
-        
-        if (Array.isArray(me.item.Implementation) && me.item.Implementation.length > 0){
-            me.item.Implementation.forEach(function(item){
-                if(tooltiptext.length > 0)
+
+        if (Array.isArray(me.item.Implementation) && me.item.Implementation.length > 0) {
+            me.item.Implementation.forEach(function (item) {
+                if (tooltiptext.length > 0)
                     tooltiptext += ", ";
-                
+
                 tooltiptext += item.ActionName;
             });
         }
-    
+
         var tooltiptext2 = "";
-        if (Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0){
-            me.item.PreExecutionImplementation.forEach(function(item){
-                if(tooltiptext2.length > 0)
+        if (Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0) {
+            me.item.PreExecutionImplementation.forEach(function (item) {
+                if (tooltiptext2.length > 0)
                     tooltiptext2 += ", ";
                 tooltiptext2 += item.ActionName;
             });
-         
-            if(tooltiptext == "")
+
+            if (tooltiptext == "")
                 tooltiptext = WorkflowDesignerConstants.None;
         }
-       
-        if(tooltiptext.length > 0){
+
+        if (tooltiptext.length > 0) {
             var textctrl = new Konva.Text({
                 x: 10,
                 y: this.graph.Settings.DefaultActivityHeight + 5,
@@ -614,24 +673,26 @@
             });
 
             obj.add(textctrl);
-
-            if(tooltiptext2.length > 0){
-                var textctrl2 = new Konva.Text({
-                    x: 10,
-                    y: this.graph.Settings.DefaultActivityHeight + textctrl.getHeight() + 5,
-                    text: tooltiptext2,
-                    fontFamily: 'Arial',
-                    fontSize: 12,
-                    fill: '#4A4A4A',
-                    fontStyle: 'italic'
-                });
-    
-                obj.add(textctrl2);
-            }
         }
+
+
+        if (tooltiptext2.length > 0) {
+            var textctrl2 = new Konva.Text({
+                x: 10,
+                y: this.graph.Settings.DefaultActivityHeight + textctrl.getHeight() + 5,
+                text: tooltiptext2,
+                fontFamily: 'Arial',
+                fontSize: 12,
+                fill: '#4A4A4A',
+                fontStyle: 'italic'
+            });
+
+            obj.add(textctrl2);
+        }
+
     };
 
-    this.destroy = function(){
+    this.destroy = function () {
         this.control.destroy();
     }
 };

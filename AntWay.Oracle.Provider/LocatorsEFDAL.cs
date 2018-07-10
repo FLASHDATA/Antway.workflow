@@ -1,39 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AntWay.Oracle.Provider.Data;
 using AntWay.Persistence.Provider;
-using AntWay.Persistence.Model;
+using AntWay.Persistence.Provider.Model;
+using Devart.Data.Oracle;
+
 
 namespace AntWay.Oracle.Provider
 {
-    public class WFSchemaEFDAL : IDALWFSchema
+    public class LocatorsEFDAL : IDALLocators
     {
-        public List<WorkflowSchemaView> GetWorkflowSchemes()
+        public ProcessPersistenceView GetLocatorFromGuid(Guid guid)
         {
             using (var ctx = new Model1())
             {
-                var result = ctx.WF_SCHEMES
-                             .ToList()
-                             .Select(s => new WorkflowSchemaView { DBSchemeName = s.DB_SCHEME_NAME })
-                             .ToList();
+                var entity = ctx.LOCATORS
+                             .FirstOrDefault(q => q.ID_WFPROCESSINSTANCE == guid);
 
+                var result = MapFromDalToView(entity);
                 return result;
             }
         }
 
-
-
         public T Fetch<T>(object pk)
         {
             string id = Convert.ToString(pk ?? "");
-
+            
             using (var ctx = new Model1())
             {
-                var entity = ctx.WF_SCHEMES
-                             .FirstOrDefault(q => q.DB_SCHEME_NAME.ToUpper() == id.ToUpper());
+                var entity = ctx.LOCATORS
+                             .FirstOrDefault(q => q.LOCATOR_VALUE.ToUpper() == id.ToUpper());
 
                 var result = MapFromDalToView(entity);
 
@@ -41,14 +38,13 @@ namespace AntWay.Oracle.Provider
             }
         }
 
-
         public T Insert<T>(T objectView)
         {
             var value = MapFromViewToDal(objectView);
 
             using (var ctx = new Model1())
             {
-                ctx.WF_SCHEMES.Attach(value);
+                ctx.LOCATORS.Attach(value);
                 ctx.Entry(value).State = System.Data.Entity.EntityState.Added;
                 int i = ctx.SaveChanges();
 
@@ -65,7 +61,7 @@ namespace AntWay.Oracle.Provider
 
             using (var ctx = new Model1())
             {
-                ctx.WF_SCHEMES.Attach(value);
+                ctx.LOCATORS.Attach(value);
                 ctx.Entry(value).State = System.Data.Entity.EntityState.Modified;
                 int i = ctx.SaveChanges();
 
@@ -76,29 +72,38 @@ namespace AntWay.Oracle.Provider
         }
 
 
-        private WorkflowSchemaView MapFromDalToView(WF_SCHEMES entity)
+        private ProcessPersistenceView MapFromDalToView(LOCATORS entity)
         {
             if (entity == null) return null;
 
-            var view = new WorkflowSchemaView
+            var view = new ProcessPersistenceView
             {
-                DBSchemeName = entity.DB_SCHEME_NAME,
+                WFProcessGuid = entity.ID_WFPROCESSINSTANCE,
+                LocatorFieldName = entity.LOCATOR_FIELD_NAME,
+                LocatorValue = entity.LOCATOR_VALUE,
+                SchemeCode = entity.SCHEME_CODE,
+                SchemeDatabase = entity.SCHEME_DATABASE,
             };
 
             return view;
         }
 
 
-        private WF_SCHEMES MapFromViewToDal<T>(T objectView)
+        private LOCATORS MapFromViewToDal<T>(T objectView)
         {
-            var view = (WorkflowSchemaView)Convert.ChangeType(objectView, typeof(T));
+            var view = (ProcessPersistenceView)Convert.ChangeType(objectView, typeof(T));
 
-            var entity = new WF_SCHEMES
+            var entity = new LOCATORS
             {
-                DB_SCHEME_NAME = view.DBSchemeName,
+                ID_WFPROCESSINSTANCE = view.WFProcessGuid,
+                SCHEME_CODE = view.SchemeCode,
+                SCHEME_DATABASE = view.SchemeDatabase,
+                LOCATOR_FIELD_NAME = view.LocatorFieldName,
+                LOCATOR_VALUE = view.LocatorValue,
             };
 
             return entity;
         }
+
     }
 }

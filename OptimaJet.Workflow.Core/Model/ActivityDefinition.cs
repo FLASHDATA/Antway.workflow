@@ -7,7 +7,7 @@ namespace OptimaJet.Workflow.Core.Model
     /// <summary>
     /// Represent an activity in a process scheme
     /// </summary>
-    public class ActivityDefinition : BaseDefinition
+    public partial class ActivityDefinition : BaseDefinition
     {
         /// <summary>
         /// Name of the state

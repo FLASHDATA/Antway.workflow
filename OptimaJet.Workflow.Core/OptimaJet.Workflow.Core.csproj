@@ -87,6 +87,7 @@
     <Compile Include="CodeActions\IExternalCompiler.cs" />
     <Compile Include="DefiningParametersSerializer.cs" />
     <Compile Include="Designer\Designer.cs" />
+    <Compile Include="Designer\DesignerPartialClassAntWay.cs" />
     <Compile Include="Designer\ParsedType.cs" />
     <Compile Include="Designer\StringTypeConverter.cs" />
     <Compile Include="Extensions.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="License\LicenseUtils.cs" />
     <Compile Include="Model\ActionDefinitionReference.cs" />
     <Compile Include="Model\ActivityDefinition.cs" />
+    <Compile Include="Model\ActivityDefinitionPartialClassAntWay.cs" />
     <Compile Include="Model\ActorDefinition.cs" />
     <Compile Include="Model\BaseDefinition.cs" />
     <Compile Include="Model\CodeActionDefinition.cs" />
@@ -182,6 +184,9 @@
   <ItemGroup>
     <Content Include="SQL\Oracle\CreatePersistenceObjects.sql" />
     <Content Include="SQL\Oracle\DropPersistenceObjects.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="_Documentación\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,6 +10,8 @@
 
         this.ImageImplementation = WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + 'wfe.implementation.png');
         this.ImageImplementationWhite = WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + 'wfe.implementation.white.png');
+
+        this.ImageScheme = WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + 'callworkflow.png');
     };
     this.ItemControls = new Array();
     this.draw = function () {

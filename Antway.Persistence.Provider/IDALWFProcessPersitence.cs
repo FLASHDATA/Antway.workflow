@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AntWay.Persistence.Model;
+using AntWay.Persistence.Provider.Model.DataTable;
 
 namespace AntWay.Persistence.Provider
 {
-    public interface IDALProcessPersistence: IDAL
+    public interface IDALProcessPersistence
     {
-        ProcessPersistenceView GetLocatorFromGuid(Guid guid);
+        List<WorkFlowDataTableView> GetWorkFlowsDataTableView(DataTableFilters filter);
 
-        List<ProcessHistoryDataTableView> GeProccessHistoryDataTableView(ProcessHistoryFilter filter);
-        int GeProccessHistoryTotalRegistros(ProcessHistoryFilter filter);
+        List<ProcessHistoryDataTableView> GetProccessesHistoryDataTableView(DataTableFilters filter);
+        int GetProccessesHistoryTotalRegistros(DataTableFilters filter);
 
         List<ProcessHistoryDetailDataTableView>
-            GetProcessHistorryDetailTableView(ProcessHistoryDetailFilter filter);
-        int GeProccessHistoryDetailTotalRegistros(ProcessHistoryDetailFilter filter);
+            GetProcessHistoryDetailTableView(ProcessHistoryDetailFilter filter);
+        int GetProccessHistoryDetailTotalRegistros(ProcessHistoryDetailFilter filter);
+
+        List<string> GetDBSchemes();
+        List<string> GetSchemes();
     }
 }

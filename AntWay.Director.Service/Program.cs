@@ -10,6 +10,8 @@ using Antway.Core;
 using Notificaciones.BLL;
 using System.Configuration;
 using AntWay.Core.WorkflowEngine;
+using OptimaJet.Workflow.Core.Runtime;
+using AntWay.Persistence.Provider.Model;
 
 namespace AntWay.Director.Service
 {
@@ -74,16 +76,18 @@ namespace AntWay.Director.Service
             while (true)
             {
                 //Init All
-                WorkflowServer.WithActionProvider(new NotificacionesActionProvider());
+                //WorkflowServer.WithActionProvider(new NotificacionesActionProvider());
                 var schemesPersistence = new SchemesPersistence
                 {
-                    IDALSchema = PersistenceObjectsFactory.GetIDALWFSchemaObject(),
+                    IDALSchemes = PersistenceObjectsFactory.GetIDALWFSchemaObject(),
                 };
                 var schemes = schemesPersistence.GetSchemes();
 
                 WorkflowRuntimesList = schemes
-                                      .Select(s => new WorkflowServer(s.DBSchemeName))
-                                      .ToList();
+                                       .Select(s => s.DBSchemeName)
+                                       .Distinct()
+                                       .Select(s => new WorkflowServer(s))
+                                       .ToList();
 
                 foreach (var wfs in WorkflowRuntimesList)
                 {

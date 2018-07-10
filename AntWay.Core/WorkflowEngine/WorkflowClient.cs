@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Antway.Core;
 using AntWay.Core.RunTime;
 using AntWay.Core.WorkflowObjects;
-using AntWay.Persistence.Model;
+using AntWay.Persistence.Provider.Model;
 using OptimaJet.Workflow.Core.Runtime;
 
 namespace AntWay.Core.WorkflowEngine
@@ -14,7 +15,19 @@ namespace AntWay.Core.WorkflowEngine
         private static IWorkflowActionProvider IAntWayActionProvider = null;
         private static ITimerManager ITimerManager = null;
 
-        public static string SingleDataBaseScheme;
+        private static string _DatabaseScheme;
+        public static string DataBaseScheme
+        {
+            get { return _DatabaseScheme;  }
+            set
+            {
+                if (value != _DatabaseScheme)
+                {
+                    _Runtime = null;
+                }
+                _DatabaseScheme = value;
+            }
+        }
 
         public static void InitWith(IWorkflowActionProvider _IAntWayActionProvider,
                                     ITimerManager _ITimerManager)
@@ -34,11 +47,6 @@ namespace AntWay.Core.WorkflowEngine
             ITimerManager = _ITimerManager;
         }
 
-        public static Guid CreateInstance(ProcessPersistenceView processPersistenceView)
-        {
-            Guid result = Workflow.CreateInstance(Runtime, processPersistenceView);
-            return result;
-        }
 
         public static AntWayProcessView GetAntWayProcess(string localizador, string identifyId = null)
         {
@@ -57,20 +65,42 @@ namespace AntWay.Core.WorkflowEngine
                     _Runtime = Workflow.InitWorkflowRuntime(
                                  ITimerManager ?? new TimerLazyClientManager(),
                                  IAntWayActionProvider ?? new AntWayActionProvider(),
-                                 SingleDataBaseScheme);
+                                 DataBaseScheme);
                 }
                 return _Runtime;
             }
+        }
+
+        public static AntWayRuntime GetAntWayRunTime(string schemeCode)
+        {
+            var schemesPersistence = new SchemesPersistence
+            {
+                IDALSchemes = PersistenceObjectsFactory.GetIDALWFSchemaObject()
+            };
+
+            var scheme = schemesPersistence.GetScheme(schemeCode);
+            if (scheme == null)
+            {
+                throw new NotImplementedException("Esquema inexistente");
+            }
+            DataBaseScheme = scheme.DBSchemeName;
+
+            var result = new AntWayRuntime(Runtime);
+            return result;
         }
 
         public static AntWayRuntime AntWayRunTime
         {
             get
             {
+                if (DataBaseScheme == null)
+                {
+                    throw new NotImplementedException("Debe especificar el esquema de base de datos. DatabaseScheme");
+                }
+
                 var result = new AntWayRuntime(Runtime);
                 return result;
             }
         }
-
     }
 }

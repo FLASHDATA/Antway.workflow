@@ -1,0 +1,117 @@
+﻿@model AntWay.Dashboard.Web.ViewModels.NewSchemeViewModel
+
+<!DOCTYPE html>
+
+<style>
+    #newScheme {
+        width: 700px;
+        height: 600px;
+    }
+
+    #newScheme.center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #newScheme .modal-dialog {
+        max-width: 700px;
+        background-color: white;
+    }
+
+</style>
+
+<!-- ModalBox newScheme -->
+<div class="modal fade in center" id="newScheme" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Nuevo Esquema</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nombre esquema del WorkFlow:</label>
+                    <input type="text" id="newSchemeName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Código</label>
+                    <input type="text" id="newSchemeCode" disabled class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Esquema Base de datos:</label>
+                    @Html.DropDownListFor(model => model.NewSchemeDataBase,
+                                Model.DBSchemesListItems, "-- Seleccionar --", new
+                                {
+                                    @class = "form-control",
+                                       //oninput = "setCustomValidity('') ",
+                                       id = "newShemeDataBase",
+                                    required = "required"
+                                })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-outline" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnNewScheme" class="btn btn-primary" disabled>Crear Esquema</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<script>
+
+    (function bindNewSchemesModalBox() {
+        $('#newScheme').on('show.bs.modal', function () {
+            $("#newSchemeName").val('');
+            $("#newShemeDataBase").val('');
+            $("#btnNewScheme").attr("disabled", "disabled");
+        })
+
+
+        $("#newShemeDataBase").on("change", function () {
+            if ($(this).val() == "" || $("#newSchemeName").val().length <= 4) {
+                $("#btnNewScheme").attr("disabled", "disabled");
+                return;
+            }
+
+            $("#btnNewScheme").removeAttr("disabled");
+        })
+
+        $("body").on("keyup", "#newSchemeName", function () {
+            $("#newSchemeCode")
+                .val($("#newSchemeName").val().replace(" ", "_").toUpperCase());
+
+            if ($("#newSchemeName").val().length <= 4 || $("#newShemeDataBase").val() == "") {
+                $("#btnNewScheme").attr("disabled", "disabled");
+                return;
+            }
+
+            $("#btnNewScheme").removeAttr("disabled");
+        });
+
+        $("#btnNewScheme").click(function () {
+            var newScheme = {
+                NewSchemeCode: $("#newSchemeCode").val(),
+                NewSchemeName: $("#newSchemeName").val(),
+                NewSchemeDataBase: $("#newShemeDataBase").val(),
+            }
+
+            var root = '@Url.Content(@"~/Home/")';
+
+            $.ajax({
+                type: "POST",
+                url: root + "/SchemeNew/",
+                data: newScheme,
+                success: function (d) {
+                    $("#newScheme").modal("toggle");
+                    window.open('/designer/Index/' + newScheme.NewSchemeName);
+                }
+            });
+        });
+    })();
+
+</script>

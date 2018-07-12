@@ -7,11 +7,12 @@ namespace AntWay.Persistence.Provider.Model.DataTable
 {
     public class SchemeDataTableView
     {
+        public string SchemeCode { get; set; }
         public string SchemeName { get; set; }
         public string SchemeDBName { get; set; }
-        public string Descripcion { get; set; }
 
-        public bool Servicio { get; set; }
+        public bool WorkFlowService { get; set; }
+        public bool Active { get; set; }
 
         public int NumFila { get; set; }
     }

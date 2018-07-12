@@ -36,9 +36,8 @@ namespace Client.Web.Controllers
             return View(vm);
         }
 
-
         [HttpPost]
-        public JsonResult NewScheme(NewSchemeViewModel vm)
+        public JsonResult SchemeNew(NewSchemeViewModel vm)
         {
             var schemesPersistence = new SchemesPersistence
             {
@@ -47,9 +46,9 @@ namespace Client.Web.Controllers
 
             var schemeView = new WorkflowSchemeView
             {
-                SchemeName = vm.NewSchemeName.Replace(" ","_").ToUpper(),
-                DBSchemeName = vm.NewSchemeDataBase,
-                Description = vm.NewSchemeName
+                SchemeCode = vm.NewSchemeCode.Replace(" ", "_").ToUpper(),
+                SchemeName = vm.NewSchemeName,
+                DBSchemeName = vm.NewSchemeDataBase
             };
 
             var newScheme = schemesPersistence.InsertScheme(schemeView);
@@ -218,6 +217,7 @@ namespace Client.Web.Controllers
         }
         #endregion
 
+
         #region "Schemes content"
 
         public ActionResult GetSchemesDataTable(JQueryDataTableParamModel param)
@@ -252,10 +252,12 @@ namespace Client.Web.Controllers
                            .Select(
                                    c => new string[]
                                        {
+                                          c.SchemeCode,
                                           c.SchemeName,
                                           c.SchemeDBName,
-                                          c.Descripcion,
-                                          c.Servicio.ToString()
+                                          c.WorkFlowService.ToString(),
+                                          c.Active.ToString(),
+                                          c.SchemeCode, //edit
                                        }
                                    )
                            .ToList();
@@ -269,6 +271,52 @@ namespace Client.Web.Controllers
             JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult SchemeGet(string scheme)
+        {
+            var schemesPersistence = new SchemesPersistence
+            {
+                IDALSchemes = PersistenceObjectsFactory.GetIDALWFSchemaObject()
+            };
+
+            var viewScheme = schemesPersistence.GetScheme(scheme);
+
+            var vm = new EditSchemeViewModel
+            {
+                SchemeCode = viewScheme.SchemeCode,
+                SchemeName = viewScheme.SchemeName,
+                SchemeDataBase = viewScheme.DBSchemeName,
+                Description = viewScheme.Description,
+                Active = viewScheme.Active,
+                WorkflowService = viewScheme.WorkflowService,
+            };
+
+            return View("SchemeEdit", vm);
+        }
+
+        [HttpPost]
+        public JsonResult SchemeEdit(EditSchemeViewModel scheme)
+        {
+            var schemesPersistence = new SchemesPersistence
+            {
+                IDALSchemes = PersistenceObjectsFactory.GetIDALWFSchemaObject()
+            };
+
+
+            var wfSchemeView = new WorkflowSchemeView
+            {
+                SchemeCode = scheme.SchemeCode,
+                SchemeName = scheme.SchemeName,
+                DBSchemeName = scheme.SchemeDataBase,
+                Description = scheme.Description,
+                Active = scheme.Active,
+                WorkflowService = scheme.WorkflowService,
+            };
+
+            schemesPersistence.UpdateScheme(wfSchemeView);
+
+            return Json(new { success = true });
+        }
 
         #endregion
     }

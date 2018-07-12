@@ -22,8 +22,14 @@ namespace AntWay.Persistence.Provider.Model
         {
             var result = IDALSchemes.Insert(schemeView);
             return result;
-        }            
+        }
 
+
+        public WorkflowSchemeView UpdateScheme(WorkflowSchemeView schemeView)
+        {
+            var result = IDALSchemes.Update(schemeView);
+            return result;
+        }
 
         public List<WorkflowSchemeView> GetSchemes()
         {

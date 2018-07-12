@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AntWay.Oracle.Provider.Data;
-using AntWay.Persistence.Provider;
 using AntWay.Persistence.Provider.Model;
 using Devart.Data.Oracle;
 

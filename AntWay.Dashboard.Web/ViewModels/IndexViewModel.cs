@@ -13,6 +13,7 @@ namespace AntWay.Dashboard.Web.ViewModels
 
     public class NewSchemeViewModel
     {
+        public string NewSchemeCode { get; set; }
         public string NewSchemeName { get; set; }
         public string NewSchemeDataBase { get; set; }
 
@@ -37,5 +38,15 @@ namespace AntWay.Dashboard.Web.ViewModels
                 return result;
             }
         }
+    }
+
+    public class EditSchemeViewModel
+    {
+        public string SchemeCode { get; set; }
+        public string SchemeName { get; set; }
+        public string SchemeDataBase { get; set; }
+        public string Description { get; set; }
+        public bool WorkflowService { get; set; }
+        public bool Active { get; set; }
     }
 }

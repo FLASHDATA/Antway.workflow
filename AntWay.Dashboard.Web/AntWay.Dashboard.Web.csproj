@@ -419,6 +419,8 @@
     <Content Include="Views\Designer\Index.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_DataTables.cshtml" />
+    <Content Include="Views\Shared\_SchemeNew.cshtml" />
+    <Content Include="Views\Home\SchemeEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

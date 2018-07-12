@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AntWay.Oracle.Provider.Data;
 using AntWay.Persistence.Provider;
-using Devart.Data.Oracle;
 using AntWay.Persistence.Provider.Model.DataTable;
+using Devart.Data.Oracle;
 
 namespace AntWay.Oracle.Provider
 {

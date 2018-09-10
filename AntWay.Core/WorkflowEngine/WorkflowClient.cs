@@ -85,7 +85,7 @@ namespace AntWay.Core.WorkflowEngine
             }
             DataBaseScheme = scheme.DBSchemeName;
 
-            var result = new AntWayRuntime(Runtime);
+            var result = new AntWayRuntime(Runtime, scheme);
             return result;
         }
 

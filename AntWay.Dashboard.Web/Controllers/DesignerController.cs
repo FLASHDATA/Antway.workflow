@@ -37,9 +37,9 @@ namespace Client.Web.Controllers
                                                ?? ConfigurationManager.AppSettings["WFSchema"]
                                                   .ToString();
 
-            DatabaseScheme.RemoveAll(s => s.Key == scheme.SchemeName);
+            DatabaseScheme.RemoveAll(s => s.Key == scheme.DBSchemeName);
             DatabaseScheme.Add(new KeyValuePair<string, string>
-                                (scheme.SchemeName, scheme.DBSchemeName));
+                                (scheme.SchemeCode, scheme.DBSchemeName));
 
             var vm = new DesignerViewModel { SchemeName = id??"SimpleWF" };
             return View(vm);

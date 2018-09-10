@@ -35,6 +35,9 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OptimaJet.Workflow.Core">
+      <HintPath>..\..\_Common\Packages\OptimaJet.Workflow.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -69,10 +72,6 @@
     <ProjectReference Include="..\Antway.Persistence.Provider\Antway.Persistence.Provider.csproj">
       <Project>{14694484-9517-491f-a03f-4337459947ae}</Project>
       <Name>Antway.Persistence.Provider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
-      <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
-      <Name>OptimaJet.Workflow.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

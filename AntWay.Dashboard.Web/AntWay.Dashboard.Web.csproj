@@ -399,11 +399,6 @@
     <Content Include="Scripts\worker-json.js" />
     <Content Include="Scripts\workflowdesigner.localization.js" />
     <Content Include="Scripts\workflowdesigner.min.js" />
-    <Content Include="SQL\CreatePersistenceObjects.sql" />
-    <Content Include="SQL\DropPersistenceObjects.sql" />
-    <Content Include="SQL\update_1_4_3_to_1_4_4.sql" />
-    <Content Include="SQL\update_1_4_4_to_1_5.sql" />
-    <Content Include="SQL\update_1_5_to_2_0.sql" />
     <Content Include="Views\Home\indexMetronics.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

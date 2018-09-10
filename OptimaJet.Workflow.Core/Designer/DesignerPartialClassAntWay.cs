@@ -29,7 +29,11 @@ namespace OptimaJet.Workflow
 
             pd.Commands = new List<CommandDefinition>()
             {
-                new CommandDefinition { Name = "next" }
+                new CommandDefinition
+                {
+                    Name = "next",
+                    InputParameters = new List<ParameterDefinitionReference>(),
+                }
             };
 
             return JsonConvert.SerializeObject(pd);

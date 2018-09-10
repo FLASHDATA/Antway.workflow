@@ -48,7 +48,8 @@ namespace Client.Web.Controllers
             {
                 SchemeCode = vm.NewSchemeCode.Replace(" ", "_").ToUpper(),
                 SchemeName = vm.NewSchemeName,
-                DBSchemeName = vm.NewSchemeDataBase
+                DBSchemeName = vm.NewSchemeDataBase,
+                Active = true,
             };
 
             var newScheme = schemesPersistence.InsertScheme(schemeView);

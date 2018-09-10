@@ -15,7 +15,19 @@ namespace Client.ConsoleApp
         static Guid ProcessId;
         static void Main(string[] args)
         {
-            EjemploCallWorkFlow();
+            //var processPersistenceViewNew = new ProcessPersistenceView
+            //{
+            //    SchemeCode = "MI_WORKFLOW",
+            //    LocatorFieldName = "EsquemaBD.Tabla.Campo",
+            //    LocatorValue = System.Guid.NewGuid().ToString(), //Tu propio identificador
+            //};
+
+            //Guid processId = WorkflowClient.GetAntWayRunTime("MI_WORKFLOW")
+            //            .CreateInstanceAndPersist(processPersistenceViewNew);
+
+            //WorkflowClient.AntWayRunTime.ExecuteCommandNext(processId);
+
+            // EjemploCallWorkFlow();
 
             //Ejemplo1();
 
@@ -27,7 +39,8 @@ namespace Client.ConsoleApp
             Console.ReadLine();
             while (true)
             {
-                EjemploLlamadaAlProcesoX();
+                SolicitudesMenuOptions();
+                //EjemploLlamadaAlProcesoX();
                 Console.WriteLine("Pulsa Enter para seguir");
                 Console.ReadLine();
             }
@@ -35,6 +48,26 @@ namespace Client.ConsoleApp
             Console.WriteLine("Pulsa enter para cerrar");
             Console.ReadLine();
         }
+
+        private static void SolicitudesMenuOptions()
+        {
+            var processPersistenceViewNew = new ProcessPersistenceView
+            {
+                WFProcessGuid = ProcessId,
+                LocatorFieldName = "Expedients.NUM_EXPEDIENT",
+                LocatorValue = System.Guid.NewGuid().ToString(),
+                SchemeCode = "SOLICITUDES_ROLES",
+                SchemeDatabase = "WFSCHEMA1",
+            };
+
+
+            ProcessId = WorkflowClient.GetAntWayRunTime("SOLICITUDES_ROLES")
+                        .CreateInstanceAndPersist(processPersistenceViewNew);
+
+            var commands = WorkflowClient.AntWayRunTime
+                        .GetAvailableCommands(ProcessId, "Administrador");
+        }
+
 
         private static void EjemploCallWorkFlow()
         {
@@ -46,6 +79,7 @@ namespace Client.ConsoleApp
                 SchemeCode = "SEPBLAC",
                 SchemeDatabase = "WFSCHEMA1",
             };
+
 
             ProcessId = WorkflowClient.GetAntWayRunTime("SEPBLAC")
                         .CreateInstanceAndPersist(processPersistenceViewNew);

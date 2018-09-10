@@ -522,8 +522,8 @@
                                                         <tr>
                                                             <th>WorkFlow</th>
                                                             <th class="color-blue m--font-bold">Totales</th>
-                                                            <th class="color-green">Finalizados</th>
-                                                            <th class="color-orange">En Proceso</th>
+                                                            <th class="color-green">En Proceso</th>
+                                                            <th class="color-orange">Finalizados</th>
                                                             <th class="color-red">Error</th>
                                                         </tr>
                                                     </thead>
@@ -1221,6 +1221,7 @@
                     {
                         "sName": "Tags",
                         "mRender": function (oObj) {
+                            if (oObj == null) return null;
                             var tags = oObj.split(',');
                             var result = "";
                             for (var i = 0; i < tags.length; i++) {

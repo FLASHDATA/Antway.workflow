@@ -18,11 +18,18 @@ namespace AntWay.Core.RunTime
     public class AntWayRuntime
     {
         protected WorkflowRuntime WorkflowRuntime { get; set; }
+        internal static WorkflowSchemeView Scheme { get; set; }
 
-
-        public AntWayRuntime(WorkflowRuntime workflowRuntime)
+        internal AntWayRuntime(WorkflowRuntime workflowRuntime)
         {
             WorkflowRuntime = workflowRuntime;
+        }
+
+        internal AntWayRuntime(WorkflowRuntime workflowRuntime,
+                             WorkflowSchemeView scheme)
+        {
+            WorkflowRuntime = workflowRuntime;
+            Scheme = scheme;
         }
 
         public Guid CreateInstance(string schemeCode)
@@ -45,6 +52,8 @@ namespace AntWay.Core.RunTime
                 IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject()
             };
             wfScheme.WFProcessGuid = processId;
+            wfScheme.SchemeCode = Scheme.SchemeCode;
+            wfScheme.SchemeDatabase = Scheme.DBSchemeName;
 
             locatorPersistence.AddWorkflowLocator(wfScheme);
 

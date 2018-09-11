@@ -282,7 +282,7 @@ namespace Client.ConsoleApp
 
             var result = WorkflowClient
                             .AntWayRunTime
-                            .ExecuteCommand(ProcessId, command);
+                            .ExecuteCommand(command);
 
                         Console.WriteLine("ExecuteCommand - OK.", ProcessId);
         }

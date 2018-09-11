@@ -124,8 +124,18 @@ namespace AntWay.Core.RunTime
             WorkflowRuntimeExtensions.ExecutecommandNext(WorkflowRuntime, processId);
         }
 
+        public bool ExecuteCommand(Guid processId, string commandName,
+                                    string identifyId = null)
+        {
+            var command = WorkflowClient.AntWayRunTime
+                          .GetAvailableCommands(processId, string.Empty)
+                          .Where(c => c.CommandName.Trim().ToLower() == commandName.ToLower())
+                          .FirstOrDefault();
 
-        public bool ExecuteCommand(Guid processId, AntWayCommand command,
+            return ExecuteCommand(command, identifyId);
+        }
+
+        public bool ExecuteCommand(AntWayCommand command,
                                    string identifyId = null)
         {
             return WorkflowRuntimeExtensions.ExecuteCommand(WorkflowRuntime, 
@@ -164,7 +174,7 @@ namespace AntWay.Core.RunTime
             string fromState = WorkflowClient.AntWayRunTime
                                   .GetCurrentStateName(processId);
 
-            WorkflowClient.AntWayRunTime.ExecuteCommand(processId, antWayCommand);
+            WorkflowClient.AntWayRunTime.ExecuteCommand(antWayCommand);
 
             string toActivity = WorkflowClient.AntWayRunTime
                                .GetCurrentActivityName(processId);
@@ -259,7 +269,7 @@ namespace AntWay.Core.RunTime
                 command.SetParameter(c.ParameterName, c.Value);
             }
 
-            WorkflowClient.AntWayRunTime.ExecuteCommand(guid, command);
+            WorkflowClient.AntWayRunTime.ExecuteCommand(command);
 
             var pi = WorkflowClient.AntWayRunTime
                         .GetProcessInstance(guid);

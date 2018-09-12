@@ -522,8 +522,8 @@
                                                         <tr>
                                                             <th>WorkFlow</th>
                                                             <th class="color-blue m--font-bold">Totales</th>
-                                                            <th class="color-green">En Proceso</th>
-                                                            <th class="color-orange">Finalizados</th>
+                                                            <th class="color-orange">En Proceso</th>
+                                                            <th class="color-green">Finalizados</th>
                                                             <th class="color-red">Error</th>
                                                         </tr>
                                                     </thead>
@@ -1021,18 +1021,18 @@
                         }
                     },
                     {
-                        "sName": "Finalizados",
-                        "mRender": function (oObj) {
-                            var result = "";
-                            result += '<span class="color-green">' + oObj + '</span>';
-                            return result;
-                        }
-                    },
-                    {
                         "sName": "EnProceso",
                         "mRender": function (oObj) {
                             var result = "";
                             result += '<span class="color-orange">' + oObj + '</span>';
+                            return result;
+                        }
+                    },
+                    {
+                        "sName": "Finalizados",
+                        "mRender": function (oObj) {
+                            var result = "";
+                            result += '<span class="color-green">' + oObj + '</span>';
                             return result;
                         }
                     },

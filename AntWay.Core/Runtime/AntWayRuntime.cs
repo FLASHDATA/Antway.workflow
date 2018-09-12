@@ -52,8 +52,8 @@ namespace AntWay.Core.RunTime
                 IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject()
             };
             wfScheme.WFProcessGuid = processId;
-            wfScheme.SchemeCode = Scheme.SchemeCode;
-            wfScheme.SchemeDatabase = Scheme.DBSchemeName;
+            wfScheme.SchemeCode = wfScheme.SchemeCode;
+            wfScheme.SchemeDatabase = wfScheme.SchemeDatabase;
 
             locatorPersistence.AddWorkflowLocator(wfScheme);
 

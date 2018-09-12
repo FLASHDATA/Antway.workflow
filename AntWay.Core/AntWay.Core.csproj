@@ -34,6 +34,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\PreventBlanqueo\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OptimaJet.Workflow.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\OptimaJet.Workflow.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="OptimaJet.Workflow.Oracle, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\OptimaJet.Workflow.Oracle.dll</HintPath>
+    </Reference>
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\packages\odp.net.managed.121.1.2\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
@@ -74,14 +82,6 @@
     <ProjectReference Include="..\Antway.Persistence.Provider\Antway.Persistence.Provider.csproj">
       <Project>{14694484-9517-491f-a03f-4337459947ae}</Project>
       <Name>Antway.Persistence.Provider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
-      <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
-      <Name>OptimaJet.Workflow.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OptimaJet.Workflow.Oracle\OptimaJet.Workflow.Oracle.csproj">
-      <Project>{b5ec37ad-83e1-4bea-912c-5fbd4d39d9c4}</Project>
-      <Name>OptimaJet.Workflow.Oracle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

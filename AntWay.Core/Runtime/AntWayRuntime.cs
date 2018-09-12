@@ -53,7 +53,6 @@ namespace AntWay.Core.RunTime
             };
             wfScheme.WFProcessGuid = processId;
             wfScheme.SchemeCode = wfScheme.SchemeCode;
-            wfScheme.SchemeDatabase = wfScheme.SchemeDatabase;
 
             locatorPersistence.AddWorkflowLocator(wfScheme);
 
@@ -128,7 +127,7 @@ namespace AntWay.Core.RunTime
                                     string identifyId = null)
         {
             var command = WorkflowClient.AntWayRunTime
-                          .GetAvailableCommands(processId, string.Empty)
+                          .GetAvailableCommands(processId, identifyId)
                           .Where(c => c.CommandName.Trim().ToLower() == commandName.ToLower())
                           .FirstOrDefault();
 

@@ -81,7 +81,6 @@ namespace AntWay.Oracle.Provider
                 LocatorFieldName = entity.LOCATOR_FIELD_NAME,
                 LocatorValue = entity.LOCATOR_VALUE,
                 SchemeCode = entity.SCHEME_CODE,
-                SchemeDatabase = entity.SCHEME_DATABASE,
             };
 
             return view;
@@ -96,7 +95,6 @@ namespace AntWay.Oracle.Provider
             {
                 ID_WFPROCESSINSTANCE = view.WFProcessGuid,
                 SCHEME_CODE = view.SchemeCode,
-                SCHEME_DATABASE = view.SchemeDatabase,
                 LOCATOR_FIELD_NAME = view.LocatorFieldName,
                 LOCATOR_VALUE = view.LocatorValue,
             };

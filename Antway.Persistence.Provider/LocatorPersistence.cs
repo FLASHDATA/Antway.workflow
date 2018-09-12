@@ -18,7 +18,7 @@ namespace AntWay.Persistence.Provider.Model
             return dataView;
         }
 
-        public ProcessPersistenceView GetWorkflowLocator(string locator)
+        public ProcessPersistenceView GetWorkflowByLocator(string locator)
         {
             var dataView = IDALocators.Fetch<ProcessPersistenceView>(locator);
             return dataView;

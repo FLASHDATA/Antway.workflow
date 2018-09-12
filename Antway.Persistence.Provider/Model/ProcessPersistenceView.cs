@@ -11,7 +11,6 @@ namespace AntWay.Persistence.Provider.Model
         public Guid WFProcessGuid { get; set; }
         
         public string SchemeCode { get; set; }
-        public string SchemeDatabase { get; set; }
 
         public string LocatorFieldName { get; set; }
         public string LocatorValue { get; set; }

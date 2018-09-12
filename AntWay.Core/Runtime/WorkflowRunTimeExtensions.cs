@@ -45,7 +45,7 @@ namespace AntWay.Core.RunTime
             {
                 IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject(),
             };
-            var wfInstance = locatorPersistence.GetWorkflowLocator(localizador);
+            var wfInstance = locatorPersistence.GetWorkflowByLocator(localizador);
 
             if (wfInstance == null) return result;
 

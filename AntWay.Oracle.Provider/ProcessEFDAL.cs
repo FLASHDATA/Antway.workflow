@@ -91,12 +91,11 @@ namespace AntWay.Oracle.Provider
                 List<string> schemesDB = GetDBSchemes();
 
                 string sql = "SELECT ROWNUM AS NUM_FILA" +
-                            " , QRY.WorkFlow, QRY.EsquemaBD" +
+                            " , QRY.WorkFlow" +
                             " ,QRY.LOCALIZADOR, QRY.ESTADOACTUAL, QRY.TAGS, QRY.ULTIMAACTUALIZACION" +
                             " FROM" +
                             " (" +
                             "  SELECT LOC.SCHEME_CODE AS WorkFlow" +
-                            "  , LOC.SCHEME_DATABASE AS EsquemaBD" +
                             "  , LOC.LOCATOR_VALUE AS Localizador" +
                             "  , PH.STATENAME as EstadoActual, PH.TAGS AS Tags" +
                             "  , PH.LASTTRANSITION AS UltimaActualizacion" +
@@ -174,7 +173,7 @@ namespace AntWay.Oracle.Provider
             var result = new List<ProcessHistoryDataTableView>();
             using (var ctx = new Model1())
             {
-                string sql = " SELECT NUM_FILA, sq.WorkFlow, sq.EsquemaBD ,sq.LOCALIZADOR " +
+                string sql = " SELECT NUM_FILA, sq.WorkFlow, sq.LOCALIZADOR " +
                              " , sq.ESTADOACTUAL, sq.TAGS, sq.ULTIMAACTUALIZACION " +
                              " FROM( " +
                                      SQLProcessesHistory +

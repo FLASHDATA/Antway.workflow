@@ -4,11 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Antway.Core;
 using Newtonsoft.Json;
 using AntWay.Dashboard.Web.ViewModels;
 using AntWay.Persistence.Provider.Model.DataTable;
 using AntWay.Persistence.Provider.Model;
+using Antway.Core.Persistence;
 
 namespace Client.Web.Controllers
 {
@@ -95,7 +95,8 @@ namespace Client.Web.Controllers
                         Order = -1,
                         WorkFlow = "TOTAL",
                         TotalProcesos = dataList.Sum(d => d.TotalProcesos),
-                        TotalProcesosEstadoEnProceso = dataList.Sum(d => d.TotalProcesosEstadoEnProceso),
+                        TotalProcesosEstadoEjecutando = dataList.Sum(d => d.TotalProcesosEstadoEjecutando),
+                        TotalProcesosEstadoDormido = dataList.Sum(d => d.TotalProcesosEstadoDormido),
                         TotalProcesosEstadoFinalizado = dataList.Sum(d => d.TotalProcesosEstadoFinalizado),
                         TotalProcesosEstadoError = dataList.Sum(d => d.TotalProcesosEstadoError),
                     }
@@ -112,7 +113,8 @@ namespace Client.Web.Controllers
                                        {
                                            c.WorkFlow,
                                            c.TotalProcesos.ToString(),
-                                           c.TotalProcesosEstadoEnProceso.ToString(),
+                                           c.TotalProcesosEstadoEjecutando.ToString(),
+                                           c.TotalProcesosEstadoDormido.ToString(),
                                            c.TotalProcesosEstadoFinalizado.ToString(),
                                            c.TotalProcesosEstadoError.ToString(),
                                        }
@@ -138,7 +140,7 @@ namespace Client.Web.Controllers
 
             string[] dataTableColNames = 
             {
-                "WorkFlow", "Localizador", "EstadoActual", "Tags", "UltimaActualizacion"
+                "WorkFlow", "Localizador", "Tags", "UltimaActualizacion"
             };
 
             var filter = new DataTableFilters
@@ -162,7 +164,7 @@ namespace Client.Web.Controllers
                                        {
                                            c.WorkFlow,
                                            c.Localizador,
-                                           c.EstadoActual,
+                                           //c.EstadoActual,
                                            c.Tags,
                                            c.UltimaActualizacion
                                        }

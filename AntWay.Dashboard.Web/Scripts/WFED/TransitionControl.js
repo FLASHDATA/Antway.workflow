@@ -295,7 +295,7 @@
                             ? 'notspecified'
             : this.item.Classifier.toLowerCase();
 
-        console.log(classifier);
+        //console.log(classifier);
         if (classifier == 'AntWay') return '#3F8C8D';
 
         return classifier == 'notspecified'

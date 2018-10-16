@@ -45,7 +45,8 @@
     ActivityFormLabel: {
         Title: 'Activity',
         Name: 'Name',
-        State: 'State',
+        State: 'Tag',
+        Id: 'Id',
         IsInitial: 'Initial',
         IsFinal: 'Final',
         IsForSetState: 'For set state',

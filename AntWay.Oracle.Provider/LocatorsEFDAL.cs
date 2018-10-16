@@ -10,6 +10,26 @@ namespace AntWay.Oracle.Provider
 {
     public class LocatorsEFDAL : IDALLocators
     {
+
+        public List<ProcessPersistenceView> GetLocatorsFromScheme(string scheme)
+        {
+            var result = new List<ProcessPersistenceView>();
+
+            using (var ctx = new Model1())
+            {
+                result = ctx.LOCATORS
+                            .Where(l => l.SCHEME_CODE == scheme)
+                            .Select(l => new ProcessPersistenceView
+                            {
+                                LocatorValue = l.LOCATOR_VALUE,
+                                WFProcessGuid = l.ID_WFPROCESSINSTANCE                                
+                            })
+                            .ToList();
+            }
+
+            return result;
+        }
+
         public ProcessPersistenceView GetLocatorFromGuid(Guid guid)
         {
             using (var ctx = new Model1())

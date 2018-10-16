@@ -15,13 +15,29 @@ namespace OptimaJet.Workflow
 {
     public static partial class Designer
     {
-        private static string NewScheme(WorkflowRuntime runtime, string schemeid, string processid)
+        private static string NewScheme(WorkflowRuntime runtime, 
+                                        string schemeid, string processid,
+                                        List<CommandDefinition> commands = null)
+        {
+            ProcessDefinition pd = GetDefaultProcessDifinition(runtime, schemeid, processid);
+
+            if (commands != null)
+            {
+                pd.Commands.AddRange(commands);
+            }
+
+            return JsonConvert.SerializeObject(pd);
+        }
+
+        private static ProcessDefinition GetDefaultProcessDifinition(WorkflowRuntime runtime, string schemeid, string processid)
         {
             List<CodeActionDefinition> globalActions;
             ProcessDefinition pd;
+
             globalActions =
                 runtime.PersistenceProvider.LoadGlobalParameters<CodeActionDefinition>(
                     WorkflowRuntime.CodeActionsGlobalParameterName);
+
             pd = InitializeProcessDefinition(runtime, null, schemeid, processid);
             pd.CodeActions.AddRange(globalActions);
 
@@ -33,10 +49,10 @@ namespace OptimaJet.Workflow
                 {
                     Name = "next",
                     InputParameters = new List<ParameterDefinitionReference>(),
-                }
+                },
             };
 
-            return JsonConvert.SerializeObject(pd);
+            return pd;
         }
     }
 }

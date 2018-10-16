@@ -15,57 +15,98 @@ namespace Client.ConsoleApp
         static Guid ProcessId;
         static void Main(string[] args)
         {
-            //var processPersistenceViewNew = new ProcessPersistenceView
+            WorkflowSample();
+            //Console.WriteLine("Pulsa Enter para ejecutar un ejemplo");
+            //Console.ReadLine();
+            //while (true)
             //{
-            //    SchemeCode = "MI_WORKFLOW",
-            //    LocatorFieldName = "EsquemaBD.Tabla.Campo",
-            //    LocatorValue = System.Guid.NewGuid().ToString(), //Tu propio identificador
-            //};
+            //    SolicitudesMenuOptions();
+            //    //EjemploLlamadaAlProcesoX();
+            //    Console.WriteLine("Pulsa Enter para seguir");
+            //    Console.ReadLine();
+            //}
 
-            //Guid processId = WorkflowClient.GetAntWayRunTime("MI_WORKFLOW")
-            //            .CreateInstanceAndPersist(processPersistenceViewNew);
-
-            //WorkflowClient.AntWayRunTime.ExecuteCommandNext(processId);
-
-            // EjemploCallWorkFlow();
-
-            //Ejemplo1();
-
-            //PersistenceProviderSample();
-            //GetProcessDefinitionSample();
-            //WorkflowSample();
-
-            Console.WriteLine("Pulsa Enter para ejecutar un ejemplo");
-            Console.ReadLine();
-            while (true)
-            {
-                SolicitudesMenuOptions();
-                //EjemploLlamadaAlProcesoX();
-                Console.WriteLine("Pulsa Enter para seguir");
-                Console.ReadLine();
-            }
-
-            Console.WriteLine("Pulsa enter para cerrar");
-            Console.ReadLine();
+            //Console.WriteLine("Pulsa enter para cerrar");
+            //Console.ReadLine();
         }
 
-        private static void SolicitudesMenuOptions()
+
+        private static void WorkflowSample()
         {
+            Console.WriteLine("Operation:");
+            Console.WriteLine("1 - EjemploLlamadaACALL_SERVICE_SAMPLE");
+            //Console.WriteLine("2 - ExecuteCommand");
+            //Console.WriteLine("3 - GetAvailableState");
+            //Console.WriteLine("4 - SetState");
+            //Console.WriteLine("5 - DeleteProcess");
+            //Console.WriteLine("9 - Exit");
+
+            do
+            {
+                Console.Write("Enter code of operation:");
+                char operation = Console.ReadLine().FirstOrDefault();
+
+                switch (operation)
+                {
+                    case '1':
+                        CrearProcesoCALL_SERVICE_SAMPLE();
+                        break;
+                    case '2':
+                        ExecuteCommand();
+                        break;
+                    case '3':
+                        GetAvailableState();
+                        break;
+                    case '4':
+                        SetState();
+                        break;
+                    case '5':
+                        DeleteProcess();
+                        break;
+                    case '9':
+                        return;
+                    default:
+                        Console.WriteLine("Unknown code. Please, repeat.");
+                        break;
+                }
+                Console.WriteLine();
+            } while (true);
+        }
+
+
+        private static void CrearProcesoCALL_SERVICE_SAMPLE()
+        {
+            Console.WriteLine("Crear proceso CALL_SERVICE_SAMPLE");
+
             var processPersistenceViewNew = new ProcessPersistenceView
             {
                 WFProcessGuid = ProcessId,
-                LocatorFieldName = "Expedients.NUM_EXPEDIENT",
+                LocatorFieldName = "None",
                 LocatorValue = System.Guid.NewGuid().ToString(),
-                SchemeCode = "SOLICITUDES_ROLES",
-                SchemeDatabase = "WFSCHEMA1",
+                SchemeCode = "CALL_SERVICE_SAMPLE",
             };
 
 
-            ProcessId = WorkflowClient.GetAntWayRunTime("SOLICITUDES_ROLES")
+            ProcessId = WorkflowClient.GetAntWayRunTime("CALL_SERVICE_SAMPLE")
                         .CreateInstanceAndPersist(processPersistenceViewNew);
 
-            var commands = WorkflowClient.AntWayRunTime
-                        .GetAvailableCommands(ProcessId, "Administrador");
+            WorkflowClient.AntWayRunTime.ExecuteCommandNext(ProcessId);
+
+            Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
+                        ProcessId,
+                        WorkflowClient.AntWayRunTime.GetCurrentStateName(ProcessId),
+                        WorkflowClient.AntWayRunTime.GetCurrentActivityName(ProcessId));
+            Console.WriteLine("Espera 5 segundos y saltará la action que llama a 'Example.OWIN.Service.HomeController.Get'");
+
+            System.Threading.Thread.Sleep(5000);
+            Console.WriteLine("Pulsa enter y consulta estado respuesta");
+            Console.ReadLine();
+
+            var processInstance = WorkflowClient.AntWayRunTime
+                                 .GetProcessInstance(ProcessId);
+
+            var statusProceso = processInstance.GetParameter("ESTAT_SIGNATURA")?.Value;
+            Console.WriteLine($"{statusProceso}");
         }
 
 
@@ -76,8 +117,7 @@ namespace Client.ConsoleApp
                 WFProcessGuid = ProcessId,
                 LocatorFieldName = "Expedients.NUM_EXPEDIENT",
                 LocatorValue = System.Guid.NewGuid().ToString(),
-                SchemeCode = "SEPBLAC",
-                SchemeDatabase = "WFSCHEMA1",
+                SchemeCode = "SEPBLAC"
             };
 
 
@@ -115,32 +155,6 @@ namespace Client.ConsoleApp
                          .CallWorkflowCommand(ProcessId, awCmdParameters);
         }
 
-
-        private static void EjemploLlamadaAlProcesoX()
-        {
-            Console.WriteLine("Ejemplo lamada al ProcesoX");
-            //ProcessId = CreateInstance("FOO");
-
-            WorkflowClient.AntWayRunTime.ExecuteCommandNext(ProcessId);
-
-            Console.WriteLine("ProcessId = '{0}'. CurrentState: {1}, CurrentActivity: {2}",
-                        ProcessId,
-                        WorkflowClient.AntWayRunTime.GetCurrentStateName(ProcessId),
-                        WorkflowClient.AntWayRunTime.GetCurrentActivityName(ProcessId));
-            Console.WriteLine("Espera 5 segundos y saltará la action que llama a 'Example.OWIN.Service.HomeController.Get'");
-
-            System.Threading.Thread.Sleep(5000);
-            Console.WriteLine("Pulsa enter y consulta estado respuesta");
-            Console.ReadLine();
-
-            var processInstance = WorkflowClient.AntWayRunTime
-                                 .GetProcessInstance(ProcessId);
-            
-            var statusProcesoX = processInstance.GetParameter("httpResponse_ProcesoX")?.Value;
-            Console.WriteLine($"{statusProcesoX}");
-        }
-
-
         private static void EjemploMailing()
         {
             Console.WriteLine("EjemploMailing");
@@ -164,49 +178,6 @@ namespace Client.ConsoleApp
             ExecuteCommand();
         }
 
-        private static void WorkflowSample()
-        {
-            Console.WriteLine("Operation:");
-            Console.WriteLine("1 - GetAvailableCommands");
-            Console.WriteLine("2 - ExecuteCommand");
-            Console.WriteLine("3 - GetAvailableState");
-            Console.WriteLine("4 - SetState");
-            Console.WriteLine("5 - DeleteProcess");
-            Console.WriteLine("9 - Exit");
-            Console.WriteLine("The process isn't created.");
-            //CreateInstance("FOO");
-
-            do
-            {
-                Console.Write("Enter code of operation:");
-                char operation = Console.ReadLine().FirstOrDefault();
-
-                switch (operation)
-                {
-                    case '1':
-                        GetAvailableCommands();
-                        break;
-                    case '2':
-                        ExecuteCommand();
-                        break;
-                    case '3':
-                        GetAvailableState();
-                        break;
-                    case '4':
-                        SetState();
-                        break;
-                    case '5':
-                        DeleteProcess();
-                        break;
-                    case '9':
-                        return;
-                    default:
-                        Console.WriteLine("Unknown code. Please, repeat.");
-                        break;
-                }
-                Console.WriteLine();
-            } while (true);
-        }
 
         private static void GetAvailableCommands()
         {

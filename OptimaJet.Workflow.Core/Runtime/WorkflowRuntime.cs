@@ -20,7 +20,7 @@ namespace OptimaJet.Workflow.Core.Runtime
     /// <summary>
     /// Provides main API to operations with workflow processes
     /// </summary>
-    public sealed class WorkflowRuntime
+    public sealed partial class WorkflowRuntime
     {
         private class PreExecutionContext
         {

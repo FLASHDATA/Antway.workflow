@@ -175,11 +175,16 @@ namespace OptimaJet.Workflow
             return runtime.Builder.Serialize(pd);
         }
 
-        private static string Load(WorkflowRuntime runtime, string schemecode, string schemeid, string processid)
+        private static string Load(WorkflowRuntime runtime, 
+                                   string schemecode, string schemeid, string processid)
         {
+            var commands = runtime
+                            .CommandMapping
+                            .GetMappedCommands();
+
             if (schemecode == null)
             {
-                return NewScheme(runtime, schemeid, processid);
+                return NewScheme(runtime, schemeid, processid, commands);
             }
 
             List<CodeActionDefinition> globalActions;
@@ -191,6 +196,15 @@ namespace OptimaJet.Workflow
             pd.CodeActions.AddRange(globalActions);
 
             pd.CodeActions = pd.CodeActions.Select(ca => ca.Encode()).ToList();
+
+            if (commands != null)
+            {
+                foreach(var command in commands)
+                {
+                    if (pd.Commands.Any(c => c.Name == command.Name)) continue;
+                    pd.Commands.Add(command);
+                }
+            }
 
             return JsonConvert.SerializeObject(pd);
         }

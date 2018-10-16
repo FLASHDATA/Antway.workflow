@@ -195,16 +195,16 @@
             }
         }
 
-        if (Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0) {
-            me.impImage2 = new Konva.Image({
-                x: me.rectangle.attrs.width - 35,
-                y: 38,
-                image: isNormal ? me.manager.ImageImplementation : me.manager.ImageImplementationWhite,
-                width: 15,
-                height: 15
-            });
-            me.control.add(me.impImage2);
-        }
+        //if (Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0) {
+        //    me.impImage2 = new Konva.Image({
+        //        x: me.rectangle.attrs.width - 35,
+        //        y: 38,
+        //        image: isNormal ? me.manager.ImageImplementation : me.manager.ImageImplementationWhite,
+        //        width: 15,
+        //        height: 15
+        //    });
+        //    me.control.add(me.impImage2);
+        //}
 
         me.text = new Konva.Text({
             x: xtext,
@@ -516,6 +516,7 @@
             data: this.item,
             elements: [
                 { name: labels.Name, field: "Name", type: "input" },
+                { name: labels.Id, field: "Id", type: "input", disabled: true },
                 { name: labels.State, field: "State", type: "input" },
                 //{ name: "Field1", field: "Field1", type: "input" },
                 //{ name: "Field2", field: "Field2", type: "input" },
@@ -536,14 +537,15 @@
                             order[0].value = row.parent().children().length;
                     }
                 },
-                {
-                    name: labels.PreExecutionImplementation, field: "PreExecutionImplementation", type: "table", elements: impparam,
-                    onrowadded: function (row) {
-                        var order = row.find('[name=impOrder]');
-                        if (order[0].value === "")
-                            order[0].value = row.parent().children().length;
-                    }
-                }],
+                //{
+                //    name: labels.PreExecutionImplementation, field: "PreExecutionImplementation", type: "table", elements: impparam,
+                //    onrowadded: function (row) {
+                //        var order = row.find('[name=impOrder]');
+                //        if (order[0].value === "")
+                //            order[0].value = row.parent().children().length;
+                //    }
+                //}
+            ],
             graph: me.graph,
             readonly: me.graph.Settings.readonly
         };
@@ -565,9 +567,9 @@
                 isValid = false;
             }
 
-            if (!formControl.CheckRequired(data.PreExecutionImplementation, ['ActionName', 'Order'], WorkflowDesignerConstants.FieldIsRequired)) {
-                isValid = false;
-            }
+            //if (!formControl.CheckRequired(data.PreExecutionImplementation, ['ActionName', 'Order'], WorkflowDesignerConstants.FieldIsRequired)) {
+            //    isValid = false;
+            //}
             return isValid;
         }
 
@@ -576,6 +578,7 @@
                 form.ClearTempField(data);
 
                 me.item.Name = data.Name;
+                me.item.Id = data.Id;
                 me.item.State = data.State;
                 me.item.IsInitial = data.IsInitial;
                 me.item.IsFinal = data.IsFinal;
@@ -585,7 +588,7 @@
                 me.item.IsCondition = data.IsCondition;
 
                 me.item.Implementation = data.Implementation;
-                me.item.PreExecutionImplementation = data.PreExecutionImplementation;
+                //me.item.PreExecutionImplementation = data.PreExecutionImplementation;
 
                 WorkflowDesignerCommon.DataCorrection(me.graph.data);
                 me.graph.Draw(me.graph.data);
@@ -650,16 +653,16 @@
         }
 
         var tooltiptext2 = "";
-        if (Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0) {
-            me.item.PreExecutionImplementation.forEach(function (item) {
-                if (tooltiptext2.length > 0)
-                    tooltiptext2 += ", ";
-                tooltiptext2 += item.ActionName;
-            });
+        //if (Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0) {
+        //    me.item.PreExecutionImplementation.forEach(function (item) {
+        //        if (tooltiptext2.length > 0)
+        //            tooltiptext2 += ", ";
+        //        tooltiptext2 += item.ActionName;
+        //    });
 
-            if (tooltiptext == "")
-                tooltiptext = WorkflowDesignerConstants.None;
-        }
+        //    if (tooltiptext == "")
+        //        tooltiptext = WorkflowDesignerConstants.None;
+        //}
 
         if (tooltiptext.length > 0) {
             var textctrl = new Konva.Text({

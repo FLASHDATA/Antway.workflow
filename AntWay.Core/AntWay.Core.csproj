@@ -34,10 +34,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\PreventBlanqueo\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OptimaJet.Workflow.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\OptimaJet.Workflow.Core.dll</HintPath>
-    </Reference>
     <Reference Include="OptimaJet.Workflow.Oracle, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\OptimaJet.Workflow.Oracle.dll</HintPath>
@@ -56,20 +52,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\CommandsMapping.cs" />
+    <Compile Include="Mapping\EmptyCommandMapping.cs" />
+    <Compile Include="Mapping\ActivityAttribute.cs" />
+    <Compile Include="Mapping\MethodAttribute.cs" />
+    <Compile Include="Model\ActivityExecution.cs" />
+    <Compile Include="Model\AntWayActivityRuntimeBase.cs" />
+    <Compile Include="Model\AntWayActivityService.cs" />
+    <Compile Include="Model\AntWayProcessParameters.cs" />
+    <Compile Include="Model\DefaultSchemeCommands.cs" />
+    <Compile Include="Model\IAntWayRuntimeActivity.cs" />
+    <Compile Include="Providers\IAssemblies.cs" />
     <Compile Include="Model\AntWayResponseView.cs" />
-    <Compile Include="Runtime\AntWayCommand.cs" />
+    <Compile Include="Persistence\IWFSchemeModel.cs" />
+    <Compile Include="Model\AntWayCommandParameter.cs" />
     <Compile Include="Model\AntWayProcessInstance.cs" />
-    <Compile Include="PersistenceObjectsFactory.cs" />
+    <Compile Include="Persistence\PersistenceObjectsFactory.cs" />
+    <Compile Include="Runtime\AntWayConditions.cs" />
     <Compile Include="Runtime\AntWayRuntime.cs" />
-    <Compile Include="WorkflowEngine\Workflow.cs" />
-    <Compile Include="WorkflowEngine\WorkflowClient.cs" />
-    <Compile Include="WorkflowObjects\AntWayActionProvider.cs" />
-    <Compile Include="SamplesNotUsed\OracleExtensionsProvider.cs" />
-    <Compile Include="WorkflowObjects\TimerLazyClientManager.cs" />
-    <Compile Include="WorkflowEngine\WorkflowServer.cs" />
-    <Compile Include="SamplesNotUsed\WorkflowHelper.cs" />
+    <Compile Include="Mapping\ParameterValuesAttribute.cs" />
+    <Compile Include="Mapping\MappingReflection.cs" />
+    <Compile Include="Persistence\WFSchemeModel.cs" />
+    <Compile Include="Runtime\Workflow.cs" />
+    <Compile Include="Runtime\WorkflowClient.cs" />
+    <Compile Include="Providers\AntWayActionProvider.cs" />
+    <Compile Include="Providers\EmptyAsembly.cs" />
+    <Compile Include="Providers\TimerLazyClientManager.cs" />
+    <Compile Include="Runtime\WorkflowServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runtime\WorkflowRunTimeExtensions.cs" />
+    <Compile Include="ServiceLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -83,6 +94,11 @@
       <Project>{14694484-9517-491f-a03f-4337459947ae}</Project>
       <Name>Antway.Persistence.Provider</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
+      <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
+      <Name>OptimaJet.Workflow.Core</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

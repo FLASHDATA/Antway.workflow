@@ -489,7 +489,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-lg-7">
+                                    <div class="col-lg-8">
                                         <div class="m-portlet m-portlet--full-height" style="margin:10px;">
                                             <div class="m-portlet__body">
                                                 <style>
@@ -521,8 +521,9 @@
                                                     <thead>
                                                         <tr>
                                                             <th>WorkFlow</th>
-                                                            <th class="color-blue m--font-bold">Totales</th>
-                                                            <th class="color-orange">En Proceso</th>
+                                                            <th class="color-grey m--font-bold">Totales</th>
+                                                            <th class="color-orange">Ejecutando</th>
+                                                            <th class="color-blue">Dormido</th>
                                                             <th class="color-green">Finalizados</th>
                                                             <th class="color-red">Error</th>
                                                         </tr>
@@ -531,7 +532,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-5">
+                                    <div class="col-lg-4">
                                         <div id="canvas-holder" style="padding:10px 0px;">
                                             <canvas id="pie-area"></canvas>
                                         </div>
@@ -641,7 +642,7 @@
                                                     <tr>
                                                         <th>WorkFlow</th>
                                                         <th>Localizador</th>
-                                                        <th>Estado Actual</th>
+                                                        @*<th>Estado Actual</th>*@
                                                         <th>Tags</th>
                                                         <th>Última Actualización</th>
                                                     </tr>
@@ -650,7 +651,7 @@
                                                     <tr>
                                                         <th class="textSearch" title="WorkFlow">WorkFlow</th>
                                                         <th class="textSearch" title="Localizador">Localizador</th>
-                                                        <th class="textSearch" title="EstadoActual">EstadoActual</th>
+                                                        @*<th class="textSearch" title="EstadoActual">EstadoActual</th>*@
                                                         <th class="textSearch" title="Tags">Tags</th>
                                                         <th class="datepickerSearch">UltimaActualizacion</th>
                                                     </tr>
@@ -880,6 +881,11 @@
         margin: 1px;
     }
 
+
+    .color-grey {
+        color: #444;
+    }
+
     .color-red {
         color: rgb(255, 99, 132)
     }
@@ -993,7 +999,7 @@
                 "language": customDataTableLangES,
                 "createdRow": function (row, data, dataIndex) {
                     $(row).attr("data-id", data[0]);
-                    $(row).attr("data-values", data[2] + "," + data[3] + "," + data[4]);
+                    $(row).attr("data-values", data[2] + "," + data[3] + "," + data[4] + "," + data[5]);
                     if (data[0] == 'TOTAL') {
                         $(row).addClass("summary");
 
@@ -1016,15 +1022,23 @@
                         "sName": "Totales",
                         "mRender": function (oObj) {
                             var result = "";
-                            result += '<span class="color-blue bold">' + oObj + '</span>';
+                            result += '<span class="color-grey bold">' + oObj + '</span>';
                             return result;
                         }
                     },
                     {
-                        "sName": "EnProceso",
+                        "sName": "Ejecutando",
                         "mRender": function (oObj) {
                             var result = "";
                             result += '<span class="color-orange">' + oObj + '</span>';
+                            return result;
+                        }
+                    },
+                    {
+                        "sName": "Dormido",
+                        "mRender": function (oObj) {
+                            var result = "";
+                            result += '<span class="color-blue">' + oObj + '</span>';
                             return result;
                         }
                     },
@@ -1108,14 +1122,15 @@
                 type: 'doughnut', // bar ,doughnut, pie
                 data: {
                     datasets: [{
-                        data: [0, 0, 0],//[17, 18, 2],
+                        data: [0, 0, 0, 0],//[17, 18, 2],
                         backgroundColor: [
-                            window.chartColors.green,
                             window.chartColors.orange,
+                            window.chartColors.blue,
+                            window.chartColors.green,
                             window.chartColors.red,
                         ],
                     }],
-                    labels: ['Finalizados', 'En proceso', 'Error']
+                    labels: ['Ejecutando','Dormido', 'Finalizados', 'Error']
                 },
                 options: {
                     responsive: true,
@@ -1201,7 +1216,7 @@
                 "bProcessing": true,
                 "iDisplayLength": 20,
                 "language": customDataTableLangES,
-                "order": [[4, 'desc']],
+                "order": [[3, 'desc']],
                 "aoColumns": [
                     {
                         "sName": "WorkFlow",
@@ -1217,7 +1232,7 @@
                             return oObj;
                         }
                     },
-                    { "sName": "Estado Actual" },
+                    //{ "sName": "Estado Actual" },
                     {
                         "sName": "Tags",
                         "mRender": function (oObj) {

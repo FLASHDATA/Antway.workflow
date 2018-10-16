@@ -9,8 +9,9 @@ namespace AntWay.Persistence.Provider.Model.DataTable
     {
         public string WorkFlow { get; set; }
         public int TotalProcesos { get; set; }
+        public int TotalProcesosEstadoEjecutando { get; set; }
+        public int TotalProcesosEstadoDormido { get; set; }
         public int TotalProcesosEstadoFinalizado { get; set; }
-        public int TotalProcesosEstadoEnProceso  { get; set; }
         public int TotalProcesosEstadoError { get; set; }
 
         public int Order { get; set; }

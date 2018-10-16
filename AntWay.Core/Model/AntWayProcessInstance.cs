@@ -4,6 +4,7 @@ using OptimaJet.Workflow.Core.Model;
 
 namespace AntWay.Core.Model
 {
+    //TODO: VALORAR ELIMINAR ESTA CLASE
     public class AntWayProcessInstance
     {
         public ProcessInstance ProcessInstance { get; set; }
@@ -18,11 +19,12 @@ namespace AntWay.Core.Model
             var pd = ProcessInstance.GetParameter(name);
             if (pd == null) return null;
 
-            var result = new KeyValuePair<string, object>(pd.Name, pd.Value);
+            var cleanValue = pd?.Value.ToString() ?? "";
+            cleanValue = cleanValue.Replace("\"", "");
+
+            var result = new KeyValuePair<string, object>(pd.Name, cleanValue);
+
             return result;
         }
     }
-
- 
-
 }

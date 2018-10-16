@@ -146,11 +146,13 @@
     <Compile Include="Runtime\CreateInstanceParams.cs" />
     <Compile Include="Runtime\BeforeActivityExecutionEventArgs.cs" />
     <Compile Include="Runtime\ExecutionSearchOrder.cs" />
+    <Compile Include="Runtime\ICommandsMapping.cs" />
     <Compile Include="Runtime\IDesignerAutocompleteProvider.cs" />
     <Compile Include="Runtime\NeedTimerValueEventArgs.cs" />
     <Compile Include="Runtime\ParametersSerializer.cs" />
     <Compile Include="Runtime\ProcessHistoryItem.cs" />
     <Compile Include="Runtime\StartingTransitionNotFoundEventArgs.cs" />
+    <Compile Include="Runtime\WorkflowRuntimeAntway.cs" />
     <Compile Include="Runtime\WorkflowRuntimeBulkApi.cs" />
     <Compile Include="Subprocess\TreeSearchFilter.cs" />
     <Compile Include="Runtime\WorkflowErrorEventArgs.cs" />
@@ -185,8 +187,9 @@
     <Content Include="SQL\Oracle\CreatePersistenceObjects.sql" />
     <Content Include="SQL\Oracle\DropPersistenceObjects.sql" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="_Documentación\" />
+    <None Include="_Documentación\Registro de cambios.odt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

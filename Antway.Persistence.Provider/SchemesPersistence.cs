@@ -10,7 +10,13 @@ namespace AntWay.Persistence.Provider.Model
     public class SchemesPersistence
     {
         public IDALWFSchemes IDALSchemes { get; set; }
+        public IDALWFSchemeParameters IDALSchemeParameters { get; set; }
 
+        public List<WorkflowSchemeParameterValuesView> GetParametersList(string schemeCode)
+        {
+            var result = IDALSchemeParameters.GetWorkflowSchemeParameterValues(schemeCode);
+            return result;
+        }
 
         public List<SchemeDataTableView> GetSchemesDataTableView(DataTableFilters filter)
         {
@@ -42,5 +48,41 @@ namespace AntWay.Persistence.Provider.Model
             var scheme = IDALSchemes.Fetch<WorkflowSchemeView>(id);
             return scheme;
         }
+
+        public List<WorkflowSchemeParameterValuesView>
+                UpdateSchemes(string schemeCode,
+                              List<KeyValuePair<string, List<string>>>
+                              schemeParametersKVP)
+        {
+            var schemePV = new List<WorkflowSchemeParameterValuesView>();
+            
+            foreach(var sp in schemeParametersKVP)
+            {
+                var items = sp.Value
+                          .Select(f => new WorkflowSchemeParameterValuesView
+                          {
+                              SchemeParameter = new WorkflowSchemeParameterView
+                              {
+                                  SchemCode = schemeCode,
+                                  SchemeParameter = sp.Key
+                              },
+                              Value = f
+                          })
+                          .ToList();
+
+                schemePV.AddRange(items);
+            }
+
+
+            var result = IDALSchemeParameters.UpdateScheme(schemePV);
+            return result;
+        }
+
+        //public List<WorkflowSchemeParameterValuesView>
+        //        UpdateSchemes(List<WorkflowSchemeParameterValuesView> schemePV)
+        //{
+        //    var result = IDALSchemeParameters.UpdateScheme(schemePV);
+        //    return result;
+        //}
     }
 }

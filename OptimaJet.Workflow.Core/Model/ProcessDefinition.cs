@@ -558,6 +558,9 @@ namespace OptimaJet.Workflow.Core.Model
                     itemXe.SetAttributeValue("IsAutoSchemeUpdate", item.IsAutoSchemeUpdate.ToString());
 
                     //ANTWAY: Serialización de las propiedades boolean añadidas a la clase Activity
+
+                    itemXe.SetAttributeValue("Id", item.Id?.ToString());
+
                     itemXe.SetAttributeValue("IsScheme", item.IsScheme.ToString());
                     itemXe.SetAttributeValue("IsCondition", item.IsCondition.ToString());
                     //------------

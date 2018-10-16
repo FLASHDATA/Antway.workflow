@@ -9,6 +9,8 @@ namespace OptimaJet.Workflow.Core.Model
     /// </summary>
     public partial class ActivityDefinition 
     {
+        public string Id { get; set; }
+
         /// <summary>
         /// If true specifies that the activity is previous to a call to a service.
         /// </summary>
@@ -16,33 +18,12 @@ namespace OptimaJet.Workflow.Core.Model
 
         public bool IsCondition { get; set; }
 
-
-        public static ActivityDefinition Create(string name, string stateName, 
-                                                string isInitial, string isFinal, 
-                                                string isForSetState, string isAutoSchemeUpdate,
-                                                string isScheme,
-                                                string isCondition)
-        {
-            return new ActivityDefinition()
-            {
-                IsFinal = !string.IsNullOrEmpty(isFinal) && bool.Parse(isFinal),
-                IsInitial = !string.IsNullOrEmpty(isInitial) && bool.Parse(isInitial),
-                IsForSetState = !string.IsNullOrEmpty(isForSetState) && bool.Parse(isForSetState),
-                IsAutoSchemeUpdate = !string.IsNullOrEmpty(isAutoSchemeUpdate) && bool.Parse(isAutoSchemeUpdate),
-                IsScheme = !string.IsNullOrEmpty(isScheme) && bool.Parse(isScheme),
-                IsCondition = !string.IsNullOrEmpty(isCondition) && bool.Parse(isCondition),
-                Name = name,
-                State = stateName,
-                Implementation = new List<ActionDefinitionReference>(),
-                PreExecutionImplementation = new List<ActionDefinitionReference>()
-            };
-        }
-
         /// <summary>
         ///  Create ActivityDefinition object
         /// </summary>
         /// <param name="name">Name of the activity</param>
         /// <param name="stateName">Name of the state</param>
+        /// <param name="id">Id of the activity</param>
         /// <param name="isInitial">If true specifies that the activity is final. The process is marked as finalized after execution of the activity marked as final.</param>
         /// <param name="isFinal">If true specifies that the activity is final. The process is marked as finalized after execution of the activity marked as final.</param>
         /// <param name="isForSetState">If true specifies that the activity is entry point for a state and possible to set the state with the <see cref="State"/> name via <see cref="WorkflowRuntime.SetState"/> method</param>
@@ -50,25 +31,32 @@ namespace OptimaJet.Workflow.Core.Model
         /// <param name="isScheme">It is previous from a call to a scheme</param>
         /// <param name="isCondition">It is a condition</param>
         /// <returns>ActivityDefinition object</returns>
-        public static ActivityDefinition Create(string name, string stateName, bool isInitial,
-                                                bool isFinal, bool isForSetState,
-                                                bool isAutoSchemeUpdate,
-                                                bool isScheme,
-                                                bool isCondition)
+        public static ActivityDefinition Create(string name, string stateName, 
+                                                string id,
+                                                string isInitial, string isFinal, 
+                                                string isForSetState, string isAutoSchemeUpdate,
+                                                string isScheme,
+                                                string isCondition)
         {
             return new ActivityDefinition()
             {
-                IsFinal = isFinal,
-                IsInitial = isInitial,
-                IsForSetState = isForSetState,
-                IsAutoSchemeUpdate = isAutoSchemeUpdate,
-                IsScheme = isScheme,
                 Name = name,
                 State = stateName,
+
+                Id = id,
+
+                IsInitial = !string.IsNullOrEmpty(isInitial) && bool.Parse(isInitial),
+                IsFinal = !string.IsNullOrEmpty(isFinal) && bool.Parse(isFinal),
+
+                IsForSetState = !string.IsNullOrEmpty(isForSetState) && bool.Parse(isForSetState),
+                IsAutoSchemeUpdate = !string.IsNullOrEmpty(isAutoSchemeUpdate) && bool.Parse(isAutoSchemeUpdate),
+
+                IsScheme = !string.IsNullOrEmpty(isScheme) && bool.Parse(isScheme),
+                IsCondition = !string.IsNullOrEmpty(isCondition) && bool.Parse(isCondition),
+
                 Implementation = new List<ActionDefinitionReference>(),
                 PreExecutionImplementation = new List<ActionDefinitionReference>()
             };
         }
-
     }
 }

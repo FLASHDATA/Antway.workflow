@@ -90,9 +90,9 @@
                 a.Implementation.forEach(function (ai) {
                     checkAdditionalParams(ai.Name, data.AdditionalParams.Actions);
                 });
-                a.PreExecutionImplementation.forEach(function (ai) {
-                    checkAdditionalParams(ai.Name, data.AdditionalParams.Actions);
-                });
+                //a.PreExecutionImplementation.forEach(function (ai) {
+                //    checkAdditionalParams(ai.Name, data.AdditionalParams.Actions);
+                //});
             }
         });
 

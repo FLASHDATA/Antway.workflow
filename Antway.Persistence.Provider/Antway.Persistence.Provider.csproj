@@ -43,6 +43,7 @@
     <Compile Include="IDAL.cs" />
     <Compile Include="IDALLocators.cs" />
     <Compile Include="IDALWFProcessPersitence.cs" />
+    <Compile Include="IDALWFSchemeParameters.cs" />
     <Compile Include="IDALWFSchemes.cs" />
     <Compile Include="LocatorPersistence.cs" />
     <Compile Include="Model\DataTable\DataTableFilters.cs" />
@@ -51,6 +52,8 @@
     <Compile Include="Model\DataTable\ProcessHistoryDetailDataTableView.cs" />
     <Compile Include="Model\DataTable\SchemeDataTableView.cs" />
     <Compile Include="Model\DataTable\WorkFlowDataTableView.cs" />
+    <Compile Include="Model\WorkflowSchemeParameterValuesView.cs" />
+    <Compile Include="Model\WorkflowSchemeParameterView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProcessPersistence.cs" />
     <Compile Include="SchemesPersistence.cs" />

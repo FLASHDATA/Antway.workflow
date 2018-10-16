@@ -411,6 +411,16 @@
         return res;
     };
 
+
+    this.guid = function() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    }
+
     this.generateEasyControls = function (p, value, prefix, item) {
         var me = this;
         if (p.type === 'input') {
@@ -418,12 +428,20 @@
             control[0].id = this.generateid(p.field, prefix);
             control[0].name = me.getElementCode(p);
 
+            if (p.field == "Id" && value == undefined) {
+                value = this.guid();
+            }
             if (value != undefined)
                 control[0].value = value;
 
+
+            if (p.disabled) {
+                control.attr('disabled', 'disabled');
+            }
+
             if (me.isReadOnly())
                 control.attr('readonly', true);
-
+            
             this.addAutoComplete(p, control);
 
             return control;

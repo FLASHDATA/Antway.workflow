@@ -22,7 +22,8 @@ namespace AntWay.Oracle.Provider
                 //FROM WF_SCHEMES
                 string sql = "SELECT WorkFlow" +
                              ", TotalProcesos" +
-                             ", TotalProcesosEstadoEnProceso" +
+                             ", TotalProcesosEstadoEjecutando" +
+                             ", TotalProcesosEstadoDormido" +
                              ", TotalProcesosEstadoFinalizado" +
                              ", TotalProcesosEstadoError" +
                              ", ROWNUM AS NumFila" +
@@ -38,11 +39,12 @@ namespace AntWay.Oracle.Provider
 
                     sql += " SELECT wps.SCHEMECODE AS WorkFlow, " +
                             " SUM(1) TotalProcesos, " +
-                            " SUM(CASE WHEN wfps.STATUS <= 2 then 1 ELSE 0 end) TotalProcesosEstadoEnProceso," +
+                            " SUM(CASE WHEN wfps.STATUS <= 1 then 1 ELSE 0 end) TotalProcesosEstadoEjecutando," +
+                            " SUM(CASE WHEN wfps.STATUS = 2 then 1 ELSE 0 end) TotalProcesosEstadoDormido," +
                             " SUM(CASE WHEN wfps.STATUS = 3 then 1 ELSE 0 end) TotalProcesosEstadoFinalizado," +
                             " SUM(CASE WHEN wfps.STATUS = 4 OR wfps.STATUS = 5 then 1 ELSE 0 end) TotalProcesosEstadoError" +
                             $" FROM {schemeDBName}.WORKFLOWPROCESSINSTANCES wfps" +
-                             " INNER JOIN " +
+                             " LEFT JOIN " +
                              " (" +
                              " SELECT PROCESSID, MAX(TRANSITIONTIME) AS LAST_TRANSITION " +
                             $" FROM {schemeDBName}.WORKFLOWPROCESSTRANSITIONH " +
@@ -51,8 +53,9 @@ namespace AntWay.Oracle.Provider
                              " ON wfps.ID = PH.PROCESSID " +
                             $" INNER JOIN {schemeDBName}.WORKFLOWPROCESSINSTANCE wpi ON wfps.ID = wpi.ID" +
                             $" INNER JOIN {schemeDBName}.WORKFLOWPROCESSSCHEME wps ON wpi.SCHEMEID = wps.ID" +
-                             " WHERE LAST_TRANSITION>=:DateFrom" +
-                             " AND LAST_TRANSITION<=:DateTo";
+                             " WHERE (LAST_TRANSITION IS NULL OR" +
+                             " (LAST_TRANSITION>=:DateFrom AND LAST_TRANSITION<=:DateTo)" +
+                             " )";
 
                     filter.FilteredStringFields
                         .ForEach(f => sql += $" AND {f.Field} like '%' || :{f.Field} || '%'");

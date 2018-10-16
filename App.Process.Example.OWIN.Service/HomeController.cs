@@ -9,9 +9,17 @@ namespace IMHab.PreventBlanqueo.OWIN.Service
 {
     public class HomeController : ApiController
     {
-        // GET api/home/5 
+        //public async Task<string> Get(int id)
+        //{
+        //    await Task.Run(() => System.Threading.Thread.Sleep(30000));
+        //    return "value";
+        //}
+
+
+        //GET api/home/5 
         public string Get(int id)
         {
+            System.Threading.Thread.Sleep(30000);
             return "value";
         }
     }

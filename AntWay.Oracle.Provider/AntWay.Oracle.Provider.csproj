@@ -53,17 +53,17 @@
     <Compile Include="Data\LOCATORS.cs" />
     <Compile Include="Data\Model2.cs" />
     <Compile Include="Data\WF_SCHEMES.cs" />
+    <Compile Include="Data\WF_SCHEMES_PARAMETERS.cs" />
+    <Compile Include="Data\WF_SCHEME_PARAMETERS_VALUES.cs" />
     <Compile Include="LocatorsEFDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProcessEFDAL.cs" />
+    <Compile Include="WFSchemeParametersEFDAL.cs" />
     <Compile Include="WFSchemesEFDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Antway.Persistence.Provider\Antway.Persistence.Provider.csproj">
@@ -77,6 +77,9 @@
     <Content Include="SQL\update_1_4_3_to_1_4_4.sql" />
     <Content Include="SQL\update_1_4_4_to_1_5.sql" />
     <Content Include="SQL\update_1_5_to_2_0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

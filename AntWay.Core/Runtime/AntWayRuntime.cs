@@ -8,14 +8,14 @@ using OptimaJet.Workflow;
 using System.Collections.Specialized;
 using System.IO;
 using AntWay.Core.Model;
-using Antway.Core;
 using OptimaJet.Workflow.Core.Model;
 using AntWay.Persistence.Provider.Model;
 using Antway.Core.Persistence;
 using Newtonsoft.Json;
-using AntWay.Core.Scheme;
 using System.Linq.Expressions;
 using AntWay.Core.Mapping;
+using AntWay.Core.Activity;
+using System.Text.RegularExpressions;
 
 namespace AntWay.Core.Runtime
 {
@@ -73,12 +73,22 @@ namespace AntWay.Core.Runtime
             return result;
         }
 
+
+        public void SkipToState(Guid processId, string stateName)
+        {
+            WorkflowRuntime.SetState(processId, string.Empty, string.Empty,
+                                     stateName,
+                                     new Dictionary<string, object>());
+        }
+
+        //TODO: Review
+        //Utilizado en el contexto de llamadas entre esquemas de workflows
         public void SetState(Guid processId,
                              string stateFrom, string activityFrom,
                              string stateTo, string activityTo)
         {
             var pi = GetProcessInstance(processId);
-            SetState(pi.ProcessInstance, stateFrom, activityFrom, stateTo, activityTo);
+            SetState(pi, stateFrom, activityFrom, stateTo, activityTo);
         }
 
 
@@ -171,7 +181,7 @@ namespace AntWay.Core.Runtime
         public bool WorkflowCommandAvailable(Guid processId, string identityId = null)
         {
             var pi = WorkflowClient.AntWayRunTime.GetProcessInstance(processId);
-            bool isSCheme = pi.ProcessInstance.CurrentActivity.IsScheme;
+            bool isSCheme = pi.CurrentActivity.IsScheme;
 
             if (!isSCheme) return false;
 
@@ -227,6 +237,14 @@ namespace AntWay.Core.Runtime
                     .Where(a => a.Id != null)
                     .ToList()
             );
+
+            return result;
+        }
+
+        public List<ProcessHistoryItem> GetProcessHistory(ProcessInstance processInstance)
+        {
+            var result = WorkflowRuntime.PersistenceProvider
+                        .GetProcessHistory(processInstance.ProcessId);
 
             return result;
         }
@@ -325,18 +343,16 @@ namespace AntWay.Core.Runtime
             var pi = WorkflowClient.AntWayRunTime
                         .GetProcessInstance(guid);
 
-            pi.ProcessInstance
-               .SetParameter("CalledFromScheme", fromProcessInstance.ProcessInstance.SchemeCode);
-            pi.ProcessInstance
-               .SetParameter("CalledFromProcessId", fromProcessInstance.ProcessInstance.ProcessId);
-            WorkflowRuntime.PersistenceProvider.SavePersistenceParameters(pi.ProcessInstance);
+            pi.SetParameter("CalledFromScheme", fromProcessInstance.SchemeCode);
+            pi.SetParameter("CalledFromProcessId", fromProcessInstance.ProcessId);
+            WorkflowRuntime.PersistenceProvider.SavePersistenceParameters(pi);
 
             WorkflowClient.DataBaseScheme = databaseSchemeFromProcessInstance;
 
             return new AntWayResponseView
             {
                 CodeResponse = AntWayResponseView.CODE_RESPONSE_OK,
-                Value = pi.ProcessInstance.CurrentState
+                Value = pi.CurrentState
             };
         }
 
@@ -397,10 +413,10 @@ namespace AntWay.Core.Runtime
         }
 
 
-        public AntWayProcessInstance GetProcessInstance(Guid processId)
+        public ProcessInstance GetProcessInstance(Guid processId)
         {
             var processInstance = WorkflowRuntime.GetProcessInstanceAndFillProcessParameters(processId);
-            return new AntWayProcessInstance(processInstance);
+            return processInstance;
         }
 
 
@@ -447,6 +463,149 @@ namespace AntWay.Core.Runtime
 
             return result;
         }
+        #endregion
+
+
+        #region "Antway Timers"
+
+        public string GetTransitionExpiredState(ProcessInstance processInstance)
+        {
+            TransitionDefinition td = GetTransitionExpired(processInstance);
+            if (td == null) return null;
+
+            var tExpiredTo = processInstance
+                               .ProcessScheme
+                               .Transitions
+                               .FirstOrDefault(t => t.Trigger.Type == TriggerType.TimerExpired &&
+                                                t.From.Name == td.From.Name);
+
+            if (tExpiredTo?.To == null) return null;
+
+            return tExpiredTo.To.State;
+        }
+
+        public TransitionDefinition GetTransitionExpired(ProcessInstance processInstance)
+        {
+            if (processInstance.CurrentActivity.IsFinal) return null;
+
+            var timerIntervals = GetTimerIntervalTransitions(processInstance);
+
+            foreach (var timerInterval in timerIntervals)
+            {
+                bool expired = CheckTransitionExpired(processInstance, timerInterval);
+                if (expired) return timerInterval;
+            }
+
+            return null;
+        }
+
+        protected List<TransitionDefinition> GetTimerIntervalTransitions(ProcessInstance processInstance)
+        {
+            var result = processInstance
+                        .ProcessScheme
+                        .Transitions
+                        .Where(t => t.Trigger.Type == TriggerType.Timer &&
+                                    t.Classifier == TransitionClassifier.TimeInterval)
+                        .ToList();
+
+            return result;
+        }
+
+        protected bool CheckTransitionExpired(ProcessInstance processInstance,
+                                            TransitionDefinition timeIntervalDefinition)
+        {
+            var processHistory = GetProcessHistory(processInstance);
+
+            var activityFromExecuted = processHistory
+                                       .LastOrDefault(ph => ph.FromActivityName == timeIntervalDefinition.From.Name);
+            if (activityFromExecuted == null) return false;
+
+            DateTime? transitionExpires = GetNextExecutionDateTime(activityFromExecuted.TransitionTime,
+                                                                    timeIntervalDefinition.Trigger.Timer);
+            if (transitionExpires == null) return false;
+
+            var activityToExecuted = processHistory
+                                 .LastOrDefault(ph => ph.ToActivityName == timeIntervalDefinition.To.Name);
+
+            return activityToExecuted != null
+                        ? (activityToExecuted.TransitionTime > transitionExpires)
+                        : (DateTime.Now > transitionExpires);
+        }
+
+        private DateTime? GetNextExecutionDateTime(DateTime dateTimeFrom,
+                                                  TimerDefinition timerDefinition)
+        {
+            var timerValueParameterName = GetTimerValueParameterName(timerDefinition);
+
+            switch (timerDefinition.Type)
+            {
+                case TimerType.Date:
+                    var date1 = DateTime.Parse(timerDefinition.Value, WorkflowRuntime.SchemeParsingCulture);
+                    return date1.Date;
+
+                case TimerType.DateAndTime:
+                    var date2 = DateTime.Parse(timerDefinition.Value, WorkflowRuntime.SchemeParsingCulture);
+                    return date2;
+
+                case TimerType.Interval:
+                    var interval = GetInterval(timerDefinition.Value);
+                    if (interval <= 0)
+                        return null;
+                    return dateTimeFrom.AddMilliseconds(interval);
+
+                case TimerType.Time:
+                    var now = dateTimeFrom;
+                    var date3 = DateTime.Parse(timerDefinition.Value, WorkflowRuntime.SchemeParsingCulture);
+                    date3 = now.Date + date3.TimeOfDay;
+                    if (date3.TimeOfDay < now.TimeOfDay)
+                        date3 = date3.AddDays(1);
+                    return date3;
+            }
+
+            return null;
+        }
+
+        private string GetTimerValueParameterName(TimerDefinition timerDefinition)
+        {
+            return GetTimerValueParameterName(timerDefinition.Name);
+        }
+
+        private string GetTimerValueParameterName(string timerName)
+        {
+            return string.Format("TimerValue_{0}", timerName);
+        }
+
+        private double GetInterval(string value)
+        {
+            int res;
+
+            if (int.TryParse(value, out res))
+                return res;
+
+            var daysRegex = @"\d*\s*((days)|(day)|(d))(\W|\d|$)";
+            var hoursRegex = @"\d*\s*((hours)|(hour)|(h))(\W|\d|$)";
+            var minutesRegex = @"\d*\s*((minutes)|(minute)|(m))(\W|\d|$)";
+            var secondsRegex = @"\d*\s*((seconds)|(second)|(s))(\W|\d|$)";
+            var millisecondsRegex = @"\d*\s*((milliseconds)|(millisecond)|(ms))(\W|\d|$)";
+
+            return new TimeSpan(GetTotal(value, daysRegex), GetTotal(value, hoursRegex), GetTotal(value, minutesRegex), GetTotal(value, secondsRegex),
+                GetTotal(value, millisecondsRegex)).TotalMilliseconds;
+        }
+
+        private static int GetTotal(string s, string regex)
+        {
+            int total = 0;
+            foreach (var match in Regex.Matches(s, regex, RegexOptions.IgnoreCase))
+            {
+                int parsed;
+                var value = Regex.Match(match.ToString(), @"\d*").Value;
+                int.TryParse(value, out parsed);
+                total += parsed;
+            }
+
+            return total;
+        }
+
         #endregion
 
         protected string GetActivityIdFromClassType(Type type)

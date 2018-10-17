@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using AntWay.Core.Mapping;
-using AntWay.Core.Model;
+using AntWay.Core.Activity;
 
-namespace AntWay.Core.Scheme
+
+namespace AntWay.Core.Mapping
 {
     public static class MappingReflection
     {
@@ -19,7 +19,7 @@ namespace AntWay.Core.Scheme
 
             foreach (string method in methods)
             {
-                activityInstance.ParametersBind = ServiceLocator.RunMethod
+                activityInstance.ParametersBind = AntWayActivityActivator.RunMethod
                                                     (method, processId, activityInstance, parametersOutput);
             }
 

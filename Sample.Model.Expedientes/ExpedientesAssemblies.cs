@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using OptimaJet.Workflow.Core.Runtime;
-using AntWay.Core.Providers;
-using static Sample.Model.Expedientes.ActivityEnviarASignar;
+using AntWay.Core.Runtime;
 
 namespace Sample.Model.Expedientes
 {

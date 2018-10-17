@@ -11,7 +11,6 @@ namespace AntWay.Core.Model
         public static DefaultSchemeCommandNames Single
                                        => new DefaultSchemeCommandNames();
 
-        //public string Next => "Next";
         public string Siguiente => "Siguiente";
         public string Anterior => "Anterior";
     }

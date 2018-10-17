@@ -296,7 +296,7 @@
             : this.item.Classifier.toLowerCase();
 
         //console.log(classifier);
-        if (classifier == 'AntWay') return '#3F8C8D';
+        if (classifier == 'TimeInterval') return '#3F8C8D';
 
         return classifier == 'notspecified'
             ? '#7F8C8D'
@@ -565,7 +565,7 @@
 
         var textvalue = '';
         var triggertype = this.item.Trigger.Type.toLowerCase();
-        if (triggertype === 'auto') {
+        if (triggertype === 'auto' || triggertype == 'timerexpired') {
             textvalue += 'A';//'⚡ 🚀 🚦';
         }
         else if (triggertype === 'command') {
@@ -905,7 +905,8 @@
                 {
                     type: "group", elements: [
                         { name: labels.Name, field: "Name", type: "input", width: "100%" },
-                        { name: labels.Classifier, field: "Classifier", type: "select", width: "100%", datasource: ['NotSpecified', 'AntWay', 'Direct', 'Reverse'] }
+                        //{ name: labels.Classifier, field: "Classifier", type: "select", width: "100%", datasource: ['NotSpecified', 'AntWay', 'Direct', 'Reverse'] }
+                        { name: labels.Classifier, field: "Classifier", type: "select", width: "100%", datasource: ['NotSpecified', 'TimeInterval'] }
                      ]
                 },
                 {
@@ -917,7 +918,7 @@
                     field: "Trigger", code: 'trigger', type: "form", datadefault: { Type: 'Command' }, elements: [
                         {
                             type: "group", elements: [
-                                { name: labels.Trigger, code: 'triggertype', field: "Type", type: "select", datasource: ['Auto', 'Command', 'Timer'] },
+                                { name: labels.Trigger, code: 'triggertype', field: "Type", type: "select", datasource: ['Auto', 'Command', 'Timer', 'TimerExpired'] },
                                 { name: labels.TriggerCommand, code: 'triggercommand', field: "Command.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Commands },
                                 { name: labels.TriggerTimer, code: 'triggertimer', field: "Timer.Name", type: "select", displayfield: 'Name', datasource: me.graph.data.Timers }
                             ]

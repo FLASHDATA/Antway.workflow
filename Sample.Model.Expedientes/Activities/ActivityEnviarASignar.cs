@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AntWay.Core.Activity;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
 using OptimaJet.Workflow.Core.Model;
@@ -100,9 +101,6 @@ namespace Sample.Model.Expedientes
         public const string PARAMETER_SIGNATURA_SIGNAT =
                                ExpedientesWorkflowParameterNames.ESTAT_SIGNATURA_SIGNAT;
 
-
-        //[ParameterValues(Values = new string[] 
-        //                    { PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR, PARAMETER_SIGNATURA_SIGNAT })]
         [BindingMethod(Name = "BindingMethod_ParamaterSignatura")]
         public string PARAMETER_SIGNATURA { get; set; }
     }

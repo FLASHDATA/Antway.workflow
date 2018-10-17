@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Antway.Core.Persistence;
+using AntWay.Core.Activity;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
 using AntWay.Persistence.Provider.Model;
@@ -70,7 +71,7 @@ namespace AntWay.Core.Providers
                                    .Activities.FirstOrDefault(a => a.Name == activityName);
 
             //Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            IAntWayRuntimeActivity awRuntimeActivity = ServiceLocator
+            IAntWayRuntimeActivity awRuntimeActivity = AntWayActivityActivator
                                                        .GetAntWayObjectFromActivity(currenteActivity.Id);
 
             if (awRuntimeActivity == null)

@@ -48,6 +48,7 @@
             this.tbActivityExecutionDetail = new System.Windows.Forms.TextBox();
             this.lbActivities = new System.Windows.Forms.ListBox();
             this.bindingWFSParameterValues = new System.Windows.Forms.BindingSource(this.components);
+            this.btTest = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.gbActividades.SuspendLayout();
@@ -138,6 +139,7 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Controls.Add(this.btTest);
             this.groupBox2.Controls.Add(this.btAnterior);
             this.groupBox2.Controls.Add(this.cmbSchemeCodes);
             this.groupBox2.Controls.Add(this.label7);
@@ -282,6 +284,16 @@
             // 
             this.bindingWFSParameterValues.DataSource = typeof(AntWay.Persistence.Provider.Model.WorkflowSchemeParameterValuesView);
             // 
+            // btTest
+            // 
+            this.btTest.Location = new System.Drawing.Point(206, 135);
+            this.btTest.Name = "btTest";
+            this.btTest.Size = new System.Drawing.Size(75, 23);
+            this.btTest.TabIndex = 21;
+            this.btTest.Text = "Test";
+            this.btTest.UseVisualStyleBackColor = true;
+            this.btTest.Click += new System.EventHandler(this.btTest_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -326,5 +338,6 @@
         private System.Windows.Forms.TextBox tbActivityExecutionDetail;
         private System.Windows.Forms.ListBox lbActivities;
         private System.Windows.Forms.Button btSimulateBDChange;
+        private System.Windows.Forms.Button btTest;
     }
 }

@@ -140,7 +140,9 @@ namespace OptimaJet.Workflow.Core.Model
         /// <summary>
         /// Transition starts by a timer
         /// </summary>
-        Timer
+        Timer,
+
+        TimerExpired,
     }
 
 

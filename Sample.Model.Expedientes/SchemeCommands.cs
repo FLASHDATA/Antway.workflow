@@ -12,7 +12,6 @@ namespace Sample.Model.Expedientes
         public static SchemeCommandNames Single
                                        => new SchemeCommandNames();
 
-        //public string Next => DefaultSchemeCommandNames.Single.Next;
         public string Siguiente => DefaultSchemeCommandNames.Single.Siguiente;
         public string Anterior => DefaultSchemeCommandNames.Single.Anterior;
         public string Firmar => "Firmar";

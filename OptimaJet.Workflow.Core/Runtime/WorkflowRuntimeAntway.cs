@@ -12,8 +12,6 @@ namespace OptimaJet.Workflow.Core.Runtime
 {
     public sealed partial class WorkflowRuntime
     {
-        //TODO: Plantearse si va a ser siempre el mismo objeto,
-        //      quitar la inyección de Antway.Core.Runtime Workflowclient.cs
         public ICommandsMapping CommandMapping { get; set; }
 
 

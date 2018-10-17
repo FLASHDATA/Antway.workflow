@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OptimaJet.Workflow.Core.Runtime;
 
-namespace AntWay.Core.Providers
+namespace AntWay.Core.Runtime
 {
     public class EmptyAsembly : IAssemblies
     {

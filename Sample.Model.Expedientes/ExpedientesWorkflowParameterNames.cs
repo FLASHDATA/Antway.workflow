@@ -19,24 +19,24 @@ namespace Sample.Model.Expedientes
 
 
     /// <summary>
-    /// MAPEADO ENTERO DE PARÁMETROS
-    /// SEGURAMENTE SE QUITARÁ
+    /// MAPEADO ENTERO DE PARÁMETROS PARA BD
+    /// SEGURAMENTE SE QUITARÁ (NO SE ESTÁ USANDO EL MAPEO A BD IMPLEMENTADO)
     /// </summary>
-    public class ExpedientesParametersMappingNOTUSED
-    {
-        public static ExpedientesParametersMappingNOTUSED Single
-                                        => new ExpedientesParametersMappingNOTUSED();
+    //public class ExpedientesParametersMappingNOTUSED
+    //{
+    //    public static ExpedientesParametersMappingNOTUSED Single
+    //                                    => new ExpedientesParametersMappingNOTUSED();
 
-        public const string ESTAT_SIGNATURA_ENVIAT_A_SIGNAR = "ENVIAT_A_SIGNAR";
-        public const string ESTAT_SIGNATURA_SIGNAT = "SIGNAT";
-        public const string ESTAT_SIGNATURA_CADUCAT = "CADUCAT";
+    //    public const string ESTAT_SIGNATURA_ENVIAT_A_SIGNAR = "ENVIAT_A_SIGNAR";
+    //    public const string ESTAT_SIGNATURA_SIGNAT = "SIGNAT";
+    //    public const string ESTAT_SIGNATURA_CADUCAT = "CADUCAT";
 
-        [ParameterValues(Values = new string[]
-                {
-                    ESTAT_SIGNATURA_ENVIAT_A_SIGNAR,
-                    ESTAT_SIGNATURA_SIGNAT,
-                    ESTAT_SIGNATURA_CADUCAT
-                })]
-        public string ESTAT_SIGNATURA => "ESTAT_SIGNATURA";
-    }
+    //    [ParameterValues(Values = new string[]
+    //            {
+    //                ESTAT_SIGNATURA_ENVIAT_A_SIGNAR,
+    //                ESTAT_SIGNATURA_SIGNAT,
+    //                ESTAT_SIGNATURA_CADUCAT
+    //            })]
+    //    public string ESTAT_SIGNATURA => "ESTAT_SIGNATURA";
+    //}
 }

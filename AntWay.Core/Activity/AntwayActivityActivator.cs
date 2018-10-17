@@ -5,11 +5,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AntWay.Core.Mapping;
-using AntWay.Core.Model;
 
-namespace AntWay.Core
+namespace AntWay.Core.Activity
 {
-    public static class ServiceLocator
+    public static class AntWayActivityActivator
     {
         public static IAntWayRuntimeActivity GetAntWayObjectFromActivity(string actityId)
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
 
-namespace AntWay.Core.Providers
+namespace AntWay.Core.Runtime
 {
     public sealed class TimerLazyClientManager : ITimerManager
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AntWay.Core.Activity;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
 using OptimaJet.Workflow.Core.Model;

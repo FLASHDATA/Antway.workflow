@@ -86,12 +86,6 @@ namespace AntWay.Core.Runtime
             }
         }
 
-        //public static AntWayProcessView GetAntWayProcess(string localizador, string identifyId = null)
-        //{
-        //    AntWayProcessView result = WorkflowRuntimeExtensions.GetAntWayProcess(Runtime, localizador, identifyId);
-        //    return result;
-        //}
-
 
         private static WorkflowRuntime _Runtime = null;
         private static WorkflowRuntime Runtime

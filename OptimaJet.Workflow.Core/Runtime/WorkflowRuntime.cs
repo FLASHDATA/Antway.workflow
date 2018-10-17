@@ -1571,7 +1571,9 @@ Please use the following method: public void ExecuteCommand(WorkflowCommand comm
             var processInstance = Builder.GetProcessInstance(processId);
             var activityToSet =
                 processInstance.ProcessScheme.Activities.FirstOrDefault(
-                    a => a.IsState && a.IsForSetState && a.State == stateName);
+                    a => a.IsState && 
+                    //a.IsForSetState &&
+                    a.State == stateName);
 
             if (activityToSet == null)
                 throw new ActivityNotFoundException();

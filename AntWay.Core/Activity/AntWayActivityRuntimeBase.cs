@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AntWay.Core.Model;
 using Newtonsoft.Json;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
 
-namespace AntWay.Core.Model
+namespace AntWay.Core.Activity
 {
     public abstract class AntWayActivityRuntimeBase
     {

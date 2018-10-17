@@ -8,16 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Antway.Core.Persistence;
-using AntWay.Core;
+using AntWay.Core.Activity;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
-using AntWay.Core.Providers;
 using AntWay.Core.Runtime;
-using AntWay.Core.Scheme;
 using AntWay.Persistence.Provider.Model;
 using Newtonsoft.Json;
 using OptimaJet.Workflow.Core.Model;
-using OptimaJet.Workflow.Core.Runtime;
 using Sample.Model.Expedientes;
 using Temp.Factory;
 
@@ -66,6 +63,34 @@ namespace Client.Winforms.Demos
             }
         }
 
+        protected bool CheckTimersExpired(ProcessInstance processInstance = null)
+        {
+            processInstance = processInstance
+                                ?? WorkflowClient.AntWayRunTime
+                                    .GetProcessInstance(ProcessId.Value);
+
+            string transitionExpiredStateTo = WorkflowClient.AntWayRunTime
+                                .GetTransitionExpiredState(processInstance);
+
+            if (transitionExpiredStateTo != null)
+            {
+                WorkflowClient.AntWayRunTime
+                    .SkipToState(ProcessId.Value, transitionExpiredStateTo);
+
+                RefreshWorkflow($"Salto a {transitionExpiredStateTo} por caducidad de periodo {Environment.NewLine}");
+                return true;
+            }
+            return false;
+        }
+
+
+        private void btTest_Click(object sender, EventArgs e)
+        {
+            var processInstance = WorkflowClient.AntWayRunTime
+                                    .GetProcessInstance(ProcessId.Value);
+
+            CheckTimersExpired(processInstance);
+        }
 
         private void LoadActivities()
         {
@@ -75,7 +100,7 @@ namespace Client.Winforms.Demos
                      .GetProcessInstance(ProcessId.Value);
 
             var activities = WorkflowClient.AntWayRunTime
-                            .GetActivities(processInstance.ProcessInstance)
+                            .GetActivities(processInstance)
                             .Select(a => new KeyValuePair<string, string>(a.Id, $"{a.Id.Substring(0, 10)}/{a.Name}"))
                             .ToList();
 
@@ -123,16 +148,16 @@ namespace Client.Winforms.Demos
                       ? $"Recuperado Workflow con localizador {Localizador}{Environment.NewLine}"
                       : $"Nuevo Workflow con localizador {Localizador}{Environment.NewLine}";
 
+
             StartWF(cmbSchemeCodes.SelectedItem.ToString());
             LoadLocalizadores(cmbSchemeCodes.SelectedItem.ToString());
 
-
             RefreshWorkflow(log);
 
-            AntWayProcessInstance awpi = GetAntWayProcessInstance(Localizador);
-            ActivityDefinition activity = awpi.ProcessInstance.CurrentActivity;
+            ProcessInstance pi = GetAntWayProcessInstance(Localizador);
+            ActivityDefinition activity = pi.CurrentActivity;
             List<TransitionDefinition>
-                transitions = awpi.ProcessInstance
+                transitions = pi
                               .ProcessScheme
                               .GetPossibleTransitionsForActivity(activity)
                               .ToList();
@@ -140,7 +165,7 @@ namespace Client.Winforms.Demos
             if (transitions.Any(t => t.IsConditionTransition))
             {
                 WorkflowClient.AntWayRunTime
-                                .ExecuteTriggeredConditionalTransitions(awpi.ProcessInstance, transitions);
+                                .ExecuteTriggeredConditionalTransitions(pi, transitions);
                 RefreshWorkflow("");
             }
 
@@ -207,11 +232,24 @@ namespace Client.Winforms.Demos
                 ProcessId = WorkflowClient.GetAntWayRunTime(schemeCode)
                             .CreateInstanceAndPersist(processPersistenceViewNew);
             }
+
+            CheckTimersExpired();
         }
 
         private void btSiguiente_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
+
+            bool caducado =  CheckTimersExpired();
+            if (caducado)
+            {
+                Cursor.Current = Cursors.Default;
+                return;
+            }
+            //var availableCommands = WorkflowClient.AntWayRunTime
+            //             .GetAvailableCommands(ProcessId.Value);
+
+            //bool commandAvailable = availableCommands
 
             WorkflowClient.AntWayRunTime
                 .ExecuteCommand(ProcessId.Value, SchemeCommandNames.Single.Siguiente);
@@ -223,6 +261,13 @@ namespace Client.Winforms.Demos
         private void btAnterior_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
+
+            bool caducado = CheckTimersExpired();
+            if (caducado)
+            {
+                Cursor.Current = Cursors.Default;
+                return;
+            }
 
             WorkflowClient.AntWayRunTime
                 .ExecuteCommand(ProcessId.Value, SchemeCommandNames.Single.Anterior);
@@ -236,6 +281,13 @@ namespace Client.Winforms.Demos
         {
             Cursor.Current = Cursors.WaitCursor;
 
+            bool caducado = CheckTimersExpired();
+            if (caducado)
+            {
+                Cursor.Current = Cursors.Default;
+                return;
+            }
+
             WorkflowClient.AntWayRunTime
                     .ExecuteCommand(ProcessId.Value, SchemeCommandNames.Single.Firmar);
             RefreshWorkflow($"Documento de localizador {Localizador} firmado");
@@ -244,7 +296,7 @@ namespace Client.Winforms.Demos
         }
 
      
-        private AntWayProcessInstance GetAntWayProcessInstance(string localizador)
+        private ProcessInstance GetAntWayProcessInstance(string localizador)
         {
             if (String.IsNullOrEmpty(localizador))
             {
@@ -321,7 +373,7 @@ namespace Client.Winforms.Demos
                                     .GetProcessInstance(ProcessId.Value);
 
             string jsonObjectString = WorkflowClient.AntWayRunTime
-                                       .GetActivityExecutionJsonObject(processInstance.ProcessInstance, 
+                                       .GetActivityExecutionJsonObject(processInstance, 
                                                                       activityId);
 
             tbActivityExecutionDetail.Text = "";
@@ -332,12 +384,12 @@ namespace Client.Winforms.Demos
             //TODO: Move to core
             var activityExecution = WorkflowClient.AntWayRunTime
                                     .GetActivityExecutionObject<List<ActivityExecution>>
-                                            (processInstance.ProcessInstance, activityId)
+                                            (processInstance, activityId)
                                     .LastOrDefault();
             
             IAntWayRuntimeActivity activityInstance = WorkflowClient.AntWayRunTime
                                                        .GetActivityExecutionObject<List<ActivityEnviarASignar>>
-                                                            (processInstance.ProcessInstance, activityId)
+                                                            (processInstance, activityId)
                                                        .LastOrDefault();
             if (activityInstance == null) return;
             activityInstance.ParametersBind = MappingReflection
@@ -353,7 +405,7 @@ namespace Client.Winforms.Demos
                                             ? $"ParametersBind: Parámetro PARAMETER_SIGNATURA = {parametersBind.PARAMETER_SIGNATURA}"
                                             : "";
 
-            tbActivityExecutionDetail.Text = $"{parameterBindSignatura} {Environment.NewLine} {jsonObjectString}";
+            tbActivityExecutionDetail.Text = $"{parameterBindSignatura} {Environment.NewLine} {Environment.NewLine} {jsonObjectString}";
         }
 
 
@@ -370,5 +422,6 @@ namespace Client.Winforms.Demos
             lbActivities.SelectedIndex = 0;
             lbActivities_SelectedValueChanged(null, null);
         }
+
     }
 }

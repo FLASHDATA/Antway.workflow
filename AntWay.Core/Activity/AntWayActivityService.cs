@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
-using Newtonsoft.Json;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
 

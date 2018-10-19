@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.ConsoleApp", "Client.ConsoleApp\Client.ConsoleApp.csproj", "{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntWay.Core", "AntWay.Core\AntWay.Core.csproj", "{9FB295C0-E9E7-4B37-9120-D9DFCCA9A3F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.OWIN.Service", "App.Process.Example.OWIN.Service\Example.OWIN.Service.csproj", "{7CF712E0-7CB1-4DE3-AB5C-D82E7F5BE7C8}"
@@ -61,18 +59,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Debug|x64.Build.0 = Debug|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Debug|x86.Build.0 = Debug|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Release|x64.ActiveCfg = Release|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Release|x64.Build.0 = Release|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Release|x86.ActiveCfg = Release|Any CPU
-		{6856DE77-F61E-4FFE-BC17-DA0055C6B53E}.Release|x86.Build.0 = Release|Any CPU
 		{9FB295C0-E9E7-4B37-9120-D9DFCCA9A3F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9FB295C0-E9E7-4B37-9120-D9DFCCA9A3F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FB295C0-E9E7-4B37-9120-D9DFCCA9A3F2}.Debug|x64.ActiveCfg = Debug|Any CPU

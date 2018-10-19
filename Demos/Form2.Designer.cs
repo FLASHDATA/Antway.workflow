@@ -37,6 +37,7 @@
             this.btRun = new System.Windows.Forms.Button();
             this.btnFirmarDoc = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btTest = new System.Windows.Forms.Button();
             this.btAnterior = new System.Windows.Forms.Button();
             this.cmbSchemeCodes = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -48,7 +49,6 @@
             this.tbActivityExecutionDetail = new System.Windows.Forms.TextBox();
             this.lbActivities = new System.Windows.Forms.ListBox();
             this.bindingWFSParameterValues = new System.Windows.Forms.BindingSource(this.components);
-            this.btTest = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.gbActividades.SuspendLayout();
@@ -155,6 +155,17 @@
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Aplicación cliente que conecta con Workflow";
+            // 
+            // btTest
+            // 
+            this.btTest.Location = new System.Drawing.Point(206, 135);
+            this.btTest.Name = "btTest";
+            this.btTest.Size = new System.Drawing.Size(75, 23);
+            this.btTest.TabIndex = 21;
+            this.btTest.Text = "Test";
+            this.btTest.UseVisualStyleBackColor = true;
+            this.btTest.Visible = false;
+            this.btTest.Click += new System.EventHandler(this.btTest_Click);
             // 
             // btAnterior
             // 
@@ -283,16 +294,6 @@
             // bindingWFSParameterValues
             // 
             this.bindingWFSParameterValues.DataSource = typeof(AntWay.Persistence.Provider.Model.WorkflowSchemeParameterValuesView);
-            // 
-            // btTest
-            // 
-            this.btTest.Location = new System.Drawing.Point(206, 135);
-            this.btTest.Name = "btTest";
-            this.btTest.Size = new System.Drawing.Size(75, 23);
-            this.btTest.TabIndex = 21;
-            this.btTest.Text = "Test";
-            this.btTest.UseVisualStyleBackColor = true;
-            this.btTest.Click += new System.EventHandler(this.btTest_Click);
             // 
             // Form2
             // 

@@ -78,6 +78,15 @@ namespace OptimaJet.Workflow.Core.Persistence
         /// <exception cref="ImpossibleToSetStatusException"></exception>
         void SetWorkflowFinalized(ProcessInstance processInstance);
 
+
+        /// <summary>
+        /// Set process instance status to <see cref="ProcessStatus.Error"/>
+        /// </summary>
+        /// <param name="processInstance">Instance of the process</param>
+        /// <exception cref="ImpossibleToSetStatusException"></exception>
+        void SetWorkflowError(ProcessInstance processInstance);
+
+
         /// <summary>
         /// Set process instance status to <see cref="ProcessStatus.Terminated"/>
         /// </summary>

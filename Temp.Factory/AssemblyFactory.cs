@@ -15,7 +15,7 @@ namespace Temp.Factory
             switch (schemeCode)
             {
                 case "EXPEDIENTES":
-                    assemblies = new Sample.Model.Expedientes.ExpedientesAssemblies();
+                    assemblies = new Sample.Model.Expedientes.AntWayBinding.ExpedientesAssemblies();
                     break;
             }
 

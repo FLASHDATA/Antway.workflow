@@ -16,6 +16,8 @@ using System.Linq.Expressions;
 using AntWay.Core.Mapping;
 using AntWay.Core.Activity;
 using System.Text.RegularExpressions;
+using AntWay.Core.Manager;
+using static AntWay.Core.Manager.Checksum;
 
 namespace AntWay.Core.Runtime
 {
@@ -136,6 +138,11 @@ namespace AntWay.Core.Runtime
         public string GetCurrentActivityName(Guid processId)
         {
             return WorkflowRuntime.GetCurrentActivityName(processId);
+        }
+
+        public void SetErrorState(ProcessInstance processInstance, string activityDescription)
+        {
+            WorkflowRuntime.SetErrorState(processInstance, activityDescription);
         }
 
         public Task<bool> ExecuteTriggeredConditionalTransitions(ProcessInstance processInstance,
@@ -420,27 +427,112 @@ namespace AntWay.Core.Runtime
         }
 
 
+        public ManagerResponse ValidateModel(ProcessInstance processInstance)
+        {
+            IAntWayRuntimeActivity activityInstance = null;
+            object activityModelInstance = null;
+
+            //GET CHECKSUM VALUES FROM BINDINGMETHODS
+            List<ActivityManager> activityManagerList = WorkflowClient.IActivityManager.GetActivitiesManager();
+            foreach(ActivityManager am in activityManagerList)
+            {
+                activityInstance = Activator.CreateInstance(am.ClassActivityType)
+                                             as IAntWayRuntimeActivity;
+
+                activityModelInstance = Activator.CreateInstance(am.ClassActivityModelType);
+
+                var idFromActivityClass = activityInstance.GetType().GetAttributeValue((ActivityAttribute a) => a.Id);
+                activityInstance.ActivityId = idFromActivityClass;
+
+                var activityExecutionPersisted = GetLastActivityExecution(processInstance, activityInstance.ActivityId);
+
+                var errorResponse = new ManagerResponse
+                                    {
+                                        Success = false,
+                                        ActivityId = activityExecutionPersisted.ActivityId,
+                                        ActivityName = activityExecutionPersisted.ActivityName,
+                                    };
+
+                if (activityExecutionPersisted?.InputChecksum != null)
+                {
+                    string checksumInputPersisted = activityExecutionPersisted.InputChecksum;
+                    string checksumInputBinded = GetChecksum(processInstance,
+                                                             activityInstance,
+                                                             activityModelInstance,
+                                                             ChecksumType.Input);
+                    if (checksumInputBinded != checksumInputPersisted) return errorResponse;
+                }
+
+                if (activityExecutionPersisted?.OutputChecksum != null)
+                {
+                    string checksumOutputPersisted = activityExecutionPersisted.OutputChecksum;
+                    string checksumOutputBinded = GetChecksum(processInstance,
+                                                              activityInstance,
+                                                              activityModelInstance,
+                                                              ChecksumType.Output);
+                    if (checksumOutputBinded != checksumOutputPersisted) return errorResponse;
+                }
+            }
+
+            return new ManagerResponse { Success = true  };
+        }
+
+        protected string GetChecksum(ProcessInstance processInstance,
+                                     IAntWayRuntimeActivity activityInstance,
+                                     object activityModelInstance,
+                                     ChecksumType checksumType)
+        {
+            string cadTochecksumFromBindingMethods = "";
+            var methods = MappingReflection
+                          .GetActivityMethodAttributes(activityModelInstance, checksumType);
+
+            foreach (string method in methods)
+            {
+                object methodResult = AntWayActivityActivator.RunMethod
+                                    (method, processInstance.ProcessId.ToString(), activityInstance);
+
+                cadTochecksumFromBindingMethods += methodResult.ToString();
+            }
+            string result = Checksum.Single.CalculateChecksum(cadTochecksumFromBindingMethods);
+
+            return result;
+        }
+
+        public ActivityExecution GetLastActivityExecution(ProcessInstance processInstance, string activityId)
+        {
+            var result = WorkflowClient.AntWayRunTime
+                        .GetActivityExecutionObject<List<ActivityExecution>>
+                                (processInstance, activityId)
+                        .OrderByDescending(ae => ae.EndTime)
+                        .FirstOrDefault();
+
+            return result;
+        }
+
+       
         #region "EvaluateExpression Functions for Conditions in designer"
         public bool EvaluateExpression<TA, TPO>(ProcessInstance processInstance,
-                                 Expression<Func<TPO, bool>> condition) where TA : IAntWayRuntimeActivity
+                                 Expression<Func<TPO, bool>> condition,
+                                 ChecksumType checksumType) where TA : IAntWayRuntimeActivity
         {
             Type type = typeof(TA);
             string activityId = GetActivityIdFromClassType(type);
-            bool result = EvaluateExpression<TA, TPO>(processInstance, activityId, condition);
+            bool result = EvaluateExpression<TA, TPO>(processInstance, activityId, condition, checksumType);
 
             return result;
         }
 
 
         public bool EvaluateExpression<TA, TPO>(ProcessInstance processInstance, string activityId,
-                                          Expression<Func<TPO, bool>> condition) where TA : IAntWayRuntimeActivity
+                                          Expression<Func<TPO, bool>> condition,
+                                          ChecksumType checksumType) where TA : IAntWayRuntimeActivity
         {
             List<TPO> l = new List<TPO>();
             List<ActivityExecution> paramValues = AntWayRuntime.Single
                                                     .GetActivityExecutionObject<List<ActivityExecution>>
                                                             (processInstance, activityId);
             TPO parametersOut = JsonConvert.DeserializeObject<TPO>
-                                    (paramValues.LastOrDefault().ParametersOut.ToString());
+                                    (paramValues.LastOrDefault().ParametersOutput.ToString());
 
             IAntWayRuntimeActivity activityInstance = WorkflowClient.AntWayRunTime
                                                        .GetActivityExecutionObject<List<TA>>
@@ -449,10 +541,11 @@ namespace AntWay.Core.Runtime
 
             if (activityInstance == null) return false;
 
-            activityInstance.ParametersBind = MappingReflection
-                                              .GetParametersBind(processInstance.ProcessId.ToString(),
-                                                                 activityInstance, parametersOut);
-            l.Add((TPO)activityInstance.ParametersBind);
+            TPO parametersBind = MappingReflection
+                                .GetParametersBind(processInstance.ProcessId.ToString(),
+                                                                 activityInstance, parametersOut,
+                                                                  checksumType);
+            l.Add(parametersBind);
 
             var f = from g in l.
                     Where(condition.Compile())

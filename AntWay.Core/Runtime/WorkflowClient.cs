@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using Antway.Core;
 using Antway.Core.Persistence;
+using AntWay.Core.Manager;
 using AntWay.Core.Mapping;
 using AntWay.Core.Providers;
 using AntWay.Core.Runtime;
@@ -18,6 +19,7 @@ namespace AntWay.Core.Runtime
         private static ITimerManager ITimerManager = null;
         private static ICommandsMapping ICommandsMapping = null;
         private static IAssemblies IAssemblies = null;
+        public static IActivityManager IActivityManager = null;
 
         private static string _DatabaseScheme;
         public static string DataBaseScheme
@@ -34,7 +36,6 @@ namespace AntWay.Core.Runtime
         }
 
         public static void WithActionProvider(IWorkflowActionProvider _IAntWayActionProvider)
-       
         {
             IAntWayActionProvider = _IAntWayActionProvider;
         }
@@ -52,6 +53,11 @@ namespace AntWay.Core.Runtime
         public static void WithAssemblies(IAssemblies _IAssemblies)
         {
             IAssemblies = _IAssemblies;
+        }
+
+        public static void WithActivityManager(IActivityManager _IActivityManager)
+        {
+            IActivityManager = _IActivityManager;
         }
 
         public static AntWayRuntime GetAntWayRunTime(string schemeCode)

@@ -151,7 +151,7 @@ namespace AntWay.Core.Providers
                        .Activities.FirstOrDefault(a => a.Name == activityName);
 
             var value = processInstance
-                        .GetParameter($"{currenteActivity.Id}/{AntWayProcessParameters.ACTIVITY_EXECUTION_SUCCEED}")
+                        .GetParameter($"{currenteActivity.Id}/{Constants.ACTIVITY_EXECUTION_SUCCEED}")
                         ?.Value
                         .ToString();
 
@@ -171,7 +171,7 @@ namespace AntWay.Core.Providers
                           .Activities.FirstOrDefault(a => a.Id == jsonObj.activityId);
 
             var value = processInstance
-                        .GetParameter($"{activity.Id}/{AntWayProcessParameters.ACTIVITY_EXECUTION_SUCCEED}")
+                        .GetParameter($"{activity.Id}/{Constants.ACTIVITY_EXECUTION_SUCCEED}")
                         .Value
                         .ToString();
 

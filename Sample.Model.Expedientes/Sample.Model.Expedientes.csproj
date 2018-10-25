@@ -40,15 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\ActivityExpedienteNew.cs" />
+    <Compile Include="AntWayBinding\ExpedientesActivityManager.cs" />
     <Compile Include="Activities\ActivitySignar.cs" />
     <Compile Include="Activities\ActivityVoid.cs" />
     <Compile Include="Activities\ActivityEnviarASignar.cs" />
-    <Compile Include="ExpedientesAssemblies.cs" />
+    <Compile Include="AntWayBinding\ExpedientesAssemblies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ExpedientesActionProvider.cs" />
-    <Compile Include="SchemeCommands.cs" />
-    <Compile Include="ExpedientesWorkflowParameterNames.cs" />
-    <Compile Include="SchemeLocator.cs" />
+    <Compile Include="AntWayBinding\SchemeCommands.cs" />
+    <Compile Include="AntWayBinding\ExpedientesWorkflowParameterNames.cs" />
+    <Compile Include="AntWayBinding\SchemeLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AntWay.Core\AntWay.Core.csproj">

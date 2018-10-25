@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AntWay.Core.Mapping;
 
 
-namespace Sample.Model.Expedientes
+namespace Sample.Model.Expedientes.AntWayBinding
 {
 
     public static class ExpedientesWorkflowParameterNames

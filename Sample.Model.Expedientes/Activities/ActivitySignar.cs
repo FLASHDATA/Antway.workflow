@@ -27,42 +27,42 @@ namespace Sample.Model.Expedientes
                 ProcessId = pi.ProcessId,
             };
 
-            result.ParametersIn = new ActivitySignarParametersInput
-            {
-                PARAMETER_SIGNATURA = ActivitySignarParametersInput.PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR
-            };
+            //result.ParametersIn = new ActivitySignarParametersInput
+            //{
+            //    PARAMETER_SIGNATURA = ActivitySignarParametersInput.PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR
+            //};
 
-            result.ParametersOut = new ActivitySignarParametersOutput
-            {
-                PARAMETER_SIGNATURA = ActivitySignarParametersOutput.PARAMETER_SIGNATURA_SIGNAT
-            };
+            //result.ParametersOut = new ActivitySignarParametersOutput
+            //{
+            //    PARAMETER_SIGNATURA = ActivitySignarParametersOutput.PARAMETER_SIGNATURA_SIGNAT
+            //};
 
             result.ExecutionSuccess = true;
 
-            PersistActivityExecution(result, pi, runtime);
+            PersistActivityExecution<ActivitySignar>(result, pi, runtime);
 
             return result;
         }
     }
 
 
-    public class ActivitySignarParametersInput
-    {
-        public const string PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR =
-                                ExpedientesWorkflowParameterNames.ESTAT_SIGNATURA_ENVIAT_A_SIGNAR;
+    //public class ActivitySignarParametersInput
+    //{
+    //    public const string PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR =
+    //                            ExpedientesWorkflowParameterNames.ESTAT_SIGNATURA_ENVIAT_A_SIGNAR;
 
-        //[ParameterValues(Values = new string[]
-        //                    { PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR })]
-        public string PARAMETER_SIGNATURA { get; set; }
-    }
+    //    //[ParameterValues(Values = new string[]
+    //    //                    { PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR })]
+    //    public string PARAMETER_SIGNATURA { get; set; }
+    //}
 
-    public class ActivitySignarParametersOutput
-    {
-        public const string PARAMETER_SIGNATURA_SIGNAT =
-                                ExpedientesWorkflowParameterNames.ESTAT_SIGNATURA_SIGNAT;
+    //public class ActivitySignarParametersOutput
+    //{
+    //    public const string PARAMETER_SIGNATURA_SIGNAT =
+    //                            ExpedientesWorkflowParameterNames.ESTAT_SIGNATURA_SIGNAT;
 
-        //[ParameterValues(Values = new string[] 
-        //                    { PARAMETER_SIGNATURA_SIGNAT })]
-        public string PARAMETER_SIGNATURA { get; set; }
-    }
+    //    //[ParameterValues(Values = new string[] 
+    //    //                    { PARAMETER_SIGNATURA_SIGNAT })]
+    //    public string PARAMETER_SIGNATURA { get; set; }
+    //}
 }

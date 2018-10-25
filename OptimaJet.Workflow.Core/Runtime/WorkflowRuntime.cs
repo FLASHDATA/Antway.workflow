@@ -2795,6 +2795,8 @@ Please use the following method: public void ExecuteCommandAsync(WorkflowCommand
                 PersistenceProvider.SetWorkflowIniialized(processInstance);
             else if (newStatus == ProcessStatus.Running)
                 PersistenceProvider.SetWorkflowRunning(processInstance);
+            else if (newStatus == ProcessStatus.Error)
+                PersistenceProvider.SetWorkflowError(processInstance);
             else if (newStatus == ProcessStatus.Terminated)
 #pragma warning disable 612
                 PersistenceProvider.SetWorkflowTerminated(processInstance, ErrorLevel.Critical, "Terminated");

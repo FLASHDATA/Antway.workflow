@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace AntWay.Core.Model
 {
-    public class AntWayProcessParameters
+    internal class Constants
     {
+        public const string INPUT_CHECKSUM = "InputChecksum";
+        public const string OUTPUT_CHECKSUM = "OutputChecksum";
         public const string ACTIVITY_EXECUTION_SUCCEED = "ActivityExecutionSucceed";
+
+        public const string ACTIVITY_ERROR = "Error";
     }
 }

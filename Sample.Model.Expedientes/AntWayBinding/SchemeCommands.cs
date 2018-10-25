@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AntWay.Core.Model;
 
-namespace Sample.Model.Expedientes
+namespace Sample.Model.Expedientes.AntWayBinding
 {
     public class SchemeCommandNames
     {

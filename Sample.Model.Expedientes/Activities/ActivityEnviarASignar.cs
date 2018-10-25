@@ -8,13 +8,15 @@ using AntWay.Core.Mapping;
 using AntWay.Core.Model;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
+using Sample.Model.Expedientes.AntWayBinding;
 
 namespace Sample.Model.Expedientes
 {
     [Activity(Id = "02c97ede-8f9e-40ca-7865-f4aa680fb3bb")]
-    public class ActivityEnviarASignar : AntWayActivityRuntimeBase, IAntWayRuntimeActivity
+    public class ActivityEnviarASignar: AntWayActivityRuntimeBase, IAntWayRuntimeActivity
     {
         public object ParametersBind { get; set; }
+
 
         public override ActivityExecution Run(ProcessInstance pi,
                                             WorkflowRuntime runtime,
@@ -27,19 +29,19 @@ namespace Sample.Model.Expedientes
                 ProcessId = pi.ProcessId,
             };
 
-            result.ParametersIn = new ActivityEnviarASignarParametersOutput
-            {
-                PARAMETER_SIGNATURA = ActivityEnviarASignarParametersOutput.PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR
-            };
+                //result.ParametersIn = new ActivityEnviarASignarParametersOutput
+                //{
+                //    PARAMETER_SIGNATURA = ActivityEnviarASignarParametersOutput.PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR
+                //};
 
-            result.ParametersOut = new ActivityEnviarASignarParametersOutput
-            {
-                PARAMETER_SIGNATURA = ActivityEnviarASignarParametersOutput.PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR
-            };
+                //result.ParametersOut = new ActivityEnviarASignarParametersOutput
+                //{
+                //    PARAMETER_SIGNATURA = ActivityEnviarASignarParametersOutput.PARAMETER_SIGNATURA_ENVIAT_A_SIGNAR
+                //};
 
             result.ExecutionSuccess = true;
 
-            PersistActivityExecution(result, pi, runtime);
+            PersistActivityExecution<ActivityEnviarASignar>(result, pi, runtime);
 
             return result;
         }
@@ -81,6 +83,7 @@ namespace Sample.Model.Expedientes
                          (idActivity, ActivityEnviarASignarParametersOutput.PARAMETER_SIGNATURA_SIGNAT)
                         );
         }
+
     }
 
 
@@ -101,7 +104,7 @@ namespace Sample.Model.Expedientes
         public const string PARAMETER_SIGNATURA_SIGNAT =
                                ExpedientesWorkflowParameterNames.ESTAT_SIGNATURA_SIGNAT;
 
-        [BindingMethod(Name = "BindingMethod_ParamaterSignatura")]
+        [ParameterBinding(IOBindMethod = nameof(ActivityEnviarASignar.BindingMethod_ParamaterSignatura))]
         public string PARAMETER_SIGNATURA { get; set; }
     }
 }

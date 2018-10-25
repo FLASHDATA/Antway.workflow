@@ -16,8 +16,11 @@ namespace AntWay.Core.Model
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-        public object ParametersIn { get; set; }
-        public object ParametersOut { get; set; }
+        public object ParametersInput { get; set; }
+        public object ParametersOutput { get; set; }
+
+        public string InputChecksum { get; set; }
+        public string OutputChecksum { get; set; }
 
         public bool ExecutionSuccess { get; set; }
         public string ExecutionMessage { get; set; }

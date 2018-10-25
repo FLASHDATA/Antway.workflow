@@ -15,7 +15,6 @@ namespace AntWay.Core.Activity
     [Activity(Id = "ServiceCall")]
     public class AntWayActivityService : AntWayActivityRuntimeBase, IAntWayRuntimeActivity
     {
-        public object ParametersBind { get; set; }
         
         public override ActivityExecution Run(ProcessInstance pi,
                                               WorkflowRuntime runtime,
@@ -34,35 +33,32 @@ namespace AntWay.Core.Activity
             {
                 var response = new HttpClient().GetAsync(url).Result;
 
-                result.ParametersOut = new AntWayActivityServiceParametersOutput
+                result.ParametersOutput = new ActivityServiceModel()
                 {
                     PARAMETER_HTTP_RESPONSE = "200"
-                };
+                }; 
+
                 result.ExecutionSuccess = true;
             }
             catch (Exception ex)
             {
-                result.ParametersOut = new AntWayActivityServiceParametersOutput
+                result.ParametersOutput = new ActivityServiceModel()
                 {
                     PARAMETER_HTTP_RESPONSE = "403"
                 };
                 result.ExecutionSuccess = false; 
             }
 
-            PersistActivityExecution(result, pi, runtime);
+            PersistActivityExecution<AntWayActivityService>(result, pi, runtime);
 
             return result;
         }
     }
 
-    public class AntWayActivityServiceParametersInput
+    public class ActivityServiceModel
     {
         public string URL { get; set; }
-    }
 
-    public class AntWayActivityServiceParametersOutput
-    {
-        //[ParameterValues(Values = new string[] { 200, 403 })]
         public string PARAMETER_HTTP_RESPONSE { get; set; }
     }
 }

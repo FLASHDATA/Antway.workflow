@@ -7,7 +7,7 @@ using System.Reflection;
 using OptimaJet.Workflow.Core.Runtime;
 using AntWay.Core.Runtime;
 
-namespace Sample.Model.Expedientes
+namespace Sample.Model.Expedientes.AntWayBinding
 {
     public class ExpedientesAssemblies : IAssemblies
     {

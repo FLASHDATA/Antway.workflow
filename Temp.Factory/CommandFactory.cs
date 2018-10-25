@@ -17,7 +17,7 @@ namespace AntWay.Dashboard.Web.Factories
             switch (schemeCode)
             {
                 case "EXPEDIENTES":
-                    commandsMapping = new CommandsMapping(Sample.Model.Expedientes.SchemeCommandNames.Single);
+                    commandsMapping = new CommandsMapping(Sample.Model.Expedientes.AntWayBinding.SchemeCommandNames.Single);
                     break;
 
                 default:

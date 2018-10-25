@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sample.Model.Expedientes
+namespace Sample.Model.Expedientes.AntWayBinding
 {
     public static class SchemeLocator
     {

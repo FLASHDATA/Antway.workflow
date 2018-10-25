@@ -34,10 +34,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\PreventBlanqueo\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OptimaJet.Workflow.Oracle, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\OptimaJet.Workflow.Oracle.dll</HintPath>
-    </Reference>
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\packages\odp.net.managed.121.1.2\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
@@ -52,14 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Manager\ActivityManager.cs" />
+    <Compile Include="Manager\Checksum.cs" />
+    <Compile Include="Manager\ManagerResponse.cs" />
+    <Compile Include="Mapping\AttributeClasses.cs" />
     <Compile Include="Mapping\CommandsMapping.cs" />
     <Compile Include="Mapping\EmptyCommandMapping.cs" />
-    <Compile Include="Mapping\ActivityAttribute.cs" />
-    <Compile Include="Mapping\MethodAttribute.cs" />
     <Compile Include="Model\ActivityExecution.cs" />
     <Compile Include="Activity\AntWayActivityRuntimeBase.cs" />
     <Compile Include="Activity\AntWayActivityService.cs" />
-    <Compile Include="Model\AntWayProcessParameters.cs" />
+    <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\DefaultSchemeCommands.cs" />
     <Compile Include="Activity\IAntWayRuntimeActivity.cs" />
     <Compile Include="Runtime\IAssemblies.cs" />
@@ -68,7 +66,6 @@
     <Compile Include="Model\AntWayCommandParameter.cs" />
     <Compile Include="Persistence\PersistenceObjectsFactory.cs" />
     <Compile Include="Runtime\AntWayRuntime.cs" />
-    <Compile Include="Mapping\ParameterValuesAttribute.cs" />
     <Compile Include="Mapping\MappingReflection.cs" />
     <Compile Include="Persistence\WFSchemeModel.cs" />
     <Compile Include="Runtime\Workflow.cs" />
@@ -95,6 +92,10 @@
     <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
       <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
       <Name>OptimaJet.Workflow.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimaJet.Workflow.Oracle\OptimaJet.Workflow.Oracle.csproj">
+      <Project>{b5ec37ad-83e1-4bea-912c-5fbd4d39d9c4}</Project>
+      <Name>OptimaJet.Workflow.Oracle</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

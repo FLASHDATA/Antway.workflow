@@ -185,6 +185,11 @@ namespace OptimaJet.Workflow.Oracle
             SetCustomStatus(processInstance.ProcessId, ProcessStatus.Finalized);
         }
 
+        public void SetWorkflowError(ProcessInstance processInstance)
+        {
+            SetCustomStatus(processInstance.ProcessId, ProcessStatus.Error);
+        }
+
 #pragma warning disable 612
         public void SetWorkflowTerminated(ProcessInstance processInstance, ErrorLevel level, string errorMessage)
 #pragma warning restore 612

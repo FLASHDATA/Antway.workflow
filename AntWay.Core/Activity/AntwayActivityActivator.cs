@@ -8,6 +8,9 @@ using AntWay.Core.Mapping;
 
 namespace AntWay.Core.Activity
 {
+    /// <summary>
+    /// TODO: Conveniente repartir métodos de esta clase en otros
+    /// </summary>
     public static class AntWayActivityActivator
     {
         public static IAntWayRuntimeActivity GetAntWayObjectFromActivity(string actityId)
@@ -46,6 +49,17 @@ namespace AntWay.Core.Activity
             ParameterInfo[] parameters = methodInfo.GetParameters();
             object[] parametersArray = new object[] { new object[] { processId, parametersBind } };
             T result = (T)methodInfo.Invoke(activityInstance, parametersArray);
+
+            return result;
+        }
+
+        public static object RunMethod(string methodName, string processId,
+                                    IAntWayRuntimeActivity activityInstance)
+        {
+            MethodInfo methodInfo = activityInstance.GetType().GetMethod(methodName);
+            ParameterInfo[] parameters = methodInfo.GetParameters();
+            object[] parametersArray = new object[] { new object[] { processId } };
+            object result = methodInfo.Invoke(activityInstance, parametersArray);
 
             return result;
         }

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AntWay.Core.Activity;
-
+using static AntWay.Core.Manager.Checksum;
 
 namespace AntWay.Core.Mapping
 {
@@ -13,22 +13,24 @@ namespace AntWay.Core.Mapping
     {
         public static TPO GetParametersBind<TPO>(string processId,
                                                  IAntWayRuntimeActivity activityInstance,
-                                                 TPO parametersOutput)
+                                                 TPO parametersOutput,
+                                                 ChecksumType type)
         {
-            List<string> methods = GetActivityMethodAttributes(parametersOutput);
+            object result = null;
+            List<string> methods = GetActivityMethodAttributes(parametersOutput, type);
 
             foreach (string method in methods)
             {
-                activityInstance.ParametersBind = AntWayActivityActivator.RunMethod
+                result = AntWayActivityActivator.RunMethod
                                                     (method, processId, activityInstance, parametersOutput);
             }
 
-            return (TPO) activityInstance.ParametersBind;
+            return (TPO) result;
         }
 
 
         public static List<string>
-                     GetActivityMethodAttributes(object obj)
+                     GetActivityMethodAttributes(object obj, ChecksumType type)
         {
             var result = new List<string>();
 
@@ -38,22 +40,22 @@ namespace AntWay.Core.Mapping
 
             foreach (var p in properties)
             {
-                var values = GetParameterMethod(p);
+                var values = GetParameterMethod(p, type);
                 result.Add(values);
             }
 
             return result;
         }
 
-        private static string GetParameterMethod(PropertyInfo prop)
+        private static string GetParameterMethod(PropertyInfo prop, ChecksumType type)
         {
-            var attr = (BindingMethodAttribute)
+            var attr = (ParameterBindingAttribute)
                         prop
                         .GetCustomAttributes(false)
-                        .Where(ca => ca.GetType() == typeof(BindingMethodAttribute))
+                        .Where(ca => ca.GetType() == typeof(ParameterBindingAttribute))
                         .FirstOrDefault();
 
-            var result = attr.Name;
+            var result = type == ChecksumType.Input ? attr.InputBindMethod : attr.OutputBindMethod;
             return result;
         }
 

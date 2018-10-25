@@ -13,7 +13,6 @@ namespace AntWay.Core.Activity
     {
         string ActivityId { get; set; }
         string ActivityName { get; set; }
-        object ParametersBind { get; set; }
 
         Task<ActivityExecution> RunAsync(ProcessInstance pi, WorkflowRuntime runtime, object[] parameters = null);
         ActivityExecution Run(ProcessInstance pi, WorkflowRuntime runtime, object[] parameters = null);

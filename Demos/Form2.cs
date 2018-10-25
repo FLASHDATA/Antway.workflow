@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Antway.Core.Persistence;
 using AntWay.Core.Activity;
+using AntWay.Core.Manager;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
 using AntWay.Core.Runtime;
@@ -16,6 +18,8 @@ using AntWay.Persistence.Provider.Model;
 using Newtonsoft.Json;
 using OptimaJet.Workflow.Core.Model;
 using Sample.Model.Expedientes;
+using Sample.Model.Expedientes.Activities;
+using Sample.Model.Expedientes.AntWayBinding;
 using Temp.Factory;
 
 namespace Client.Winforms.Demos
@@ -84,14 +88,6 @@ namespace Client.Winforms.Demos
         }
 
 
-        private void btTest_Click(object sender, EventArgs e)
-        {
-            var processInstance = WorkflowClient.AntWayRunTime
-                                    .GetProcessInstance(ProcessId.Value);
-
-            CheckTimersExpired(processInstance);
-        }
-
         private void LoadActivities()
         {
             if (ProcessId == null) return;
@@ -149,7 +145,14 @@ namespace Client.Winforms.Demos
                       : $"Nuevo Workflow con localizador {Localizador}{Environment.NewLine}";
 
 
-            StartWF(cmbSchemeCodes.SelectedItem.ToString());
+            var managerResponse = StartWF(cmbSchemeCodes.SelectedItem.ToString());
+            if (!managerResponse.Success)
+            {
+                tbActivityExecutionDetail.Text = $"{managerResponse.ActivityId} {Environment.NewLine}" +
+                                                 $"{managerResponse.ActivityName}";
+                return;
+            }
+
             LoadLocalizadores(cmbSchemeCodes.SelectedItem.ToString());
 
             RefreshWorkflow(log);
@@ -210,31 +213,50 @@ namespace Client.Winforms.Demos
         }
 
 
-        private void StartWF(string schemeCode)
+        private ManagerResponse StartWF(string schemeCode)
         {
             IAssemblies assemblies = AssemblyFactory.GetAssemblyObject(schemeCode);
             WorkflowClient.WithAssemblies(assemblies);
+            WorkflowClient.WithActivityManager(new ExpedientesActivityManager());
             //WorkflowClient.WithTimeManager(new TimerManager());
             //IWorkflowActionProvider actionProvider = new ExpedientesActionProvider();
             //WorkflowClient.WithActionProvider(actionProvider);
             WorkflowClient.GetAntWayRunTime(schemeCode);
 
-            if (ProcessId == null)
+            if (ProcessId != null)
             {
-                var processPersistenceViewNew = new ProcessPersistenceView
-                {
-                    WFProcessGuid = Guid.NewGuid(),
-                    LocatorFieldName = "Table.Field",
-                    LocatorValue = Localizador,
-                    SchemeCode = schemeCode,
-                };
+                var processInstance = WorkflowClient.AntWayRunTime
+                                        .GetProcessInstance(ProcessId.Value);
 
-                ProcessId = WorkflowClient.GetAntWayRunTime(schemeCode)
-                            .CreateInstanceAndPersist(processPersistenceViewNew);
+                var managerResponse = WorkflowClient.AntWayRunTime.ValidateModel(processInstance);
+
+                if (!managerResponse.Success)
+                {
+                    WorkflowClient.AntWayRunTime
+                    .SetErrorState(processInstance, 
+                                   $"{managerResponse.ActivityId}/{managerResponse.ActivityName}");
+
+                    return managerResponse;
+                }
+
+                CheckTimersExpired();
             }
 
-            CheckTimersExpired();
+
+            var processPersistenceViewNew = new ProcessPersistenceView
+            {
+                WFProcessGuid = Guid.NewGuid(),
+                LocatorFieldName = "Table.Field",
+                LocatorValue = Localizador,
+                SchemeCode = schemeCode,
+            };
+
+            ProcessId = WorkflowClient.GetAntWayRunTime(schemeCode)
+                        .CreateInstanceAndPersist(processPersistenceViewNew);
+
+            return new ManagerResponse { Success = true };
         }
+
 
         private void btSiguiente_Click(object sender, EventArgs e)
         {
@@ -344,14 +366,18 @@ namespace Client.Winforms.Demos
             tbLocalizador.Clear();
             LoadLocalizadores(schemeCode);
 
-            btSimulateBDChange.Enabled = false;
-            btAnterior.Enabled = false;
-            btSiguiente.Enabled = false;
-            btnFirmarDoc.Enabled = false;
+            DisableButtons();
 
             Cursor.Current = Cursors.Default;
         }
 
+        private void DisableButtons()
+        {
+            btSimulateBDChange.Enabled = false;
+            btAnterior.Enabled = false;
+            btSiguiente.Enabled = false;
+            btnFirmarDoc.Enabled = false;
+        }
 
         private void lbLocalizadores_SelectedValueChanged(object sender, EventArgs e)
         {
@@ -376,36 +402,33 @@ namespace Client.Winforms.Demos
                                        .GetActivityExecutionJsonObject(processInstance, 
                                                                       activityId);
 
-            tbActivityExecutionDetail.Text = "";
+            tbActivityExecutionDetail.Text = jsonObjectString;
             if (jsonObjectString == null) return;
 
-            btSimulateBDChange.Enabled = (cmbSchemeCodes.SelectedItem.ToString() == "EXPEDIENTES");
+            //btSimulateBDChange.Enabled = (cmbSchemeCodes.SelectedItem.ToString() == "EXPEDIENTES");
 
-            //TODO: Move to core
-            var activityExecution = WorkflowClient.AntWayRunTime
-                                    .GetActivityExecutionObject<List<ActivityExecution>>
-                                            (processInstance, activityId)
-                                    .LastOrDefault();
+            ////TODO: Move to core
+            //var activityExecution = WorkflowClient.AntWayRunTime
+            //                        .GetActivityExecutionObject<List<ActivityExecution>>
+            //                                (processInstance, activityId)
+            //                        .LastOrDefault();
             
-            IAntWayRuntimeActivity activityInstance = WorkflowClient.AntWayRunTime
-                                                       .GetActivityExecutionObject<List<ActivityEnviarASignar>>
-                                                            (processInstance, activityId)
-                                                       .LastOrDefault();
-            if (activityInstance == null) return;
-            activityInstance.ParametersBind = MappingReflection
-                                              .GetParametersBind(ProcessId.Value.ToString(),
-                                                  activityInstance,
-                                                  JsonConvert
-                                                  .DeserializeObject<ActivityEnviarASignarParametersOutput>
-                                                    (activityExecution.ParametersOut.ToString()));
-            //
+            //IAntWayRuntimeActivity activityInstance = WorkflowClient.AntWayRunTime
+            //                                           .GetActivityExecutionObject<List<ActivityEnviarASignar>>
+            //                                                (processInstance, activityId)
+            //                                           .LastOrDefault();
+            //if (activityInstance == null) return;
+            //ActivityServiceModel parametersBind = MappingReflection
+            //                            .GetParametersBind(ProcessId.Value.ToString(),
+            //                                activityInstance,
+            //                                JsonConvert.DeserializeObject<ActivityServiceModel>
+            //                                            (activityExecution.Parameters.ToString()));
 
-            var parametersBind = (ActivityEnviarASignarParametersOutput)activityInstance.ParametersBind;
-            var parameterBindSignatura = parametersBind != null
-                                            ? $"ParametersBind: Parámetro PARAMETER_SIGNATURA = {parametersBind.PARAMETER_SIGNATURA}"
-                                            : "";
+            //var parameterBindSummary = parametersBind != null
+            //                                ? $"ParametersBind: Parámetro PARAMETER_SIGNATURA = {parametersBind.PARAMETER_HTTP_RESPONSE}"
+            //                                : "";
 
-            tbActivityExecutionDetail.Text = $"{parameterBindSignatura} {Environment.NewLine} {Environment.NewLine} {jsonObjectString}";
+            //tbActivityExecutionDetail.Text = $"{parameterBindSummary} {Environment.NewLine} {Environment.NewLine} {jsonObjectString}";
         }
 
 
@@ -423,5 +446,22 @@ namespace Client.Winforms.Demos
             lbActivities_SelectedValueChanged(null, null);
         }
 
+        private void tbLocalizador_TextChanged(object sender, EventArgs e)
+        {
+            DisableButtons();
+        }
+
+
+        #region "Tests"
+        private void btTest_Click(object sender, EventArgs e)
+        {
+            string valueToCheck = tbText.Text;
+            string checkSum = Checksum.Single.CalculateChecksum(valueToCheck);
+
+            tbActivityExecutionDetail.Text = $"{valueToCheck}{Environment.NewLine}{Environment.NewLine}{checkSum}";
+        }
+        #endregion
     }
+
+
 }

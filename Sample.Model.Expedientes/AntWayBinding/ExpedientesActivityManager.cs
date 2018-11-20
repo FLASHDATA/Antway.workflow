@@ -9,11 +9,6 @@ namespace Sample.Model.Expedientes.Activities
 {
     public class ExpedientesActivityManager: ActivityManagerBase, IActivityManager
     {
-        public List<ActivityManager> GetActivitiesManager()
-        {
-            return SetActivitiesManager();
-        }
-
         protected override List<ActivityManager> SetActivitiesManager()
         {
             var result = new List<ActivityManager>();

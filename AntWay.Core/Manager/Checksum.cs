@@ -14,6 +14,7 @@ namespace AntWay.Core.Manager
 
         public string CalculateChecksum(string dataToCalculate)
         {
+            if (String.IsNullOrEmpty(dataToCalculate)) return null;
             String hash = String.Empty;
 
             byte[] byteToCalculate = Encoding.ASCII.GetBytes(dataToCalculate);

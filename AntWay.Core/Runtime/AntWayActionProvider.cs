@@ -8,12 +8,13 @@ using Antway.Core.Persistence;
 using AntWay.Core.Activity;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
+using AntWay.Core.Runtime;
 using AntWay.Persistence.Provider.Model;
 using Newtonsoft.Json;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
 
-namespace AntWay.Core.Providers
+namespace AntWay.Core.Runtime
 {
     public class AntWayActionProvider : IWorkflowActionProvider
     {
@@ -32,6 +33,9 @@ namespace AntWay.Core.Providers
         {
             _actions.Add("RunActivity", RunAntWayActivity);
             _actions.Add("RunActivityAsync", RunAntWayActivityAsync);
+
+            //_actions.Add("CallWorkflow", CallWorkflow);
+            //_actions.Add("CallWorkflowAsync", CallWorkflowAsync);
 
             _actions.Add("CallService", CallService);
             _actions.Add("CallServiceAsync", CallServiceAsync);
@@ -66,28 +70,39 @@ namespace AntWay.Core.Providers
                                          WorkflowRuntime runtime,
                                          string activityName, bool runAsync)
         {
-            var currenteActivity = processInstance
-                                   .ProcessScheme
-                                   .Activities.FirstOrDefault(a => a.Name == activityName);
+            IAntWayRuntimeActivity awRuntimeActivity = null;
 
-            //Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            IAntWayRuntimeActivity awRuntimeActivity = AntWayActivityActivator
-                                                       .GetAntWayObjectFromActivity(currenteActivity.Id);
-
-            if (awRuntimeActivity == null)
+            try
             {
-                return;
+                var currenteActivity = processInstance
+                                       .ProcessScheme
+                                       .Activities.FirstOrDefault(a => a.Name == activityName);
+                if (currenteActivity == null) { return; }
+
+                List<Type> types = WorkflowClient.IAssemblies.GetTypes();
+                awRuntimeActivity = AntWayActivityActivator
+                                    .GetAntWayRuntimeActivity(currenteActivity.Id, types);
+
+                if (awRuntimeActivity == null) { return; }
+
+                awRuntimeActivity.ActivityId = currenteActivity.Id;
+                awRuntimeActivity.ActivityName = currenteActivity.Name;
+                if (runAsync)
+                {
+                    awRuntimeActivity.RunAsync(processInstance, runtime);
+                }
+                else
+                {
+                    awRuntimeActivity.Run(processInstance, runtime);
+                }
             }
-
-            awRuntimeActivity.ActivityId = currenteActivity.Id;
-            awRuntimeActivity.ActivityName = currenteActivity.Name;
-            if (runAsync)
+            catch (Exception ex)
             {
-                awRuntimeActivity.RunAsync(processInstance, runtime);
-            }
-            else
-            {
-                awRuntimeActivity.Run(processInstance, runtime);
+                runtime.SetErrorState(processInstance,
+                                       $"{awRuntimeActivity.ActivityId}/{Constants.ACTIVITY_RUNNING_EXCEPTION_ID}",
+                                       activityName,
+                                       Constants.ACTIVITY_ERROR_TITLE,
+                                       new List<string> { ex.Message });
             }
         }
 
@@ -121,8 +136,6 @@ namespace AntWay.Core.Providers
 
             IAntWayRuntimeActivity awRuntimeActivity = new AntWayActivityService
             {
-                //ActivityId = typeof(AntWayActivityService)
-                //             .GetAttributeValue((ActivityAttribute a) => a.Id)
                 ActivityId = currenteActivity.Id,
                 ActivityName = currenteActivity.Name,
             };
@@ -180,20 +193,7 @@ namespace AntWay.Core.Providers
             return success;
         }
 
-        //protected virtual bool ParameterValueEqualTo(ProcessInstance processInstance,
-        //                        WorkflowRuntime runtime,
-        //                        string actionParameter)
-        //{
-        //    var kvp = JsonConvert.DeserializeObject<KeyValuePair<string, string>>(actionParameter);
-
-        //    var currentValue = processInstance.GetParameter(kvp.Key).Value.ToString();
-
-        //    bool match = (currentValue.Replace("\"", "") == kvp.Value.ToString());
-
-        //    return match;
-        //}
-
-
+ 
         //TEMA NOTIFICACIONES: DE MOMENTO EN STAND BY (4/10/2018)
         protected virtual void InsertarNotificationAction(ProcessInstance processInstance,
                                                 WorkflowRuntime runtime,

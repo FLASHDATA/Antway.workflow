@@ -1,0 +1,59 @@
+<Process>
+  <Designer />
+  <Commands>
+    <Command Name="Siguiente" />
+    <Command Name="Anterior" />
+  </Commands>
+  <Timers>
+    <Timer Name="5s" Type="Interval" Value="5s" NotOverrideIfExists="false" />
+    <Timer Name="12s" Type="Interval" Value="12s" NotOverrideIfExists="false" />
+  </Timers>
+  <Activities>
+    <Activity Name="Inici" IsInitial="True" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" IsScheme="False" IsCondition="False">
+      <Designer X="100" Y="70" />
+    </Activity>
+    <Activity Name="FIN" IsInitial="False" IsFinal="True" IsForSetState="False" IsAutoSchemeUpdate="True" Id="a8502c1d-0a2d-8c7d-b47a-c8b02b71e4bb" IsScheme="False" IsCondition="False">
+      <Designer X="830" Y="430" />
+    </Activity>
+    <Activity Name="LLamar a servicio externo" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" Id="bf174ffb-463b-72a4-0c9b-4e8a4ae499e7" IsScheme="False" IsCondition="False">
+      <Implementation>
+        <ActionRef Order="1" NameRef="CallServiceAsync">
+          <ActionParameter><![CDATA[{url:"http://localhost:9000/api/home/5"}]]></ActionParameter>
+        </ActionRef>
+      </Implementation>
+      <Designer X="260" Y="250" />
+    </Activity>
+    <Activity Name="Lo que sea antes de terminar" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" Id="324a831c-7029-aa9a-9854-b3b07da36838" IsScheme="False" IsCondition="False">
+      <Designer X="820" Y="220" />
+    </Activity>
+  </Activities>
+  <Transitions>
+    <Transition Name="Activity_1_Activity_4_1" To="LLamar a servicio externo" From="Inici" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Crear_expediente_Enviar_a_signar_1" To="FIN" From="Lo que sea antes de terminar" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Command" NameRef="Siguiente" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="LLamar a servicio externo_Lo que sea antes de terminar_1" To="Lo que sea antes de terminar" From="LLamar a servicio externo" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+  </Transitions>
+</Process>

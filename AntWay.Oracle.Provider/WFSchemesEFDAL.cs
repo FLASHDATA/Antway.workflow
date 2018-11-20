@@ -161,5 +161,10 @@ namespace AntWay.Oracle.Provider
 
             return entity;
         }
+
+        public SchemeDataTableView Fetch(string schemeCode, string locatorValue)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

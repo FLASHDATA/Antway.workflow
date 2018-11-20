@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using OptimaJet.Workflow.Core.Bus;
 using OptimaJet.Workflow.Core.Fault;
 using OptimaJet.Workflow.Core.Model;
@@ -31,16 +32,19 @@ namespace OptimaJet.Workflow.Core.Runtime
         }
 
 
-        public async void SetErrorState(ProcessInstance processInstance,
-                                  string activityDescription,
-                                  string identityId = null,
-                                  string impersonatedIdentityId = null)
+        public void SetErrorState(ProcessInstance processInstance,
+                                      string activityId,
+                                      string activityName,
+                                      string activityState,
+                                      List<string> errorsDescription,
+                                      string identityId = null)
         {
             var activityError = new ActivityDefinition
             {
-                Id = "Error",
-                Name = $"Error {activityDescription}",
-                State = $"Error {activityDescription}",
+                Id = activityId,
+                Name = $"{activityId} at {activityName}",
+                State = activityState,
+                IsForSetState = true,
             };
             processInstance.ProcessScheme.Activities.Add(activityError);
 
@@ -50,10 +54,14 @@ namespace OptimaJet.Workflow.Core.Runtime
             if (activityToSet == null)
                 throw new ActivityNotFoundException();
 
-            //SetActivityWithExecution(identityId, impersonatedIdentityId, parameters, activityToSet, processInstance);
-            SetActivityWithoutExecution(activityToSet, processInstance);
+            SetActivityWithoutExecution(activityToSet, processInstance, true);
 
-            await SetProcessNewStatus(processInstance, ProcessStatus.Error);
+            processInstance.SetParameter(activityId,
+                                         errorsDescription,
+                                         ParameterPurpose.Persistence);
+            PersistenceProvider.SavePersistenceParameters(processInstance);
+
+            SetProcessNewStatus(processInstance, ProcessStatus.Error);
         }
 
 
@@ -78,38 +86,6 @@ namespace OptimaJet.Workflow.Core.Runtime
 
             return false;
         }
-
-
-        /// <summary>
-        /// Set specified state for specified process 
-        /// </summary>
-        /// <param name="processId">Process id</param>
-        /// <param name="id">Activity Id to set</param>
-        /// /// <param name="identityId">The user id which set the Activity</param>
-        /// <param name="preventExecution">Actions due to transition process do not executed if true</param>
-        //public void SetActivity(Guid processId, 
-        //                        string id,
-        //                        bool preventExecution = false,
-        //                        string identityId = null)
-        //{
-        //    var processInstance = Builder.GetProcessInstance(processId);
-        //    var activityToSet = processInstance
-        //                        .ProcessScheme
-        //                        .Activities.FirstOrDefault(a => a.Id == id);
-
-        //    if (activityToSet == null)
-        //        throw new ActivityNotFoundException();
-
-        //    if (!preventExecution)
-        //    {
-        //       var parameters = new Dictionary<string, object>();
-
-        //       SetActivityWithExecution(identityId, null, parameters,
-        //                                activityToSet, processInstance);
-        //    }
-        //    else
-        //        SetActivityWithoutExecution(activityToSet, processInstance);
-        //}
 
     }
 }

@@ -565,20 +565,31 @@
 
         var textvalue = '';
         var triggertype = this.item.Trigger.Type.toLowerCase();
-        if (triggertype === 'auto' || triggertype == 'timerexpired') {
+
+        if (triggertype === 'auto') {
             textvalue += 'A';//'⚡ 🚀 🚦';
         }
         else if (triggertype === 'command') {
-            if (this.item.Trigger.Command.Name == "Next") {
-                textvalue += 'N'; //👨🏻‍💼
-            }
-            else {
-                textvalue += 'C'; //👨🏻‍💼
-            }
-            
+             textvalue += 'C'; //👨🏻‍💼
         }
-        else if (triggertype === 'timer') {
+        else if (triggertype === 'timer' || triggertype === 'timerexpired') {
             textvalue += 'T';//'⏱ ⚡🚩 🚧';
+        }
+
+
+
+        var imageName1 = '';
+
+        switch (textvalue) {
+            case 'A':
+                imageName1 = 'transition-auto.png';
+                break;
+            case 'C':
+                imageName1 = 'transition-command.png';
+                break;
+            case 'T':
+                imageName1 = 'transition-timer.png';
+                break;
         }
 
         var conditiontype = this.item.Conditions[0].Type.toLowerCase();
@@ -591,68 +602,49 @@
         else if (conditiontype === 'otherwise') {
             textvalue += 'O';
         }
+        
 
-        if (textvalue == "AA") { textvalue = "    ⚡"; }
-        if (textvalue == "CA") { textvalue = "    👨🏻‍💼"; }
-        if (textvalue == "NA") { textvalue = "    💻"; }
-        if (textvalue == "TA") { textvalue = "    ⏱"; }
+        if (textvalue == "AA") { textvalue = ""; }
+        if (textvalue == "CA") { textvalue = ""; }
+        if (textvalue == "TA") { textvalue = "     if"; }
 
-        if (textvalue == "AC") { textvalue = " ⚡ if"; }
-        if (textvalue == "CC") { textvalue = "  👨🏻‍💼 if"; }
-        if (textvalue == "NC") { textvalue = "  💻 if"; }
-        if (textvalue == "TC") { textvalue = "  ⏱ if"; }
+        if (textvalue == "AC") { textvalue = "     if"; }
+        if (textvalue == "CC") { textvalue = "     if"; }
+        if (textvalue == "TC") { textvalue = "     if"; }
 
-        if (textvalue == "AO") { textvalue = "⚡else"; }
-        if (textvalue == "CO") { textvalue = " 👨🏻‍💼else"; }
-        if (textvalue == "NO") { textvalue = " 💻else"; }
-        if (textvalue == "TO") { textvalue = "⏱else"; }
-
- 
-
-        if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command') {
-            if (Array.isArray(me.item.Restrictions) && me.item.Restrictions.length > 0) {
-                me.item.Restrictions.forEach(function (item) {
-                    if (item.Actor != undefined) {
-                        var str = item.Actor.Name;
-                        if (item.Type == "Restrict") {
-                            textvalue += '🔒';
-                        }
-                        else {
-                            textvalue += '🔓';
-                        }
-                        textvalue = textvalue.trim();
-
-                    }
-                });
-            }
-        }
+        if (textvalue == "AO") { textvalue = "     else"; }
+        if (textvalue == "CO") { textvalue = "     else"; }
+        if (textvalue == "TO") { textvalue = "     else"; }
 
 
-        if (textvalue == "AAR") { textvalue = "  ⚡⛔"; }
-        if (textvalue == "ACR") { textvalue = "⚡if⛔"; }
-        if (textvalue == "AOR") { textvalue = "⚡else⛔"; }
-        if (textvalue == "CAR") { textvalue = "  👨🏻‍💼⛔"; }
-        if (textvalue == "CCR") { textvalue = "👨🏻‍💼if⛔"; }
-        if (textvalue == "COR") { textvalue = "👨🏻‍💼else⛔"; }
-        if (textvalue == "TAR") { textvalue = "  ⏱⛔"; }
-        if (textvalue == "TCR") { textvalue = "⏱if⛔"; }
-        if (textvalue == "TOR") { textvalue = "⏱else⛔"; }
-
-
-
-
-        //if (conditiontype == 'action' || conditiontype == 'otherwise' ) {
-        //    var circle = new Konva.Rect({
-        //        x: textvalue.length == 5 ? - 32 : 16,
-        //        y: -40,
-        //        width: 65,
-        //        height: 65,
-        //        fill: "#FCF55F",
-        //        rotation: 50,
-        //    });
-
+        //if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command') {
+        //    if (Array.isArray(me.item.Restrictions) && me.item.Restrictions.length > 0) {
+        //        me.item.Restrictions.forEach(function (item) {
+        //            if (item.Actor != undefined) {
+        //                var str = item.Actor.Name;
+        //                if (item.Type == "Restrict") {
+        //                    textvalue += '🔒';
+        //                }
+        //                else {
+        //                    textvalue += '🔓';
+        //                }
+        //                textvalue = textvalue.trim();
+        //            }
+        //        });
+        //    }
         //}
-        //else {
+
+        //if (textvalue == "AAR") { textvalue = "  ⚡⛔"; }
+        //if (textvalue == "ACR") { textvalue = "⚡if⛔"; }
+        //if (textvalue == "AOR") { textvalue = "⚡else⛔"; }
+        //if (textvalue == "CAR") { textvalue = "  👨🏻‍💼⛔"; }
+        //if (textvalue == "CCR") { textvalue = "👨🏻‍💼if⛔"; }
+        //if (textvalue == "COR") { textvalue = "👨🏻‍💼else⛔"; }
+        //if (textvalue == "TAR") { textvalue = "  ⏱⛔"; }
+        //if (textvalue == "TCR") { textvalue = "⏱if⛔"; }
+        //if (textvalue == "TOR") { textvalue = "⏱else⛔"; }
+
+
         var circle = new Konva.Rect({
             x: textvalue.length == 5 ? - 32 : -26,
             y: -15,
@@ -662,12 +654,18 @@
             cornerRadius: 15
         });
 
-        //}
-
-
-
 
         cActivePoint.add(circle);
+
+        var image = new Konva.Image({
+            x: textvalue.length == 0 ? 0 : -25,
+            y: -7,
+            image: WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + imageName1),
+            width: 25,
+            height: 25
+        });
+        cActivePoint.add(image);
+
 
         var text = new Konva.Text({
             x: textvalue.length == 5 ? -32 : -26,
@@ -679,6 +677,7 @@
             fontStyle: 'bold'
         });
         cActivePoint.add(text);
+
         cActivePoint.transition = cTransition;
 
         var redraw = function (d, r) {

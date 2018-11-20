@@ -1,0 +1,165 @@
+<Process>
+  <Designer />
+  <Commands>
+    <Command Name="Siguiente" />
+    <Command Name="Firmar" />
+    <Command Name="Anterior" />
+  </Commands>
+  <Timers>
+    <Timer Name="5s" Type="Interval" Value="5s" NotOverrideIfExists="false" />
+    <Timer Name="10s" Type="Interval" Value="10s" NotOverrideIfExists="false" />
+    <Timer Name="60s" Type="Interval" Value="60s" NotOverrideIfExists="false" />
+    <Timer Name="24h" Type="Interval" Value="24h" NotOverrideIfExists="false" />
+  </Timers>
+  <Activities>
+    <Activity Name="Inici" IsInitial="True" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" IsScheme="False" IsCondition="False">
+      <Designer X="10" Y="80" />
+    </Activity>
+    <Activity Name="Enviar_a_signar" State="EXPEDIENTE_CREAT_I_ENVIAT_A_SIGNAR" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" Id="02c97ede-8f9e-40ca-7865-f4aa680fb3bb" IsScheme="False" IsCondition="False">
+      <Implementation>
+        <ActionRef Order="2" NameRef="RunActivityAsync" />
+      </Implementation>
+      <Designer X="1210" Y="80" />
+    </Activity>
+    <Activity Name="Seguir expedient: Presentar documentación, etc.." IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" IsScheme="False" IsCondition="False">
+      <Designer X="1200" Y="340" />
+    </Activity>
+    <Activity Name="FIN" State="EXPEDIENT_TANCAT" IsInitial="False" IsFinal="True" IsForSetState="False" IsAutoSchemeUpdate="True" IsScheme="False" IsCondition="False">
+      <Designer X="40" Y="620" />
+    </Activity>
+    <Activity Name="Más cosas" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" IsScheme="False" IsCondition="False">
+      <Designer X="540" Y="610" />
+    </Activity>
+    <Activity Name="Crear_expediente" State="DATA_ENTRY_EXPEDIENTE" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" Id="bf174ffb-463b-72a4-0c9b-4e8a4ae499e7" IsScheme="False" IsCondition="False">
+      <Implementation>
+        <ActionRef Order="1" NameRef="RunActivity" />
+      </Implementation>
+      <Designer X="490" Y="80" />
+    </Activity>
+    <Activity Name="Imprimir document signat" State="EXPEDIENT_SIGNAT" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" IsScheme="False" IsCondition="False">
+      <Designer X="1200" Y="610" />
+    </Activity>
+    <Activity Name="Firmar" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" Id="1defd107-436b-a7d1-dda4-26732d901ff0" IsScheme="False" IsCondition="False">
+      <Implementation>
+        <ActionRef Order="1" NameRef="RunActivity" />
+      </Implementation>
+      <Designer X="500" Y="310" />
+    </Activity>
+    <Activity Name="Caducat" State="EXPEDIENT_CADUCAT" IsInitial="False" IsFinal="False" IsForSetState="False" IsAutoSchemeUpdate="True" Id="79ab8a36-745c-10db-5ef1-eeea2af67a4c" IsScheme="False" IsCondition="False">
+      <Designer X="30" Y="290" />
+    </Activity>
+  </Activities>
+  <Transitions>
+    <Transition Name="Activity_2_Activity_3_1" To="Seguir expedient: Presentar documentación, etc.." From="Enviar_a_signar" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Command" NameRef="Siguiente" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Activity_3_Activity_4_1" To="FIN" From="Más cosas" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Activity_1_Activity_4_1" To="Crear_expediente" From="Inici" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Crear_expediente_Enviar_a_signar_1" To="Enviar_a_signar" From="Crear_expediente" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Command" NameRef="Siguiente" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Activity_5_Activity_2_1" To="Más cosas" From="Imprimir document signat" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Command" NameRef="Siguiente" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Seguir expedient_Activity_3_1" To="Firmar" From="Seguir expedient: Presentar documentación, etc.." Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Command" NameRef="Firmar" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="928" Y="219" />
+    </Transition>
+    <Transition Name="Firmar_Seguir expedient_1" To="Imprimir document signat" From="Firmar" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="1089" Y="338" />
+    </Transition>
+    <Transition Name="Seguir expedient: Presentar documentación, etc.._Imprimir document signat_1" To="Imprimir document signat" From="Seguir expedient: Presentar documentación, etc.." Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Action" NameRef="CheckDocumentoFirmado" ConditionInversion="false" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Activity_1_FIN_1" To="FIN" From="Caducat" Classifier="NotSpecified" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Auto" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer />
+    </Transition>
+    <Transition Name="Enviar_a_signar_Más cosas_1" To="Más cosas" From="Enviar_a_signar" Classifier="TimeInterval" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="Timer" NameRef="24h" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="837" Y="432" />
+    </Transition>
+    <Transition Name="Enviar_a_signar_Caducat_1" To="Caducat" From="Enviar_a_signar" Classifier="TimeInterval" AllowConcatenationType="And" RestrictConcatenationType="And" ConditionsConcatenationType="And" IsFork="false" MergeViaSetState="false" DisableParentStateControl="false">
+      <Triggers>
+        <Trigger Type="TimerExpired" />
+      </Triggers>
+      <Conditions>
+        <Condition Type="Always" />
+      </Conditions>
+      <Designer X="410" Y="327" />
+    </Transition>
+  </Transitions>
+  <CodeActions>
+    <CodeAction Name="CheckDocumentoFirmado" Type="Condition" IsGlobal="False" IsAsync="False">
+      <ActionCode><![CDATA[//return 
+//   AntWayRuntime.Single.EvaluateExpression<ActivityEnviarASignar, ActivityEnviarASignarParametersOutput>
+//       (processInstance, c => c.PARAMETER_SIGNATURA == ActivityEnviarASignarParametersOutput.PARAMETER_SIGNATURA_SIGNAT);
+
+return false;
+        
+]]></ActionCode>
+      <Usings><![CDATA[AntWay.Core.Runtime;OptimaJet.Workflow.Core.Model;System.Collections;Antway.Core.Persistence;AntWay.Core.Model;OptimaJet.Workflow;AntWay.Core;System.Threading;System.Threading.Tasks;System.Collections.Generic;Sample.Model.Expedientes;OptimaJet.Workflow.Core.Runtime;]]></Usings>
+    </CodeAction>
+  </CodeActions>
+</Process>

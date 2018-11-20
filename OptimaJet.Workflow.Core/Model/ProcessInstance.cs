@@ -14,7 +14,7 @@ namespace OptimaJet.Workflow.Core.Model
     /// <summary>
     /// Represent a instance of a specific process 
     /// </summary>
-    public class ProcessInstance
+    public partial class ProcessInstance
     {
         private ProcessInstance()
         { }

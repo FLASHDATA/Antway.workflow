@@ -9,6 +9,8 @@ namespace AntWay.Persistence.Provider.Model
 {
     public interface IDALWFSchemes: IDAL
     {
+        SchemeDataTableView Fetch(string schemeCode, string locatorValue);
+
         List<SchemeDataTableView> GetSchemesDataTableView(DataTableFilters filter);
 
         List<WorkflowSchemeView> GetWorkflowSchemes();

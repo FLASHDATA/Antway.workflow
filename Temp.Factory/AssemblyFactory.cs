@@ -17,6 +17,14 @@ namespace Temp.Factory
                 case "EXPEDIENTES":
                     assemblies = new Sample.Model.Expedientes.AntWayBinding.ExpedientesAssemblies();
                     break;
+
+                case "EVALUAR_RIESGO":
+                    assemblies = new IMHab.PreventBlanqueo.Riesgo.AntWay.AntWayBinding.RiesgoAssemblies();
+                    break;
+
+                case "SEPBLAC":
+                    assemblies = new IMHab.PreventBlanqueo.SEPBLAC.AntWay.AntWayBinding.SEPBLACAssemblies();
+                    break;
             }
 
             return assemblies;

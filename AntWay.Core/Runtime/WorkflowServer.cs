@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Xml.Linq;
-using AntWay.Core.Providers;
+using AntWay.Core.Manager;
 using OptimaJet.Workflow.Core.Runtime;
 
 namespace AntWay.Core.Runtime
@@ -12,6 +12,7 @@ namespace AntWay.Core.Runtime
         private static ITimerManager ITimerManager = null;
         private static ICommandsMapping ICommandMapping = null;
         private static IAssemblies IAssemblies = null;
+        private string DataBaseScheme;
 
 
         public static void WithActionProvider(IWorkflowActionProvider _IAntWayActionProvider)
@@ -24,8 +25,18 @@ namespace AntWay.Core.Runtime
             IAssemblies = _IAssemblies;
         }
 
-        private string DataBaseScheme;
+        //public static ManagerResponse StartWF(string schemeCode, string localizadorFieldName,
+        //                             string localizador,
+        //                             IAssemblies assemblies,
+        //                             IActivityManager activityManager)
+        //{
+        //    var result = Workflow.StartWF(schemeCode, localizadorFieldName,
+        //                                  localizador, assemblies, activityManager);
 
+        //    return result;
+        //}
+
+        
         public WorkflowServer(string databaseScheme)
         {
             DataBaseScheme = databaseScheme;

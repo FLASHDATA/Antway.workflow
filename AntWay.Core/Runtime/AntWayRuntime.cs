@@ -24,7 +24,7 @@ namespace AntWay.Core.Runtime
     public class AntWayRuntime
     {
         public static AntWayRuntime Single => new AntWayRuntime();
-        protected WorkflowRuntime WorkflowRuntime { get; set; }
+        internal WorkflowRuntime WorkflowRuntime { get; set; }
         internal static WorkflowSchemeView Scheme { get; set; }
 
         public AntWayRuntime() { }
@@ -54,8 +54,6 @@ namespace AntWay.Core.Runtime
         {
             var processId = Guid.NewGuid();
 
-            WorkflowRuntime.CreateInstance(wfScheme.SchemeCode, processId);
-
             var locatorPersistence = new LocatorPersistence
             {
                 IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject()
@@ -64,6 +62,8 @@ namespace AntWay.Core.Runtime
             wfScheme.SchemeCode = wfScheme.SchemeCode;
 
             locatorPersistence.AddWorkflowLocator(wfScheme);
+
+            WorkflowRuntime.CreateInstance(wfScheme.SchemeCode, processId);
 
             return processId;
         }
@@ -76,44 +76,50 @@ namespace AntWay.Core.Runtime
         }
 
 
-        public void SkipToState(Guid processId, string stateName)
+        public void SkipToState(Guid processId, string stateName,
+                                bool preventExecution = false)
         {
             WorkflowRuntime.SetState(processId, string.Empty, string.Empty,
                                      stateName,
-                                     new Dictionary<string, object>());
+                                     new Dictionary<string, object>(),
+                                     preventExecution);
         }
 
-        //TODO: Review
-        //Utilizado en el contexto de llamadas entre esquemas de workflows
-        public void SetState(Guid processId,
-                             string stateFrom, string activityFrom,
-                             string stateTo, string activityTo)
+        public void SetState(Guid processId, string state,
+                            bool withExecution, string identityId = null)
         {
-            var pi = GetProcessInstance(processId);
-            SetState(pi, stateFrom, activityFrom, stateTo, activityTo);
+            WorkflowRuntime.SetState(processId, identityId, null, state,null, !withExecution);
         }
 
+        //public void SetState(Guid processId,
+        //                     string stateFrom, string activityFrom,
+        //                     string stateTo, string activityTo)
+        //{
+        //    var pi = GetProcessInstance(processId);
+        //    SetState(pi, stateFrom, activityFrom, stateTo, activityTo);
+        //}
 
-        public void SetState(ProcessInstance processInstance, 
-                             string stateFrom, string activityFrom,
-                             string stateTo, string activityTo)
-        {
-            ActivityDefinition adFrom = new ActivityDefinition
-            {
-                State = stateFrom,
-                Name = activityFrom
-            };
 
-            ActivityDefinition adTo = new ActivityDefinition
-            {
-                State = stateTo,
-                Name = activityTo
-            };
+        //public void SetState(ProcessInstance processInstance, 
+        //                     string stateFrom, string activityFrom,
+        //                     string stateTo, string activityTo)
+        //{
+        //    ActivityDefinition adFrom = new ActivityDefinition
+        //    {
+        //        State = stateFrom,
+        //        Name = activityFrom
+        //    };
 
-            WorkflowRuntime.PersistenceProvider
-            .UpdatePersistenceState(processInstance,
-                                    TransitionDefinition.Create(adFrom, adTo));
-        }
+        //    ActivityDefinition adTo = new ActivityDefinition
+        //    {
+        //        State = stateTo,
+        //        Name = activityTo
+        //    };
+
+        //    WorkflowRuntime.PersistenceProvider
+        //    .UpdatePersistenceState(processInstance,
+        //                            TransitionDefinition.Create(adFrom, adTo));
+        //}
 
         public void SavePersistenceParameter(ProcessInstance processInstance)
         {
@@ -135,15 +141,34 @@ namespace AntWay.Core.Runtime
             return WorkflowRuntime.GetCurrentStateName(processId);
         }
 
+        public bool IsErrorState(Guid processId)
+        {
+            bool result = GetCurrentStateName(processId)?.ToLower()
+                          .IndexOf("error") >= 0;
+
+            return result;
+        }
+
         public string GetCurrentActivityName(Guid processId)
         {
             return WorkflowRuntime.GetCurrentActivityName(processId);
         }
 
-        public void SetErrorState(ProcessInstance processInstance, string activityDescription)
-        {
-            WorkflowRuntime.SetErrorState(processInstance, activityDescription);
-        }
+        //internal void SetErrorState(ProcessInstance processInstance,
+        //                          string activityId,
+        //                          string activityName,
+        //                          string activityState,
+        //                          List<string> errorsDescription)
+        //{
+        //    WorkflowRuntime.SetErrorState(processInstance, activityId,
+        //                                  activityName, activityState,
+        //                                  errorsDescription);
+
+        //    ////var smph = AntWayBus.AntWayBusErrorSemaphore
+        //    ////           .FirstOrDefault(s => s.Key == processInstance.ProcessId)
+        //    ////           .Value;
+        //    ////smph.Release();
+        //}
 
         public Task<bool> ExecuteTriggeredConditionalTransitions(ProcessInstance processInstance,
                                                                  List<TransitionDefinition> transtions)
@@ -172,6 +197,8 @@ namespace AntWay.Core.Runtime
                           .Where(c => c.CommandName.Trim().ToLower() == commandName.ToLower())
                           .FirstOrDefault();
 
+            if (command == null) return false;
+
             return ExecuteCommand(command, identifyId);
         }
 
@@ -183,54 +210,6 @@ namespace AntWay.Core.Runtime
                                         string.Empty);
 
             return cmdExecResult.WasExecuted;
-        }
-
-        public bool WorkflowCommandAvailable(Guid processId, string identityId = null)
-        {
-            var pi = WorkflowClient.AntWayRunTime.GetProcessInstance(processId);
-            bool isSCheme = pi.CurrentActivity.IsScheme;
-
-            if (!isSCheme) return false;
-
-            bool commandNextAvailable =  WorkflowRuntime
-                                        .GetAvailableCommands(processId, identityId ?? string.Empty)
-                                        .Any(c => c.CommandName.ToLower() == "next");
-
-            return commandNextAvailable;
-        }
-
-        public AntWayResponseView CallWorkflowCommand(Guid processId,
-                                                       List<CommandParameter> commandParameters,
-                                                       string identityId = null)
-        {
-            var cmdCallWorkFlow = WorkflowRuntime
-                             .GetAvailableCommands(processId, identityId ?? string.Empty)
-                             .FirstOrDefault(c => c.CommandName.ToLower() == "next");
-
-            string fromActivity = WorkflowClient.AntWayRunTime
-                                 .GetCurrentActivityName(processId);
-
-            string schemeName = fromActivity;
-            string fromState = WorkflowClient.AntWayRunTime
-                                  .GetCurrentStateName(processId);
-
-            WorkflowClient.AntWayRunTime.ExecuteCommand(cmdCallWorkFlow);
-
-            string toActivity = WorkflowClient.AntWayRunTime
-                               .GetCurrentActivityName(processId);
-
-            var result = CallWorkflow(schemeName, processId, commandParameters);
-
-            if (result.Success)
-            {
-                WorkflowClient.AntWayRunTime
-                              .SetState(processId,
-                                          fromState, schemeName,
-                                          result.Value.ToString(),
-                                          toActivity);
-            }
-
-            return result;
         }
 
         public List<ActivityDefinition> GetActivities(ProcessInstance processInstance)
@@ -248,6 +227,32 @@ namespace AntWay.Core.Runtime
             return result;
         }
 
+        public List<string> GetStates(ProcessInstance processInstance)
+        {
+            var result = new List<string>();
+
+            result.AddRange(
+                    processInstance
+                    .ProcessScheme
+                    .Activities
+                    .Where(a => a.State!=null)
+                    .Select(a => a.State)
+                    .OrderBy(s => s)
+                    .ToList()
+            );
+
+            return result;
+        }
+
+
+        public bool IsActivityStateInHistory(ProcessInstance processInstance, 
+                                             string activityState)
+        {
+            var lh = GetProcessHistory(processInstance);
+            bool result = lh.Exists(l => l.FromStateName?.ToLower() == activityState?.ToLower());
+            return result;
+        }
+
         public List<ProcessHistoryItem> GetProcessHistory(ProcessInstance processInstance)
         {
             var result = WorkflowRuntime.PersistenceProvider
@@ -260,19 +265,22 @@ namespace AntWay.Core.Runtime
         {
             var jsonString = GetActivityExecutionJsonObject(processInstance, activityId);
 
+            if (jsonString == null) return default(T);
+
             return JsonConvert.DeserializeObject<T>(jsonString);
         }
 
-        public string GetActivityExecutionJsonObject(ProcessInstance processInstance, string activityId)
+        protected string GetActivityExecutionJsonObject(ProcessInstance processInstance, string activityId)
         {
             var jsonString = processInstance.GetParameter(activityId)?.Value.ToString();
 
             return jsonString;
         }
         
-        internal AntWayResponseView CallWorkflow(string schemeName,
-                                        Guid? fromProcessGuid,
-                                        List<CommandParameter> commandParameters)
+        public CallWorkFlowResponseView CallWorkflow(string schemeName,
+                                                   string fromDatabaseScheme,
+                                                   string fromSchemeName,
+                                                   Guid fromProcessGuid)
         {
             var schemesPersistence = new SchemesPersistence
             {
@@ -282,144 +290,32 @@ namespace AntWay.Core.Runtime
             var scheme = schemesPersistence.GetScheme(schemeName);
             if (scheme == null)
             {
-                return new AntWayResponseView
-                {
-                    CodeResponse = AntWayResponseView.CODE_RESPONSE_ERROR,
-                    Description = $"Scheme {schemeName} does not exist"
-                };
+                return new CallWorkFlowResponseView
+                { CodeResponse = ResponseCodes.CODE_RESPONSE_NOT_FOUND };
             }
 
-            if (!scheme.WorkflowService)
+            var processPersistenceView = new ProcessPersistenceView
             {
-                return new AntWayResponseView
-                {
-                    CodeResponse = AntWayResponseView.CODE_RESPONSE_ERROR,
-                    Description = $"Scheme {schemeName} is not a service"
-                };
-            }
+                SchemeCode = scheme.SchemeCode,
+                LocatorFieldName = "Caller.ProcessId",
+                LocatorValue = fromProcessGuid.ToString(),
+            };
 
-            var fromProcessInstance = fromProcessGuid != null
-                                        ? WorkflowClient.AntWayRunTime
-                                          .GetProcessInstance(fromProcessGuid.Value)
-                                        : null;
-
-            string databaseSchemeFromProcessInstance = WorkflowClient.DataBaseScheme;
+            WorkflowClient.GetAntWayRunTime(scheme.SchemeCode);
             WorkflowClient.DataBaseScheme = scheme.DBSchemeName;
+            var guid = CreateInstanceAndPersist(processPersistenceView);
 
-            var guid = WorkflowClient.AntWayRunTime.CreateInstance(schemeName);
+            WorkflowClient.GetAntWayRunTime(fromSchemeName);
+            WorkflowClient.DataBaseScheme = fromDatabaseScheme;
 
-            WorkflowCommand command = WorkflowClient.AntWayRunTime
-                             .GetAvailableCommands(guid, string.Empty)
-                             .FirstOrDefault();
-
-            if (command == null)
+            return new CallWorkFlowResponseView
             {
-                WorkflowClient.DataBaseScheme = databaseSchemeFromProcessInstance;
-                return new AntWayResponseView
-                {
-                    CodeResponse = AntWayResponseView.CODE_RESPONSE_ERROR,
-                    Description = $"Not command found in scheme {schemeName}"
-                };
-            }
-
-            //Comprobar si cumple con los parámetros requeridos
-            bool parametersMatch = ParametersMatchTheCommand(commandParameters, command);
-
-            //Si no los cumple...
-            if (!parametersMatch)
-            {
-                WorkflowClient.DataBaseScheme = databaseSchemeFromProcessInstance;
-
-                return new AntWayResponseView
-                {
-                    CodeResponse = AntWayResponseView.CODE_RESPONSE_ERROR,
-                    Description = $"Parameters do not match {schemeName}. Check DescriptionDetail.",
-                    DescriptionDetail = GetCommandParameters(schemeName)
-                                        .Select(cp => $"Parameter {cp.ParameterName} of type {cp.Type.Name} is required {cp.IsRequired.ToString()}")
-                                        .ToList()
-                };
-            }
-
-            foreach (var c in commandParameters)
-            {
-                command.SetParameter(c.ParameterName, c.Value);
-            }
-
-            WorkflowClient.AntWayRunTime.ExecuteCommand(command);
-
-            var pi = WorkflowClient.AntWayRunTime
-                        .GetProcessInstance(guid);
-
-            pi.SetParameter("CalledFromScheme", fromProcessInstance.SchemeCode);
-            pi.SetParameter("CalledFromProcessId", fromProcessInstance.ProcessId);
-            WorkflowRuntime.PersistenceProvider.SavePersistenceParameters(pi);
-
-            WorkflowClient.DataBaseScheme = databaseSchemeFromProcessInstance;
-
-            return new AntWayResponseView
-            {
-                CodeResponse = AntWayResponseView.CODE_RESPONSE_OK,
-                Value = pi.CurrentState
+                CodeResponse = ResponseCodes.CODE_RESPONSE_OK,
+                WorflowProcessId = guid
             };
         }
 
-
-        internal List<CommandParameter> GetCommandParameters(string schemeName)
-        {
-            var schemesPersistence = new SchemesPersistence
-            {
-                IDALSchemes = PersistenceObjectsFactory.GetIDALWFSchemaObject()
-            };
-
-            var scheme = schemesPersistence.GetScheme(schemeName);
-            if (scheme == null)
-            {
-                throw new NotImplementedException("Esquema inexistente");
-            }
-
-            if (!scheme.WorkflowService)
-            {
-                throw new NotImplementedException("Esquema no marcado como servicio");
-            }
-
-            WorkflowClient.DataBaseScheme = scheme.DBSchemeName;
-            var guid = WorkflowClient.AntWayRunTime.CreateInstance(schemeName);
-
-            WorkflowCommand command = WorkflowClient.AntWayRunTime
-                             .GetAvailableCommands(guid, string.Empty)
-                             .FirstOrDefault();
-
-            var result = command
-                            .Parameters
-                            .Select(p => AntWayCommandParameter.Single
-                                        .NewCommandParameter(p.ParameterName, p.Value
-                                                            , p.IsRequired))
-                            .ToList();
-
-            return result;
-        }
-
-        public bool ParametersMatchTheCommand
-                                    (List<CommandParameter> sendedParameters,
-                                     WorkflowCommand commandToExecute)
-        {
-            var requiredParameters = commandToExecute
-                                    .Parameters
-                                    .Where(c => c.IsRequired)
-                                    .ToList();
-
-            foreach (var rp in requiredParameters)
-            {
-                bool match = sendedParameters
-                             .Any(sp => sp.ParameterName == rp.ParameterName);
-
-                if (!match) return false;
-            }
-
-            return true;
-        }
-
-
+       
         public ProcessInstance GetProcessInstance(Guid processId)
         {
             var processInstance = WorkflowRuntime.GetProcessInstanceAndFillProcessParameters(processId);
@@ -427,13 +323,14 @@ namespace AntWay.Core.Runtime
         }
 
 
-        public ManagerResponse ValidateModel(ProcessInstance processInstance)
+        internal ManagerResponse ValidateModel(ProcessInstance processInstance)
         {
             IAntWayRuntimeActivity activityInstance = null;
             object activityModelInstance = null;
 
             //GET CHECKSUM VALUES FROM BINDINGMETHODS
-            List<ActivityManager> activityManagerList = WorkflowClient.IActivityManager.GetActivitiesManager();
+            List<ActivityManager> activityManagerList = WorkflowClient.IActivityManager
+                                                        .GetActivitiesManager();
             foreach(ActivityManager am in activityManagerList)
             {
                 activityInstance = Activator.CreateInstance(am.ClassActivityType)
@@ -446,36 +343,60 @@ namespace AntWay.Core.Runtime
 
                 var activityExecutionPersisted = GetLastActivityExecution(processInstance, activityInstance.ActivityId);
 
+                if (activityExecutionPersisted == null)
+                {
+                    return new ManagerResponse { Success = true, ProcessId = processInstance.ProcessId };
+                }
+
                 var errorResponse = new ManagerResponse
                                     {
                                         Success = false,
                                         ActivityId = activityExecutionPersisted.ActivityId,
                                         ActivityName = activityExecutionPersisted.ActivityName,
+                                        ProcessId = processInstance.ProcessId
                                     };
 
                 if (activityExecutionPersisted?.InputChecksum != null)
                 {
-                    string checksumInputPersisted = activityExecutionPersisted.InputChecksum;
                     string checksumInputBinded = GetChecksum(processInstance,
                                                              activityInstance,
                                                              activityModelInstance,
                                                              ChecksumType.Input);
-                    if (checksumInputBinded != checksumInputPersisted) return errorResponse;
+                    if (checksumInputBinded!=null &&
+                        checksumInputBinded != activityExecutionPersisted.InputChecksum)
+                    {
+                        errorResponse.ValidationMessages = activityInstance
+                                                          .DifferenceBetweenPersistedAndBindedObject(
+                                                              processInstance.ProcessId,
+                                                              activityExecutionPersisted.ParametersInput.ToString(),
+                                                              ChecksumType.Input);
+                        return errorResponse;
+                    }
                 }
 
                 if (activityExecutionPersisted?.OutputChecksum != null)
                 {
-                    string checksumOutputPersisted = activityExecutionPersisted.OutputChecksum;
                     string checksumOutputBinded = GetChecksum(processInstance,
                                                               activityInstance,
                                                               activityModelInstance,
                                                               ChecksumType.Output);
-                    if (checksumOutputBinded != checksumOutputPersisted) return errorResponse;
+
+                    if (checksumOutputBinded!=null &&
+                        checksumOutputBinded != activityExecutionPersisted.OutputChecksum)
+                    {
+                        errorResponse.ValidationMessages =  activityInstance
+                                                            .DifferenceBetweenPersistedAndBindedObject(
+                                                                   processInstance.ProcessId,
+                                                                   activityExecutionPersisted.ParametersOutput.ToString(),
+                                                                   ChecksumType.Output);
+                        return errorResponse;
+                    }
                 }
             }
 
-            return new ManagerResponse { Success = true  };
+            return new ManagerResponse { Success = true, ProcessId = processInstance.ProcessId };
         }
+
 
         protected string GetChecksum(ProcessInstance processInstance,
                                      IAntWayRuntimeActivity activityInstance,
@@ -491,18 +412,54 @@ namespace AntWay.Core.Runtime
                 object methodResult = AntWayActivityActivator.RunMethod
                                     (method, processInstance.ProcessId.ToString(), activityInstance);
 
-                cadTochecksumFromBindingMethods += methodResult.ToString();
+                cadTochecksumFromBindingMethods += JsonConvert.SerializeObject(methodResult);
             }
             string result = Checksum.Single.CalculateChecksum(cadTochecksumFromBindingMethods);
 
             return result;
         }
 
+
+        public List<string> GetPersistedErrorMessages(ManagerResponse managerResponse)
+        {
+            var processInstance = WorkflowClient.AntWayRunTime
+                       .GetProcessInstance(managerResponse.ProcessId);
+
+            var result = new List<string>()
+            {
+                $"CurrentActivity: {managerResponse.ActivityName}",
+            };
+
+
+            //processInstance.GetParameters();
+
+            var errors = WorkflowClient.AntWayRunTime
+                         .GetErrorFromActivity(processInstance, managerResponse.ActivityId);
+            result.AddRange(errors);
+
+            return result;
+        }
+
+        public List<string> GetErrorFromActivity(ProcessInstance processInstance, string activityId)
+        {
+           string errorList = processInstance.GetParameter(activityId)?.Value.ToString();
+
+           var result = JsonConvert.DeserializeObject<List<string>>(errorList);
+           return result;
+        }
+
         public ActivityExecution GetLastActivityExecution(ProcessInstance processInstance, string activityId)
         {
-            var result = WorkflowClient.AntWayRunTime
+            var activitisList = WorkflowClient.AntWayRunTime
                         .GetActivityExecutionObject<List<ActivityExecution>>
-                                (processInstance, activityId)
+                                (processInstance, activityId);
+
+            if (activitisList==null || !activitisList.Any())
+            {
+                return null;
+            }
+
+            var result = activitisList
                         .OrderByDescending(ae => ae.EndTime)
                         .FirstOrDefault();
 
@@ -511,28 +468,32 @@ namespace AntWay.Core.Runtime
 
        
         #region "EvaluateExpression Functions for Conditions in designer"
-        public bool EvaluateExpression<TA, TPO>(ProcessInstance processInstance,
-                                 Expression<Func<TPO, bool>> condition,
+        public bool EvaluateExpression<TA, TAM>(ProcessInstance processInstance,
+                                 Expression<Func<TAM, bool>> condition,
                                  ChecksumType checksumType) where TA : IAntWayRuntimeActivity
         {
             Type type = typeof(TA);
             string activityId = GetActivityIdFromClassType(type);
-            bool result = EvaluateExpression<TA, TPO>(processInstance, activityId, condition, checksumType);
+            bool result = EvaluateExpression<TA, TAM>(processInstance, activityId, condition, checksumType);
 
             return result;
         }
 
 
-        public bool EvaluateExpression<TA, TPO>(ProcessInstance processInstance, string activityId,
-                                          Expression<Func<TPO, bool>> condition,
+        public bool EvaluateExpression<TA, TAM>(ProcessInstance processInstance, string activityId,
+                                          Expression<Func<TAM, bool>> condition,
                                           ChecksumType checksumType) where TA : IAntWayRuntimeActivity
         {
-            List<TPO> l = new List<TPO>();
+            List<TAM> l = new List<TAM>();
             List<ActivityExecution> paramValues = AntWayRuntime.Single
                                                     .GetActivityExecutionObject<List<ActivityExecution>>
                                                             (processInstance, activityId);
-            TPO parametersOut = JsonConvert.DeserializeObject<TPO>
-                                    (paramValues.LastOrDefault().ParametersOutput.ToString());
+
+            TAM parametersStoredFromActivity = checksumType == ChecksumType.Input
+                                                ? JsonConvert.DeserializeObject<TAM>
+                                                    (paramValues.LastOrDefault().ParametersInput?.ToString())
+                                                : JsonConvert.DeserializeObject<TAM>
+                                                    (paramValues.LastOrDefault().ParametersOutput?.ToString());
 
             IAntWayRuntimeActivity activityInstance = WorkflowClient.AntWayRunTime
                                                        .GetActivityExecutionObject<List<TA>>
@@ -541,11 +502,18 @@ namespace AntWay.Core.Runtime
 
             if (activityInstance == null) return false;
 
-            TPO parametersBind = MappingReflection
+            TAM parametersBind = MappingReflection
                                 .GetParametersBind(processInstance.ProcessId.ToString(),
-                                                                 activityInstance, parametersOut,
-                                                                  checksumType);
-            l.Add(parametersBind);
+                                                   activityInstance, parametersStoredFromActivity,
+                                                   checksumType);
+            if (parametersBind != null)
+            {
+                l.Add(parametersBind);
+            }
+            else
+            {
+                l.Add(parametersStoredFromActivity);
+            }
 
             var f = from g in l.
                     Where(condition.Compile())

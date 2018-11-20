@@ -42,19 +42,23 @@ namespace AntWay.Oracle.Provider
             }
         }
 
-        public T Fetch<T>(object pk)
+        public ProcessPersistenceView Fetch(string schemeCode, string locatorValue)
         {
-            string id = Convert.ToString(pk ?? "");
-            
             using (var ctx = new Model1())
             {
                 var entity = ctx.LOCATORS
-                             .FirstOrDefault(q => q.LOCATOR_VALUE.ToUpper() == id.ToUpper());
+                             .FirstOrDefault(q => q.LOCATOR_VALUE.ToUpper() == locatorValue &&
+                                             q.SCHEME_CODE.ToUpper() ==  schemeCode);
 
                 var result = MapFromDalToView(entity);
 
-                return (T)Convert.ChangeType(result, typeof(T));
+                return result;
             }
+        }
+
+        public T Fetch<T>(object pk)
+        {
+            throw new NotImplementedException();
         }
 
         public T Insert<T>(T objectView)

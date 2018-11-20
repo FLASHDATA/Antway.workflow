@@ -80,7 +80,7 @@
                     <table>
                         <tr style="text-align:center">
                             <td>
-                                <img height="32px" src="/Images/download.png" title="Click on this for download the workflow scheme" />
+                                <img height="32px" src="~/Images/download.png" title="Click on this for download the workflow scheme" />
 
                             </td>
                             <td>Download XML</td>
@@ -93,7 +93,7 @@
                     <table>
                         <tr style="text-align:center">
                             <td>
-                                <img height="32px" src="/Images/upload.png" title="Click on this for upload a workflow scheme" />
+                                <img height="32px" src="~/Images/upload.png" title="Click on this for upload a workflow scheme" />
                             </td>
                             <td>Upload XML</td>
                         </tr>
@@ -166,9 +166,9 @@
         WorkflowDesignerConstants.FormMaxHeight = 600;
         wfdesigner = new WorkflowDesigner({
             name: 'simpledesigner',
-            apiurl: '/Designer/API',
+            apiurl: '@Url.Content("~/Designer/API")',
             renderTo: 'wfdesigner',
-            imagefolder: '/Images/',
+            imagefolder: '@Url.Content("~/Images/")',
             graphwidth: graphwidth,
             graphheight: graphheight
         });

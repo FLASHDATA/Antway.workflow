@@ -2,14 +2,11 @@
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Antway.Core;
 using Antway.Core.Persistence;
 using AntWay.Core.Manager;
-using AntWay.Core.Mapping;
-using AntWay.Core.Providers;
-using AntWay.Core.Runtime;
 using AntWay.Persistence.Provider.Model;
 using OptimaJet.Workflow.Core.Runtime;
+
 
 namespace AntWay.Core.Runtime
 {
@@ -18,7 +15,7 @@ namespace AntWay.Core.Runtime
         private static IWorkflowActionProvider IAntWayActionProvider = null;
         private static ITimerManager ITimerManager = null;
         private static ICommandsMapping ICommandsMapping = null;
-        private static IAssemblies IAssemblies = null;
+        public static IAssemblies IAssemblies = null;
         public static IActivityManager IActivityManager = null;
 
         private static string _DatabaseScheme;
@@ -59,6 +56,38 @@ namespace AntWay.Core.Runtime
         {
             IActivityManager = _IActivityManager;
         }
+
+
+        public static ManagerResponse StartWF(string schemeCode, string localizadorFieldName,
+                                             string localizador,
+                                             IAssemblies assemblies,
+                                             IActivityManager activityManager,
+                                             bool forceNewProcess,
+                                             string actor = null)
+        {
+            WithAssemblies(assemblies);
+            WithActivityManager(activityManager);
+            GetAntWayRunTime(schemeCode);
+
+            var result = !forceNewProcess
+                             ? Workflow.StartWFP(AntWayRunTime,
+                                          schemeCode,
+                                          localizadorFieldName,
+                                          localizador,
+                                          actor)
+                             : Workflow.StartWFPNew(AntWayRunTime,
+                                                  schemeCode,
+                                                  localizadorFieldName,
+                                                  localizador,
+                                                  actor);
+
+            result.Success = (result.Success &&
+                              result.ActivityName != null &&
+                              result.ActivityName.ToLower().IndexOf("error") < 0);
+
+            return result;
+        }
+
 
         public static AntWayRuntime GetAntWayRunTime(string schemeCode)
         {

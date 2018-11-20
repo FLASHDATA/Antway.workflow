@@ -132,6 +132,7 @@
     <Compile Include="Model\ParametersCollection.cs" />
     <Compile Include="Model\ProcessDefinition.cs" />
     <Compile Include="Model\ProcessInstance.cs" />
+    <Compile Include="Model\ProcessInstanceAntWay.cs" />
     <Compile Include="Model\SchemeDefinition.cs" />
     <Compile Include="Model\TimerDefinition.cs" />
     <Compile Include="Model\TimerType.cs" />

@@ -9,7 +9,7 @@ namespace OptimaJet.Workflow.Core.Bus
     /// <summary>
     /// Represent execution request which contains conditions and actions
     /// </summary>
-    public sealed class ExecutionRequestParameters
+public sealed class ExecutionRequestParameters
     {
         /// <summary>
         /// Returns Process instance which requested execution 

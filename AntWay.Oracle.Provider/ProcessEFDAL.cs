@@ -95,11 +95,13 @@ namespace AntWay.Oracle.Provider
 
                 string sql = "SELECT ROWNUM AS NUM_FILA" +
                             " , QRY.WorkFlow" +
-                            " ,QRY.LOCALIZADOR, QRY.ESTADOACTUAL, QRY.TAGS, QRY.ULTIMAACTUALIZACION" +
+                            " ,QRY.LOCALIZADOR, QRY.ESTADOACTUAL" +
+                            " ,QRY.STATUS, QRY.TAGS, QRY.ULTIMAACTUALIZACION" +
                             " FROM" +
                             " (" +
                             "  SELECT LOC.SCHEME_CODE AS WorkFlow" +
                             "  , LOC.LOCATOR_VALUE AS Localizador" +
+                            "  , PH.STATUS as Status" +
                             "  , PH.STATENAME as EstadoActual, PH.TAGS AS Tags" +
                             "  , PH.LASTTRANSITION AS UltimaActualizacion" +
                             " FROM LOCATORS LOC" +
@@ -113,7 +115,7 @@ namespace AntWay.Oracle.Provider
                         sqlSubquery += " UNION ";
                     }
                     sqlSubquery += 
-                              " SELECT pi.ID, pi.STATENAME, pth.Tags, pth.LastTransition" +
+                              " SELECT pi.ID, pi.STATENAME, ps.Status, pth.Tags, pth.LastTransition" +
                               $" FROM {schemeDBName}.WORKFLOWPROCESSINSTANCE pi" +
                               " LEFT JOIN(" +
                               "           select PROCESSID" +
@@ -122,7 +124,10 @@ namespace AntWay.Oracle.Provider
                               $"           from {schemeDBName}.WORKFLOWPROCESSTRANSITIONH" +
                               "           GROUP BY PROCESSID" +
                               " )  pth" +
-                              " ON pi.ID = pth.PROCESSID";
+                              " ON pi.ID = pth.PROCESSID" +
+                              " LEFT JOIN(SELECT ID as PROCESSID, STATUS " +
+                              $"           FROM {schemeDBName}.WORKFLOWPROCESSINSTANCES) ps " +
+                              "            ON  pi.ID = ps.PROCESSID";
                 }
 
                 sql +=   sqlSubquery +
@@ -177,14 +182,14 @@ namespace AntWay.Oracle.Provider
             using (var ctx = new Model1())
             {
                 string sql = " SELECT NUM_FILA, sq.WorkFlow, sq.LOCALIZADOR " +
-                             " , sq.ESTADOACTUAL, sq.TAGS, sq.ULTIMAACTUALIZACION " +
+                             " , sq.STATUS, sq.ESTADOACTUAL, sq.TAGS, sq.ULTIMAACTUALIZACION " +
                              " FROM( " +
                                      SQLProcessesHistory +
                              " ) sq" +
                              " WHERE NUM_FILA >=:FromRecord AND NUM_FILA <=:ToRecord";
                              
                 filter.FilteredStringFields
-                    .ForEach(f => sql += $" AND {f.Field} like '%' || :{f.Field} || '%'");
+                    .ForEach(f => sql += $" AND lower({f.Field}) like '%' || lower(:{f.Field}) || '%'");
 
                 sql += $" ORDER BY {filter.OrderByColumnName} {filter.OrderByDirection}";
 

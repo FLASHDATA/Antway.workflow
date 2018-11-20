@@ -9,6 +9,10 @@ using AntWay.Dashboard.Web.ViewModels;
 using AntWay.Persistence.Provider.Model.DataTable;
 using AntWay.Persistence.Provider.Model;
 using Antway.Core.Persistence;
+using AntWay.Core.Runtime;
+using AntWay.Core.Manager;
+using IMHab.PreventBlanqueo.SEPBLAC.AntWay.AntWayBinding;
+using Temp.Factory;
 
 namespace Client.Web.Controllers
 {
@@ -140,7 +144,7 @@ namespace Client.Web.Controllers
 
             string[] dataTableColNames = 
             {
-                "WorkFlow", "Localizador", "Tags", "UltimaActualizacion"
+                "WorkFlow", "Localizador", "Status", "Tags", "UltimaActualizacion"
             };
 
             var filter = new DataTableFilters
@@ -164,7 +168,7 @@ namespace Client.Web.Controllers
                                        {
                                            c.WorkFlow,
                                            c.Localizador,
-                                           //c.EstadoActual,
+                                           c.StatusDescripcion,
                                            c.Tags,
                                            c.UltimaActualizacion
                                        }
@@ -258,7 +262,7 @@ namespace Client.Web.Controllers
                                           c.SchemeCode,
                                           c.SchemeName,
                                           c.SchemeDBName,
-                                          c.WorkFlowService.ToString(),
+                                          //c.WorkFlowService.ToString(),
                                           c.Active.ToString(),
                                           c.SchemeCode, //edit
                                        }
@@ -273,6 +277,60 @@ namespace Client.Web.Controllers
             },
             JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public ActionResult GetErrorFromLocator(string scheme, string locator)
+        {
+            var vm = new ActivityManagerViewModel
+            {
+                TagDescription = "Error no especificado"
+            };
+
+            IAssemblies assemblies = AssemblyFactory.GetAssemblyObject(scheme);
+            IActivityManager activityManager = new ActivityManagerVoid();
+
+            var managerResponse = WorkflowClient
+                                 .StartWF(scheme,
+                                          null,
+                                          locator, 
+                                          assemblies,
+                                          activityManager,
+                                          false);
+            if (!managerResponse.Success)
+            {
+                var errors = WorkflowClient.AntWayRunTime
+                             .GetPersistedErrorMessages(managerResponse);
+                vm.TagDescription = String.Join("<br/>", errors);
+
+                var processInstance = WorkflowClient.AntWayRunTime
+                                      .GetProcessInstance(managerResponse.ProcessId);
+                vm.StateList = WorkflowClient.AntWayRunTime.GetStates(processInstance);
+            }
+ 
+            return View("ActivityManager", vm);
+        }
+
+        [HttpPost]
+        public JsonResult SetState(ActivityStatePostViewModel vm)
+        {
+            IAssemblies assemblies = AssemblyFactory.GetAssemblyObject(vm.scheme);
+            IActivityManager activityManager = new ActivityManagerVoid();
+
+            var managerResponse = WorkflowClient
+                                .StartWF(vm.scheme,
+                                         null,
+                                         vm.locator,
+                                         assemblies,
+                                         activityManager,
+                                         false);
+
+
+            WorkflowClient.AntWayRunTime
+                .SetState(managerResponse.ProcessId, vm.stateToSet, true);
+
+            return Json(new { success = true });
+        }
+
 
         [HttpPost]
         public ActionResult SchemeGet(string scheme)

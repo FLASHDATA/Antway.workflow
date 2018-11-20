@@ -132,7 +132,8 @@ namespace Client.Winforms.Demos
 
             var locatorPersistence = new LocatorPersistence
                 { IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject() };
-            var wfInstance = locatorPersistence.GetWorkflowByLocator(Localizador);
+            var wfInstance = locatorPersistence.GetWorkflowByLocator(Localizador,
+                                                                     cmbSchemeCodes.SelectedItem.ToString());
             
             ProcessId = (wfInstance?.WFProcessGuid == null)
                                 ? (Guid?) null 
@@ -232,9 +233,9 @@ namespace Client.Winforms.Demos
 
                 if (!managerResponse.Success)
                 {
-                    WorkflowClient.AntWayRunTime
-                    .SetErrorState(processInstance, 
-                                   $"{managerResponse.ActivityId}/{managerResponse.ActivityName}");
+                    //WorkflowClient.AntWayRunTime
+                    //.SetErrorState(processInstance, 
+                    //               $"{managerResponse.ActivityId}/{managerResponse.ActivityName}");
 
                     return managerResponse;
                 }
@@ -329,7 +330,8 @@ namespace Client.Winforms.Demos
             {
                 IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject(),
             };
-            var wfInstance = locatorPersistence.GetWorkflowByLocator(localizador);
+            var wfInstance = locatorPersistence.GetWorkflowByLocator(localizador,
+                                                                     cmbSchemeCodes.SelectedItem.ToString());
 
             if (wfInstance?.WFProcessGuid == null)
             {

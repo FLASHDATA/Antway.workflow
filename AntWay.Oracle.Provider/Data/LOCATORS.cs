@@ -15,6 +15,7 @@ namespace AntWay.Oracle.Provider.Data
         public string LOCATOR_FIELD_NAME { get; set; }
 
         [Key]
+        [Column(Order = 0)]
         [StringLength(50)]
         public string LOCATOR_VALUE { get; set; }
 
@@ -24,6 +25,8 @@ namespace AntWay.Oracle.Provider.Data
         [StringLength(50)]
         public string ALTERN_LOCATOR_FIELD_VALUE1 { get; set; }
 
+        [Key]
+        [Column(Order = 1)]
         [StringLength(50)]
         public string SCHEME_CODE { get; set; }
     }

@@ -22,10 +22,10 @@
         });
     </script>
     <!--end::Web font -->
-    <link href="/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/demo/demo3/base/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/demo/demo3/base/style.bundle.css" rel="stylesheet" type="text/css" />
     <!--end::Base Styles -->
-    <link rel="shortcut icon" href="/assets/demo/demo3/media/img/logo/favicon.ico" />
+    <link rel="shortcut icon" href="~/assets/demo/demo3/media/img/logo/favicon.ico" />
 
 
     <script src="~/assets/chart/Chart.bundle.js"></script>
@@ -54,8 +54,8 @@
                     <div class="m-stack__item m-brand  m-brand--skin-dark ">
                         <div class="m-stack m-stack--ver m-stack--general">
                             <div class="m-stack__item m-stack__item--middle m-stack__item--center m-brand__logo">
-                                <a href="/index.html" class="m-brand__logo-wrapper">
-                                    <img alt="" src="/images/logo.png" />
+                                <a href="@Url.Content("~/home/index")" class="m-brand__logo-wrapper">
+                                    <img alt="" src="~/images/logo.png" />
                                 </a>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                                         <div class="m-dropdown__wrapper">
                                             <span class="m-dropdown__arrow m-dropdown__arrow--center"></span>
                                             <div class="m-dropdown__inner">
-                                                <div class="m-dropdown__header m--align-center" style="background: url(assets/app/media/img/misc/notification_bg.jpg); background-size: cover;">
+                                                <div class="m-dropdown__header m--align-center" style="background: url(~/assets/app/media/img/misc/notification_bg.jpg); background-size: cover;">
                                                     <span class="m-dropdown__header-title">
                                                         9 New
                                                     </span>
@@ -326,7 +326,7 @@
                                         <div class="m-dropdown__wrapper">
                                             <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
                                             <div class="m-dropdown__inner">
-                                                <div class="m-dropdown__header m--align-center" style="background: url(assets/app/media/img/misc/quick_actions_bg.jpg); background-size: cover;">
+                                                <div class="m-dropdown__header m--align-center" style="background: url(~/assets/app/media/img/misc/quick_actions_bg.jpg); background-size: cover;">
                                                     <span class="m-dropdown__header-title">
                                                         Quick Actions
                                                     </span>
@@ -642,7 +642,7 @@
                                                     <tr>
                                                         <th>WorkFlow</th>
                                                         <th>Localizador</th>
-                                                        @*<th>Estado Actual</th>*@
+                                                        <th>Status</th>
                                                         <th>Tags</th>
                                                         <th>Última Actualización</th>
                                                     </tr>
@@ -651,7 +651,7 @@
                                                     <tr>
                                                         <th class="textSearch" title="WorkFlow">WorkFlow</th>
                                                         <th class="textSearch" title="Localizador">Localizador</th>
-                                                        @*<th class="textSearch" title="EstadoActual">EstadoActual</th>*@
+                                                        <th class="selectStatusSearch" title="Status">Status</th>
                                                         <th class="textSearch" title="Tags">Tags</th>
                                                         <th class="datepickerSearch">UltimaActualizacion</th>
                                                     </tr>
@@ -736,7 +736,7 @@
                                                             <th data-toggle="tooltip" title="Código del esquema">Código</th>
                                                             <th data-toggle="tooltip" title="Nombre del esquema">Nombre</th>
                                                             <th data-toggle="tooltip" title="Base de datos del esquema">Base de datos</th>
-                                                            <th data-toggle="tooltip" title="Si está marcado como servicio, podrá ser llamado desde otros Workflows">Servicio</th>
+                                                            @*<th data-toggle="tooltip" title="Si está marcado como servicio, podrá ser llamado desde otros Workflows">Servicio</th>*@
                                                             <th data-toggle="tooltip" title="Si está deshabilitado, no se podrán crear nuevas instancias">Habilitado</th>
                                                             <th></th>
                                                         </tr>
@@ -746,7 +746,7 @@
                                                             <th class="textSearch" title="SCHEME_CODE">Código</th>
                                                             <th class="textSearch" title="SCHEME_NAME">Nombre</th>
                                                             <th class="textSearch" title="DB_SCHEME_NAME">Base de datos</th>
-                                                            <th></th>
+                                                            @*<th></th>*@
                                                             <th></th>
                                                             <th></th>
                                                         </tr>
@@ -802,14 +802,14 @@
     </div>
     <!-- end::Scroll Top -->
     <!--begin::Base Scripts -->
-    <script src="/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
-    <script src="/assets/demo/demo3/base/scripts.bundle.js" type="text/javascript"></script>
+    <script src="~/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
+    <script src="~/assets/demo/demo3/base/scripts.bundle.js" type="text/javascript"></script>
     <!--end::Base Scripts -->
     <!--begin::Page Vendors -->
-    <script src="/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
+    <script src="~/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
     <!--end::Page Vendors -->
     <!--begin::Page Snippets -->
-    <script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
+    <script src="~/assets/app/js/dashboard.js" type="text/javascript"></script>
     <!--end::Page Snippets -->
 </body>
 <!-- end::Body -->
@@ -823,6 +823,20 @@
 
 <div id="schemeEdit">
 
+</div>
+
+<div id="activityManager">
+
+</div>
+
+<div id="html_selectStatusSearch">
+    <select id="selectStatusSearch">
+        <option value="0">Todos</option>
+        <option value="1">Ejecutando</option>
+        <option value="2">Dormido</option>
+        <option value="3">Finalizado</option>
+        <option value="5">Error</option>
+    </select>
 </div>
 
 <style>
@@ -993,7 +1007,7 @@
         window.dataTableWorkFlows = {
             tableDefinition: {
                 "bServerSide": true,
-                "sAjaxSource": "/home/GetWorkFlowsDataTable",
+                "sAjaxSource": "@Url.Content("~/home/GetWorkFlowsDataTable")",
                 "bProcessing": true,
                 "iDisplayLength": 6,
                 "language": customDataTableLangES,
@@ -1014,7 +1028,7 @@
                         "mRender": function (oObj) {
                             if (oObj == "TOTAL") return oObj;
                             var result = "";
-                            result += '<a href="/designer/Index/' + oObj + '" target="_blank">' + oObj + '</span>';
+                            result += '<a href="@Url.Content("~/designer/Index/")' + oObj + '" target="_blank">' + oObj + '</span>';
                             return result;
                         }
                     },
@@ -1066,7 +1080,7 @@
                 if ($("#tbWorkflow").val().length > 0) {
                     filterFields.push({
                         field: "SCHEMECODE",
-                        value: $("#tbWorkflow").val(),
+                        value: $("#tbWorkflow").val().toUpperCase(),
                     });
                 }
 
@@ -1090,6 +1104,10 @@
                 //        .html()
                 //        .replace("{id}", "datepickerProcesos"));
 
+                $(".selectStatusSearch")
+                    .html($("#html_selectStatusSearch").html());
+
+
                 this.dataTable = $('#dataTableWorkFlows')
                     .DataTable(window.dataTableWorkFlows.tableDefinition);
 
@@ -1099,11 +1117,13 @@
                     window.pie.chartPie.update();
                 });
 
+
                 this.bindSearchColumns();
             },
 
             bindSearchColumns: function () {
                 var me = this;
+
                 $('#tbWorkflow').on('keyup change', function (e) {
                     if (e.keyCode == 13 && $(this).is(":focus")) {
                         if (me.dataTable.search() !== this.value) {
@@ -1112,8 +1132,9 @@
                         }
                     }
                 });
-            }
+            },
         }
+
 
         window.pie = {
             chartPie: {},
@@ -1212,17 +1233,17 @@
         window.dataTableProcesos = {
             tableDefinition: {
                 "bServerSide": true,
-                "sAjaxSource": "/home/GetProccessesHistoryDataTable",
+                "sAjaxSource": "@Url.Content("~/home/GetProccessesHistoryDataTable")",
                 "bProcessing": true,
                 "iDisplayLength": 20,
                 "language": customDataTableLangES,
-                "order": [[3, 'desc']],
+                "order": [[4, 'desc']],
                 "aoColumns": [
                     {
                         "sName": "WorkFlow",
                         "mRender": function (oObj) {
                             var result = "";
-                            result += '<a href="/designer/Index/' + oObj + '" target="_blank">' + oObj + '</span>';
+                            result += '<a href="@Url.Content("~/designer/Index/")' + oObj + '" target="_blank">' + oObj + '</span>';
                             return result;
                         }
                     },
@@ -1232,21 +1253,64 @@
                             return oObj;
                         }
                     },
-                    //{ "sName": "Estado Actual" },
+                    {
+                        "sName": "Status",
+                        "mRender": function (oObj) {
+                            if (oObj == null) return null;
+                            var result = '';
+                            result += '<span class="';
+                            if (oObj == 'Ejecutando') result += "color-orange";
+                            if (oObj == 'Dormido') result += "color-blue";
+                            if (oObj == 'Finalizado') result += "color-green";
+                            if (oObj == 'Error') result += "color-red";
+                            result += '">';
+                            result += oObj;
+                            result += '</span>';
+                            return result;
+                        }
+                    },
                     {
                         "sName": "Tags",
-                        "mRender": function (oObj) {
+                        "mRender": function (oObj, type, row) {
                             if (oObj == null) return null;
                             var tags = oObj.split(',');
                             var result = "";
                             for (var i = 0; i < tags.length; i++) {
-                                result += '<span class="m-badge m-badge--brand m-badge--wide" style="margin-right:3px;font-size:0.6em;">' + tags[i] + '</span>';
+                                result += '<span class="m-badge m-badge--brand m-badge--wide"';
+                                result += ' style ="margin-right:3px;font-size:0.6em;';
+
+                                result += (tags[i].toLowerCase().indexOf('error') >= 0
+                                    ? 'background-color:red;cursor: hand;' : 'cursor: default;');
+                                result += '" ';
+                                if (tags[i].toLowerCase().indexOf('error') >= 0) {
+                                    result += ' onClick=window.dataTableProcesos.getActivityManagerErrorTagDetail("' + row[0] + '","' + row[1] + '")';
+                                }
+                                result += '>';
+                                result += tags[i];
+                                result += '</span>';
                             }
                             return result;
                         }
                     },
                     { "sName": "Última Actualización" }
                 ],
+            },
+
+            getActivityManagerErrorTagDetail: function (scheme, locator) {
+                //console.log(locator); 
+                $("#activityManager").load("@Url.Content("~/home/GetErrorFromLocator")",
+                    {
+                        scheme: scheme,
+                        locator: locator
+                    },
+                    function () {
+                        $("#activityManagerModal").modal();
+                        $("#activityManagerModal .modal-body .errorDescription")
+                            .attr("style", "color:red;");
+                        $("#scheme").val(scheme);
+                        $("#locator").val(locator);
+                    }
+                );
             },
 
             getFilters: function () {
@@ -1259,6 +1323,11 @@
                 });
 
                 filterFields = filterFields.concat(window.datePickerProcesos.getDateFilters());
+
+                if ($("#selectStatusSearch").val() != "0") {
+                    filterFields = filterFields
+                        .concat({ field: "STATUS", value: $("#selectStatusSearch").val() });
+                }
 
                 return filterFields;
             },
@@ -1293,6 +1362,12 @@
 
             bindSearchColumns: function () {
                 var me = this;
+
+                $("#selectStatusSearch").on('change', function () {
+                    var filterFields = me.getFilters();
+                    me.dataTable.search(JSON.stringify(filterFields)).draw();
+                });
+
                 this.dataTable.columns().every(function () {
                     $('input', this.footer()).on('keyup change', function (e) {
                         if (e.keyCode == 13 && $(this).is(":focus")) {
@@ -1302,8 +1377,13 @@
                             }
                         }
                     });
+
+                    //$("#selectStatusSearch").on('change', function () {
+                    //    var filterFields = me.getFilters();
+                    //    me.dataTable.search(JSON.stringify(filterFields)).draw();
+                    //});
                 });
-            }
+            },
         }
 
         //Llamada a métodos bind() de todos los objetos del tabDashboard
@@ -1313,7 +1393,6 @@
         window.dataTableProcesos.bind();
         window.datePickerProcesos.bind();
 
-
         $('[data-toggle="tooltip"]').tooltip();
     };
 
@@ -1322,7 +1401,7 @@
     window.dataTableSchemes = {
         tableDefinition: {
             "bServerSide": true,
-            "sAjaxSource": "/home/GetSchemesDataTable",
+            "sAjaxSource":  "@Url.Content("~/home/GetSchemesDataTable")",
             "bProcessing": true,
             "iDisplayLength": 20,
             "language": customDataTableLangES,
@@ -1342,13 +1421,13 @@
                     "sName": "WorkFlow",
                     "mRender": function (oObj) {
                         var result = "";
-                        result += '<a href="/designer/Index/' + oObj + '" target="_blank">' + oObj + '</span>';
+                        result += '<a href="@Url.Content("~/designer/Index/")' + oObj + '" target="_blank">' + oObj + '</span>';
                         return result;
                     }
                 },
                 { "sName": "Esquema Base de datos" },
                 { "sName": "Descripcion" },
-                { "sName": "Servicio" },
+                ////{ "sName": "Servicio" },
                 { "sName": "Activo" },
                 {
                     "sName": "Edit",
@@ -1398,7 +1477,7 @@
         },
 
         getScheme: function (scheme) {
-            $("#schemeEdit").load("Home/SchemeGet",
+            $("#schemeEdit").load("@Url.Content("~/home/SchemeGet")",
                 { scheme: scheme },
                 function () {
                     $("#editScheme").modal();

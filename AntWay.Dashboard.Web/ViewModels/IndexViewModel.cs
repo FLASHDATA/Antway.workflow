@@ -49,4 +49,19 @@ namespace AntWay.Dashboard.Web.ViewModels
         public bool WorkflowService { get; set; }
         public bool Active { get; set; }
     }
+
+    public class ActivityManagerViewModel
+    {
+        public List<string> StateList { get; set; }
+        public string TagDescription { get; set; }
+
+        public string StateSelected { get; set; }
+    }
+
+    public class ActivityStatePostViewModel
+    {
+        public string scheme { get; set; }
+        public string locator { get; set; }
+        public string stateToSet { get; set; }
+    }
 }

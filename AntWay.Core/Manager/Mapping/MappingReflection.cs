@@ -9,27 +9,29 @@ using static AntWay.Core.Manager.Checksum;
 
 namespace AntWay.Core.Mapping
 {
-    public static class MappingReflection
+    internal static class MappingReflection
     {
-        public static TPO GetParametersBind<TPO>(string processId,
+        internal static TAM GetParametersBind<TAM>(string processId,
                                                  IAntWayRuntimeActivity activityInstance,
-                                                 TPO parametersOutput,
+                                                 TAM parameters,
                                                  ChecksumType type)
         {
             object result = null;
-            List<string> methods = GetActivityMethodAttributes(parametersOutput, type);
+            string method = GetActivityMethodAttributes(parameters, type)
+                                   .FirstOrDefault();
 
-            foreach (string method in methods)
+            if (method == null)
             {
-                result = AntWayActivityActivator.RunMethod
-                                                    (method, processId, activityInstance, parametersOutput);
+                return (TAM) result;
             }
 
-            return (TPO) result;
+            result = AntWayActivityActivator.RunMethod(method, processId, activityInstance, parameters);
+            
+            return (TAM) result;
         }
 
 
-        public static List<string>
+        internal static List<string>
                      GetActivityMethodAttributes(object obj, ChecksumType type)
         {
             var result = new List<string>();
@@ -41,7 +43,10 @@ namespace AntWay.Core.Mapping
             foreach (var p in properties)
             {
                 var values = GetParameterMethod(p, type);
-                result.Add(values);
+                if (values != null)
+                {
+                    result.Add(values);
+                }
             }
 
             return result;
@@ -61,23 +66,23 @@ namespace AntWay.Core.Mapping
 
 
 
-        public static List<KeyValuePair<string, List<string>>>
-                      GetSchemeValuesParameters(object obj)
-        {
-            var result = new List<KeyValuePair<string, List<string>>>();
+        //public static List<KeyValuePair<string, List<string>>>
+        //              GetSchemeValuesParameters(object obj)
+        //{
+        //    var result = new List<KeyValuePair<string, List<string>>>();
 
-            var properties = obj.GetType()
-                                    .GetProperties()
-                                    .Where(p => p.CustomAttributes.Count() > 0);
+        //    var properties = obj.GetType()
+        //                            .GetProperties()
+        //                            .Where(p => p.CustomAttributes.Count() > 0);
 
-            foreach (var p in properties)
-            {
-                var values = GetParameterValues(p);
-                result.Add(new KeyValuePair<string, List<string>>(p.Name, values));
-            }
+        //    foreach (var p in properties)
+        //    {
+        //        var values = GetParameterValues(p);
+        //        result.Add(new KeyValuePair<string, List<string>>(p.Name, values));
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         
         private static List<string> GetParameterValues(PropertyInfo prop)

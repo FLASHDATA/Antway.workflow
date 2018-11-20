@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\Dependencies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\PreventBlanqueo\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -48,12 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\ActivityModel.cs" />
+    <Compile Include="Activity\IActivityModelBase.cs" />
     <Compile Include="Manager\ActivityManager.cs" />
     <Compile Include="Manager\Checksum.cs" />
     <Compile Include="Manager\ManagerResponse.cs" />
-    <Compile Include="Mapping\AttributeClasses.cs" />
-    <Compile Include="Mapping\CommandsMapping.cs" />
-    <Compile Include="Mapping\EmptyCommandMapping.cs" />
+    <Compile Include="Manager\Mapping\AttributeClasses.cs" />
+    <Compile Include="Manager\Mapping\CommandsMapping.cs" />
+    <Compile Include="Manager\Mapping\EmptyCommandMapping.cs" />
     <Compile Include="Model\ActivityExecution.cs" />
     <Compile Include="Activity\AntWayActivityRuntimeBase.cs" />
     <Compile Include="Activity\AntWayActivityService.cs" />
@@ -61,13 +66,14 @@
     <Compile Include="Model\DefaultSchemeCommands.cs" />
     <Compile Include="Activity\IAntWayRuntimeActivity.cs" />
     <Compile Include="Runtime\IAssemblies.cs" />
-    <Compile Include="Model\AntWayResponseView.cs" />
+    <Compile Include="Model\ResponseViews.cs" />
     <Compile Include="Persistence\IWFSchemeModel.cs" />
     <Compile Include="Model\AntWayCommandParameter.cs" />
     <Compile Include="Persistence\PersistenceObjectsFactory.cs" />
     <Compile Include="Runtime\AntWayRuntime.cs" />
-    <Compile Include="Mapping\MappingReflection.cs" />
+    <Compile Include="Manager\Mapping\MappingReflection.cs" />
     <Compile Include="Persistence\WFSchemeModel.cs" />
+    <Compile Include="Runtime\AntWayBus.cs" />
     <Compile Include="Runtime\Workflow.cs" />
     <Compile Include="Runtime\WorkflowClient.cs" />
     <Compile Include="Runtime\AntWayActionProvider.cs" />

@@ -9,6 +9,11 @@ namespace AntWay.Core.Runtime
 {
     public class EmptyAsembly : IAssemblies
     {
+        public List<Type> GetTypes()
+        {
+            return new List<Type>();
+        }
+
         public void RegisterAssembliesForServiceLocator()
         {
             

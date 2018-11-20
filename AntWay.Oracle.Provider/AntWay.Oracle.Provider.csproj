@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\LOCATORS.cs" />
-    <Compile Include="Data\Model2.cs" />
+    <Compile Include="Data\Model1.cs" />
     <Compile Include="Data\WF_SCHEMES.cs" />
     <Compile Include="Data\WF_SCHEMES_PARAMETERS.cs" />
     <Compile Include="Data\WF_SCHEME_PARAMETERS_VALUES.cs" />

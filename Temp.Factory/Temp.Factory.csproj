@@ -45,6 +45,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\PreventBlanqueo\IMHab.PreventBlanqueo.Riesgo\IMHab.PreventBlanqueo.Riesgo.AntWay.csproj">
+      <Project>{f3c676dd-8e59-4a9e-aafd-5764742cb62a}</Project>
+      <Name>IMHab.PreventBlanqueo.Riesgo.AntWay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PreventBlanqueo\IMHab.PreventBlaqueo.SEPBLAC.AntWay\IMHab.PreventBlaqueo.SEPBLAC.AntWay.csproj">
+      <Project>{5114EF32-FA24-4AE0-A9FB-90DBE15786A3}</Project>
+      <Name>IMHab.PreventBlaqueo.SEPBLAC.AntWay</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AntWay.Core\AntWay.Core.csproj">
       <Project>{9fb295c0-e9e7-4b37-9120-d9dfcca9a3f2}</Project>
       <Name>AntWay.Core</Name>

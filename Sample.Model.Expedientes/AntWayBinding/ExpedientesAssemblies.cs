@@ -9,28 +9,9 @@ using AntWay.Core.Runtime;
 
 namespace Sample.Model.Expedientes.AntWayBinding
 {
-    public class ExpedientesAssemblies : IAssemblies
+    public class ExpedientesAssemblies : AssembliesBase, IAssemblies
     {
-        public void RegisterAssembliesForWorkflowDesigner(WorkflowRuntime runtime)
-        {
-            var assemblies = GetAssemblies();
-            foreach (Assembly assembly in assemblies)
-            {
-                runtime.RegisterAssemblyForCodeActions(assembly);
-            }
-        }
-
-        public void RegisterAssembliesForServiceLocator()
-        {
-            var assemblies = GetAssemblies();
-
-            foreach(Assembly assembly in assemblies)
-            {
-                Assembly.Load(assembly.FullName);
-            }
-        }
-
-        protected List<Assembly> GetAssemblies()
+        protected override List<Assembly> GetAssemblies()
         {
             var result = new List<Assembly>
             {

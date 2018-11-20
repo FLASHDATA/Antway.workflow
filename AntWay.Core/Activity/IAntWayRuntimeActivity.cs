@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AntWay.Core.Model;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
+using static AntWay.Core.Manager.Checksum;
 
 namespace AntWay.Core.Activity
 {
@@ -16,5 +17,9 @@ namespace AntWay.Core.Activity
 
         Task<ActivityExecution> RunAsync(ProcessInstance pi, WorkflowRuntime runtime, object[] parameters = null);
         ActivityExecution Run(ProcessInstance pi, WorkflowRuntime runtime, object[] parameters = null);
+
+        List<string> DifferenceBetweenPersistedAndBindedObject(Guid processId,
+                                                               string jsonPersisted,
+                                                               ChecksumType checksumType);
     }
 }

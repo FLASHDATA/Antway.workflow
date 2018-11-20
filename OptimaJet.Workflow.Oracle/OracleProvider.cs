@@ -164,7 +164,7 @@ namespace OptimaJet.Workflow.Oracle
                     throw new StatusNotDefinedException();
 
                 if (instanceStatus.Status == ProcessStatus.Running.Id)
-                    throw new ImpossibleToSetStatusException();
+                    return;
 
                 var oldLock = instanceStatus.LOCKFLAG;
 

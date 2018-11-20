@@ -104,10 +104,11 @@ namespace OptimaJet.Workflow.Core.Builder
             SchemeDefinition<TSchemeMedium> schemeDefinition = null;
             try
             {
-                schemeDefinition = SchemePersistenceProvider.GetProcessSchemeWithParameters(schemeCode,
-                                                                                             definingParameters,
-                                                                                             null,
-                                                                                             true);
+                schemeDefinition = SchemePersistenceProvider
+                                    .GetProcessSchemeWithParameters(schemeCode,
+                                                                    definingParameters,
+                                                                    null,
+                                                                    true);
             }
             catch (SchemeNotFoundException)
             {

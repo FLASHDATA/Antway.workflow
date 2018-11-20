@@ -9,6 +9,6 @@ namespace Sample.Model.Expedientes.AntWayBinding
     public static class SchemeLocator
     {
         public static string SchemeCode => "EXPEDIENTES";
-        public static string ExpedienteLocatorFieldName => "Table.Field";
+        public static string LocatorFieldName => "Table.Field";
     }
 }

@@ -13,11 +13,22 @@ namespace AntWay.Core.Manager
 
     public abstract class ActivityManagerBase
     {
+        public virtual List<ActivityManager> GetActivitiesManager()
+        {
+            return SetActivitiesManager();
+        }
+
         protected virtual List<ActivityManager> SetActivitiesManager()
         {
-            throw new NotImplementedException();
+            var result = new List<ActivityManager>();
+            return result;
         }
     }
+
+    public class ActivityManagerVoid: ActivityManagerBase, IActivityManager
+    {
+    }
+
 
     public class ActivityManager
     {

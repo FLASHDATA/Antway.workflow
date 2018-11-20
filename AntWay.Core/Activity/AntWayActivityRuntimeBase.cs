@@ -18,7 +18,13 @@ namespace AntWay.Core.Activity
     {
         public string ActivityId { get; set; }
         public string ActivityName { get; set; }
-        
+
+        public virtual List<string> DifferenceBetweenPersistedAndBindedObject(Guid processId,
+                                                                    string jsonPersisted,
+                                                                    ChecksumType checksumType)
+        {
+            return new List<string> { "Diferencia sin especificar" };
+        }
 
         public virtual async Task<ActivityExecution> RunAsync(ProcessInstance pi,
                                                               WorkflowRuntime runtime,
@@ -81,27 +87,8 @@ namespace AntWay.Core.Activity
                                                      ChecksumType checksumType)
         {
             if (activityModel == null) return null;
-            string cadToChecksum = "";
-            Type myType1 = typeof(TActivityModel); 
-            List<PropertyInfo> paramBindingProperties = myType1
-                                                         .GetProperties()
-                                                         .Where(prop => prop.IsDefined(typeof(ParameterBindingAttribute), false))
-                                                         .OrderBy(p => p.Name)
-                                                         .ToList();
 
-            foreach(PropertyInfo p in paramBindingProperties)
-            {
-                Attribute attr = p.GetCustomAttribute(typeof(ParameterBindingAttribute));
-                ParameterBindingAttribute pbAttr = attr as ParameterBindingAttribute;
-                if (checksumType == ChecksumType.Input && pbAttr.InputChecksum)
-                {
-                    cadToChecksum += p.GetValue(activityModel).ToString();
-                }
-                if (checksumType == ChecksumType.Output && pbAttr.OutputChecksum)
-                {
-                    cadToChecksum += p.GetValue(activityModel).ToString();
-                }
-            }
+            string cadToChecksum = JsonConvert.SerializeObject(activityModel);
 
             string result = Checksum.Single.CalculateChecksum(cadToChecksum);
             return result;

@@ -1,0 +1,104 @@
+﻿@model AntWay.Dashboard.Web.ViewModels.ActivityManagerViewModel
+
+<!DOCTYPE html>
+
+<style>
+
+    #activityManagerModal {
+        width: 700px;
+        height: 700px;
+    }
+
+        #activityManagerModal.center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #activityManagerModal .modal-dialog {
+            max-width: 700px;
+            background-color: white;
+        }
+
+    .modal-title {font-weight: bold !important;}
+</style>
+
+<!-- ModalBox  -->
+<div class="modal center fade in" id="activityManagerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detalles</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12 errorDescription">
+                            @Html.Raw(Model.TagDescription)
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                            <label>Estado</label>
+                        </div>
+                        <div class="col-md-9">
+                            @{
+                        var listItems = new List<SelectListItem>();
+                        Model.StateList
+                        .ForEach(s => listItems.Add(new SelectListItem
+                        { Text = s, Value = s, Selected = false }));
+                            }
+
+                            @Html.DropDownListFor(model => model.StateSelected, listItems, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-8">
+                        </div>
+                        <div class="col-md-4" style="text-align:right;">
+                            <button id="btSetState" class="btn btn-primary">Saltar a estado</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btActivityManagerClose"
+                        class="btn btn-secondary btn-outline" data-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+
+            <input type="hidden" id="scheme" />
+            <input type="hidden" id="locator" />
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script>
+
+    $("#btSetState").click(function () {
+        var selectedState = $("#StateSelected").val();
+        //console.log($("#StateSelected").val());
+
+        $("#btSetState").attr("disabled", "disabled");
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Content("~/home/SetState/")",
+            data: {
+                scheme: $("#scheme").val(),
+                locator: $("#locator").val(),
+                stateToSet: selectedState,
+            },
+            success: function (d) {
+                $("#btActivityManagerClose").click();
+            }
+        });
+    });
+
+</script>

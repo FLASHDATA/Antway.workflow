@@ -69,6 +69,7 @@ namespace Client.Winforms.Demos
 
         protected bool CheckTimersExpired(ProcessInstance processInstance = null)
         {
+            return false;
             processInstance = processInstance
                                 ?? WorkflowClient.AntWayRunTime
                                     .GetProcessInstance(ProcessId.Value);
@@ -269,10 +270,7 @@ namespace Client.Winforms.Demos
                 Cursor.Current = Cursors.Default;
                 return;
             }
-            //var availableCommands = WorkflowClient.AntWayRunTime
-            //             .GetAvailableCommands(ProcessId.Value);
 
-            //bool commandAvailable = availableCommands
 
             WorkflowClient.AntWayRunTime
                 .ExecuteCommand(ProcessId.Value, SchemeCommandNames.Single.Siguiente);

@@ -443,7 +443,7 @@ namespace AntWay.Core.Runtime
         public List<string> GetErrorFromActivity(ProcessInstance processInstance, string activityId)
         {
            string errorList = processInstance.GetParameter(activityId)?.Value.ToString();
-
+           if (errorList == null) return new List<string>();
            var result = JsonConvert.DeserializeObject<List<string>>(errorList);
            return result;
         }

@@ -39,29 +39,32 @@
                             @Html.Raw(Model.TagDescription)
                         </div>
                     </div>
-                    <hr />
-                    <div class="row form-group">
-                        <div class="col-md-3">
-                            <label>Estado</label>
-                        </div>
-                        <div class="col-md-9">
-                            @{
-                        var listItems = new List<SelectListItem>();
-                        Model.StateList
-                        .ForEach(s => listItems.Add(new SelectListItem
-                        { Text = s, Value = s, Selected = false }));
-                            }
+                    @if (Model.StateSelectVisible)
+                    {
+                        <hr/>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>Estado</label>
+                            </div>
+                            <div class="col-md-9">
+                                @{
+                                    var listItems = new List<SelectListItem>();
+                                    Model.StateList
+                                    .ForEach(s => listItems.Add(new SelectListItem
+                                    { Text = s, Value = s, Selected = false }));
+                                }
 
-                            @Html.DropDownListFor(model => model.StateSelected, listItems, new { @class = "form-control" })
+                                @Html.DropDownListFor(model => model.StateSelected, listItems, new { @class = "form-control" })
+                            </div>
                         </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-8">
+                        <div class="row form-group">
+                            <div class="col-md-8">
+                            </div>
+                            <div class="col-md-4" style="text-align:right;">
+                                <button id="btSetState" class="btn btn-primary">Saltar a estado</button>
+                            </div>
                         </div>
-                        <div class="col-md-4" style="text-align:right;">
-                            <button id="btSetState" class="btn btn-primary">Saltar a estado</button>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
             <div class="modal-footer">
@@ -83,6 +86,7 @@
 
     $("#btSetState").click(function () {
         var selectedState = $("#StateSelected").val();
+        if (selectedState.length <= 1) retur;
         //console.log($("#StateSelected").val());
 
         $("#btSetState").attr("disabled", "disabled");

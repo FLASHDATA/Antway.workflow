@@ -52,10 +52,16 @@ namespace AntWay.Dashboard.Web.ViewModels
 
     public class ActivityManagerViewModel
     {
+        public ActivityManagerViewModel()
+        {
+            StateList = new List<string>();
+        }
+
         public List<string> StateList { get; set; }
         public string TagDescription { get; set; }
-
         public string StateSelected { get; set; }
+
+        public bool StateSelectVisible => (StateList.Count>1);
     }
 
     public class ActivityStatePostViewModel

@@ -50,7 +50,15 @@ namespace AntWay.Core.Runtime
             var response = await executor.Execute(requestParameters, token).ConfigureAwait(false);
             string currentStateName = WorkflowClient.AntWayRunTime
                                       .GetCurrentStateName(execRequestParam.ProcessId);
-            if ((currentStateName??"").ToLower().IndexOf("error") >= 0) return false;
+
+            var processInstance = WorkflowClient.AntWayRunTime.GetProcessInstance(execRequestParam.ProcessId);
+
+            try
+            {
+                if (processInstance.CurrentActivity != null &&
+                (currentStateName ?? "").ToLower().IndexOf("error") >= 0) return false;
+            }
+            catch { }
 
             if (ExecutionComplete != null && !notFireExecutionComplete)
             {

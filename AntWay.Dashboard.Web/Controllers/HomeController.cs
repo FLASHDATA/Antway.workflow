@@ -304,7 +304,8 @@ namespace Client.Web.Controllers
 
                 var processInstance = WorkflowClient.AntWayRunTime
                                       .GetProcessInstance(managerResponse.ProcessId);
-                vm.StateList = WorkflowClient.AntWayRunTime.GetStates(processInstance);
+                vm.StateList = new List<string> { "" };
+                vm.StateList.AddRange(WorkflowClient.AntWayRunTime.GetStates(processInstance));
             }
  
             return View("ActivityManager", vm);

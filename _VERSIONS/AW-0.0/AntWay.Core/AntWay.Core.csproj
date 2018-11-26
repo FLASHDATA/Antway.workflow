@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9FB295C0-E9E7-4B37-9120-D9DFCCA9A3F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AntWay.Core</RootNamespace>
+    <AssemblyName>AntWay.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\Dependencies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PreventBlanqueo\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\packages\odp.net.managed.121.1.2\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activity\ActivityModel.cs" />
+    <Compile Include="Activity\IActivityModelBase.cs" />
+    <Compile Include="Manager\ActivityManager.cs" />
+    <Compile Include="Manager\Checksum.cs" />
+    <Compile Include="Manager\ManagerResponse.cs" />
+    <Compile Include="Manager\Mapping\AttributeClasses.cs" />
+    <Compile Include="Manager\Mapping\CommandsMapping.cs" />
+    <Compile Include="Manager\Mapping\EmptyCommandMapping.cs" />
+    <Compile Include="Model\ActivityExecution.cs" />
+    <Compile Include="Activity\AntWayActivityRuntimeBase.cs" />
+    <Compile Include="Activity\AntWayActivityService.cs" />
+    <Compile Include="Model\Constants.cs" />
+    <Compile Include="Model\DefaultSchemeCommands.cs" />
+    <Compile Include="Activity\IAntWayRuntimeActivity.cs" />
+    <Compile Include="Runtime\IAssemblies.cs" />
+    <Compile Include="Model\ResponseViews.cs" />
+    <Compile Include="Persistence\IWFSchemeModel.cs" />
+    <Compile Include="Model\AntWayCommandParameter.cs" />
+    <Compile Include="Persistence\PersistenceObjectsFactory.cs" />
+    <Compile Include="Runtime\AntWayRuntime.cs" />
+    <Compile Include="Manager\Mapping\MappingReflection.cs" />
+    <Compile Include="Persistence\WFSchemeModel.cs" />
+    <Compile Include="Runtime\AntWayBus.cs" />
+    <Compile Include="Runtime\Workflow.cs" />
+    <Compile Include="Runtime\WorkflowClient.cs" />
+    <Compile Include="Runtime\AntWayActionProvider.cs" />
+    <Compile Include="Runtime\EmptyAsembly.cs" />
+    <Compile Include="Runtime\TimerLazyClientManager.cs" />
+    <Compile Include="Runtime\WorkflowServer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Activity\AntWayActivityActivator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AntWay.Oracle.Provider\AntWay.Oracle.Provider.csproj">
+      <Project>{d92a8f0f-7e8c-4d6f-b915-2032b7ee3147}</Project>
+      <Name>AntWay.Oracle.Provider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Antway.Persistence.Provider\Antway.Persistence.Provider.csproj">
+      <Project>{14694484-9517-491f-a03f-4337459947ae}</Project>
+      <Name>Antway.Persistence.Provider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
+      <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
+      <Name>OptimaJet.Workflow.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimaJet.Workflow.Oracle\OptimaJet.Workflow.Oracle.csproj">
+      <Project>{b5ec37ad-83e1-4bea-912c-5fbd4d39d9c4}</Project>
+      <Name>OptimaJet.Workflow.Oracle</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

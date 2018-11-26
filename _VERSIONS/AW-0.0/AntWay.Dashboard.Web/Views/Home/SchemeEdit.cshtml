@@ -1,0 +1,170 @@
+﻿@model AntWay.Dashboard.Web.ViewModels.EditSchemeViewModel
+
+<!DOCTYPE html>
+
+<style>
+
+    #editScheme {
+        width: 700px;
+        height: 700px;
+    }
+
+    #editScheme.center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #editScheme .modal-dialog {
+        max-width: 700px;
+        background-color: white;
+    }
+</style>
+
+<!-- ModalBox newScheme -->
+<div class="modal center fade in" id="editScheme" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar Esquema</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Código:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <label>@Model.SchemeCode</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Nombre esquema del WorkFlow:</label>
+                        </div>
+                        <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.SchemeName, null, new
+                                       {
+                                           @class = "form-control",
+                                           @type = "text",
+                                           oninput = "setCustomValidity('') ",
+                                           id = "schemeName",
+                                           required = "required"
+                                       })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Esquema Base de datos:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <label>@Model.SchemeDataBase</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                         <label>Descripción</label>
+                        </div>
+                        <div class="col-md-8">
+                           @Html.TextAreaFor(m => m.Description, new
+                           {
+                            @class = "form-control",
+                            id = "description",
+                            rows = 4,
+                           })
+                        </div>
+                    </div>
+                </div>
+                @*<div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Servicio</label>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.CheckBoxFor(m => m.WorkflowService, new
+                                    {
+                                        id = "servicio"
+                                    })
+                        </div>
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Habilitado</label>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.CheckBoxFor(m => m.Active, new
+                                    {
+                                        id = "habilitado"
+                                    })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-outline" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnEditSchemeOk" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<script>
+   (function bindEditSchemesModalBox() {
+        //$('#btnEditSchemeOk').on('show.bs.modal', function () {
+        //    console.log('ok');
+        //})
+
+       //$('#editScheme').on('hidden.bs.modal', function (e) {
+       //    console.log(e);
+       //})
+
+        $("body").on("keyup", "#schemeName", function () {
+            if ($("#schemeName").val().length <= 4) {
+                $("#btnEditSchemeOk").attr("disabled", "disabled");
+                return;
+            }
+
+            $("#btnEditSchemeOk").removeAttr("disabled");
+        });
+
+        $("#btnEditSchemeOk").click(function () {
+            var scheme = {
+                schemeCode: '@Model.SchemeCode',
+                SchemeName: $("#schemeName").val(),
+                SchemeDataBase: '@Model.SchemeDataBase',
+                Description: $("#description").val(),
+                Active: $("#habilitado:checked").length == 1,
+                WorkflowService: $("#servicio:checked").length == 1,
+            }
+
+            var root = '@Url.Content(@"~/Home/")';
+
+            $.ajax({
+                type: "POST",
+                url: root + "/SchemeEdit/",
+                data: scheme,
+                success: function (d) {
+
+                    var filterFields = window.dataTableSchemes.getFilters();
+                    window.dataTableSchemes.dataTable.search(JSON.stringify(filterFields)).draw();
+
+                    $("#editScheme").modal("toggle");
+                }
+            });
+        });
+   })();
+
+</script>

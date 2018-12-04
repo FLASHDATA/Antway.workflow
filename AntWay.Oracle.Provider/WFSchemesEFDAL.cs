@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AntWay.Oracle.Provider.Data;
 using AntWay.Persistence.Provider.Model;
 using AntWay.Persistence.Provider.Model.DataTable;

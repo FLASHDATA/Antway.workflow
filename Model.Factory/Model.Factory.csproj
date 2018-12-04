@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8BA85B9C-BDA9-4380-9F90-5D647B68454D}</ProjectGuid>
+    <ProjectGuid>{F8D52DAD-C406-41F9-AF38-1F545DF41F3F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sample.Model.Expedientes</RootNamespace>
-    <AssemblyName>Sample.Model.Expedientes</AssemblyName>
+    <RootNamespace>Model.Factory</RootNamespace>
+    <AssemblyName>Model.Factory</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IMHab.PreventBlanqueo.Riesgo.AntWay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\SchemeModels\IMHab.PreventBlanqueo.Riesgo.AntWay.dll</HintPath>
+    </Reference>
+    <Reference Include="IMHab.PreventBlaqueo.SEPBLAC.AntWay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\SchemeModels\IMHab.PreventBlaqueo.SEPBLAC.AntWay.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,17 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\ActivityExpedienteNew.cs" />
-    <Compile Include="AntWayBinding\ExpedientesActivityManager.cs" />
-    <Compile Include="Activities\ActivitySignar.cs" />
-    <Compile Include="Activities\ActivityVoid.cs" />
-    <Compile Include="Activities\ActivityEnviarASignar.cs" />
-    <Compile Include="AntWayBinding\ExpedientesAssemblies.cs" />
+    <Compile Include="AssemblyFactory.cs" />
+    <Compile Include="CommandFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\ExpedientesActionProvider.cs" />
-    <Compile Include="AntWayBinding\SchemeCommands.cs" />
-    <Compile Include="AntWayBinding\ExpedientesWorkflowParameterNames.cs" />
-    <Compile Include="AntWayBinding\SchemeLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AntWay.Core\AntWay.Core.csproj">
@@ -58,7 +58,7 @@
       <Name>AntWay.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
-      <Project>{D92EF824-B99D-4955-8078-AA8ECE917187}</Project>
+      <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
       <Name>OptimaJet.Workflow.Core</Name>
     </ProjectReference>
   </ItemGroup>

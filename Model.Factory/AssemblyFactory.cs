@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using AntWay.Core.Runtime;
 
-namespace Temp.Factory
+namespace Model.Factory
 {
     public static class AssemblyFactory
     {
@@ -14,10 +14,6 @@ namespace Temp.Factory
 
             switch (schemeCode)
             {
-                case "EXPEDIENTES":
-                    assemblies = new Sample.Model.Expedientes.AntWayBinding.ExpedientesAssemblies();
-                    break;
-
                 case "EVALUAR_RIESGO":
                     assemblies = new IMHab.PreventBlanqueo.Riesgo.AntWay.AntWayBinding.RiesgoAssemblies();
                     break;

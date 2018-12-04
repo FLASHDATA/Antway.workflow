@@ -8,7 +8,7 @@ using OptimaJet.Workflow.Core.Runtime;
 using RiesgoAntWay = IMHab.PreventBlanqueo.Riesgo.AntWay;
 using SEPBLACAntWay = IMHab.PreventBlanqueo.SEPBLAC.AntWay;
 
-namespace AntWay.Dashboard.Web.Factories
+namespace Model.Factory
 {
     /// <summary>
     /// TODO: Modificar a inyección de dependencias
@@ -21,10 +21,6 @@ namespace AntWay.Dashboard.Web.Factories
 
             switch (schemeCode)
             {
-                case "EXPEDIENTES":
-                    commandsMapping = new CommandsMapping(Sample.Model.Expedientes.AntWayBinding.SchemeCommandNames.Single);
-                    break;
-
                 case "EVALUAR_RIESGO":
                     commandsMapping = new CommandsMapping(RiesgoAntWay.AntWayBinding.SchemeCommandNames.Single);
                     break;

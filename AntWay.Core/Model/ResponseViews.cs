@@ -28,6 +28,8 @@ namespace AntWay.Core.Model
         public decimal CodeResponse { get; set; }
         public bool Success => (CodeResponse == ResponseCodes.CODE_RESPONSE_OK);
 
+        public string StateName { get; set; }
+
         public Guid? WorflowProcessId { get; set; }
         
     }

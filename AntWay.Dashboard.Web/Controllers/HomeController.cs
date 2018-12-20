@@ -12,6 +12,7 @@ using Antway.Core.Persistence;
 using AntWay.Core.Runtime;
 using AntWay.Core.Manager;
 using Model.Factory;
+using AntWay.Core.Model;
 
 namespace Client.Web.Controllers
 {
@@ -285,16 +286,15 @@ namespace Client.Web.Controllers
                 TagDescription = "Error no especificado"
             };
 
-            IAssemblies assemblies = AssemblyFactory.GetAssemblyObject(scheme);
-            IActivityManager activityManager = new ActivityManagerVoid();
+            var sw = new StartWorkflow
+            {
+                SchemeCode = scheme,
+                Localizador = locator,
+                Assemblies = AssemblyFactory.GetAssemblyObject(scheme),
+                ActivityManager = new ActivityManagerVoid(),
+            };
 
-            var managerResponse = WorkflowClient
-                                 .StartWF(scheme,
-                                          null,
-                                          locator, 
-                                          assemblies,
-                                          activityManager,
-                                          false);
+            var managerResponse = WorkflowClient.StartWF(sw);
             if (!managerResponse.Success)
             {
                 var errors = WorkflowClient.AntWayRunTime
@@ -313,16 +313,15 @@ namespace Client.Web.Controllers
         [HttpPost]
         public JsonResult SetState(ActivityStatePostViewModel vm)
         {
-            IAssemblies assemblies = AssemblyFactory.GetAssemblyObject(vm.scheme);
-            IActivityManager activityManager = new ActivityManagerVoid();
+            var sw = new StartWorkflow
+            {
+                SchemeCode = vm.scheme,
+                Localizador = vm.locator,
+                Assemblies = AssemblyFactory.GetAssemblyObject(vm.scheme),
+                ActivityManager = new ActivityManagerVoid(),
+            };
 
-            var managerResponse = WorkflowClient
-                                .StartWF(vm.scheme,
-                                         null,
-                                         vm.locator,
-                                         assemblies,
-                                         activityManager,
-                                         false);
+            var managerResponse = WorkflowClient.StartWF(sw);
 
 
             WorkflowClient.AntWayRunTime

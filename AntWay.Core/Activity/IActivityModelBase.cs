@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AntWay.Core.Activity
 {
-    //public interface IActivityModelBase
+    //public interface IActivityBinding
     //{
-    //    string BindInputToMethod { get; set; }
-    //    string BindOutputToMethod { get; set; }
+    //    object BindInput();
+    //    object BindOutput();
     //}
 }

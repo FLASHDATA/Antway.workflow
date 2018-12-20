@@ -25,5 +25,10 @@ namespace Antway.Core.Persistence
         {
             return new LocatorsEFDAL();
         }
+
+        public static IDAL GetIDALLocatorRelationsObject()
+        {
+            return new LocatorRelationsEFDAL();
+        }
     }
 }

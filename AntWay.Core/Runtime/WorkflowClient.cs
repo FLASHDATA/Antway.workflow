@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Antway.Core.Persistence;
 using AntWay.Core.Manager;
+using AntWay.Core.Mapping;
+using AntWay.Core.Model;
 using AntWay.Persistence.Provider.Model;
 using OptimaJet.Workflow.Core.Runtime;
 
@@ -58,28 +61,17 @@ namespace AntWay.Core.Runtime
         }
 
 
-        public static ManagerResponse StartWF(string schemeCode, string localizadorFieldName,
-                                             string localizador,
-                                             IAssemblies assemblies,
-                                             IActivityManager activityManager,
-                                             bool forceNewProcess,
-                                             string actor = null)
+        public static ManagerResponse StartWF(StartWorkflow startworkflow)
         {
-            WithAssemblies(assemblies);
-            WithActivityManager(activityManager);
-            GetAntWayRunTime(schemeCode);
+            WithAssemblies(startworkflow.Assemblies);
+            WithActivityManager(startworkflow.ActivityManager);
+            GetAntWayRunTime(startworkflow.SchemeCode);
 
-            var result = !forceNewProcess
-                             ? Workflow.StartWFP(AntWayRunTime,
-                                          schemeCode,
-                                          localizadorFieldName,
-                                          localizador,
-                                          actor)
-                             : Workflow.StartWFPNew(AntWayRunTime,
-                                                  schemeCode,
-                                                  localizadorFieldName,
-                                                  localizador,
-                                                  actor);
+            startworkflow.AntwayRuntime = AntWayRunTime;
+
+            var result = !startworkflow.ForceNewProcess
+                             ? Workflow.StartWFP(startworkflow)
+                             : Workflow.StartWFPNew(startworkflow);
 
             result.Success = (result.Success &&
                               result.ActivityName != null &&

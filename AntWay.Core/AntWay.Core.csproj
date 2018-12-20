@@ -65,13 +65,14 @@
     <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\DefaultSchemeCommands.cs" />
     <Compile Include="Activity\IAntWayRuntimeActivity.cs" />
+    <Compile Include="Model\StartWorkflow.cs" />
+    <Compile Include="Runtime\AntWayRuntimeHost.cs" />
     <Compile Include="Runtime\IAssemblies.cs" />
     <Compile Include="Model\ResponseViews.cs" />
     <Compile Include="Persistence\IWFSchemeModel.cs" />
     <Compile Include="Model\AntWayCommandParameter.cs" />
     <Compile Include="Persistence\PersistenceObjectsFactory.cs" />
     <Compile Include="Runtime\AntWayRuntime.cs" />
-    <Compile Include="Manager\Mapping\MappingReflection.cs" />
     <Compile Include="Persistence\WFSchemeModel.cs" />
     <Compile Include="Runtime\AntWayBus.cs" />
     <Compile Include="Runtime\Workflow.cs" />

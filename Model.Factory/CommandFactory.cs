@@ -5,8 +5,8 @@ using System.Web;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
-using RiesgoAntWay = IMHab.PreventBlanqueo.Riesgo.AntWay;
-using SEPBLACAntWay = IMHab.PreventBlanqueo.SEPBLAC.AntWay;
+using RiesgoAntWay = SEPBLAC.Scheme.Riesgo.AntWay;
+using SEPBLACAntWay = SEPBLAC.Scheme.SEPBLAC.AntWay;
 
 namespace Model.Factory
 {

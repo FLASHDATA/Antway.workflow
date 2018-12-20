@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Antway.Core.Persistence;
 using AntWay.Core.Manager;
 using AntWay.Core.Model;
+using AntWay.Core.Mapping;
 using AntWay.Persistence.Provider.Model;
 using OptimaJet.Workflow.Core.Builder;
 using OptimaJet.Workflow.Core.Model;
@@ -19,15 +20,12 @@ namespace AntWay.Core.Runtime
 {
     internal static class Workflow
     {
-        internal static ManagerResponse StartWFP(AntWayRuntime antwayRuntime,
-                                                string schemeCode, 
-                                                string localizadorFieldName,
-                                                string localizador,
-                                                string actor = null)
+        internal static ManagerResponse StartWFP(StartWorkflow startworkflow)
         {
             var locatorPersistence = new LocatorPersistence
                             { IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject() };
-            var wfInstance = locatorPersistence.GetWorkflowByLocator(schemeCode, localizador);
+            var wfInstance = locatorPersistence
+                            .GetWorkflowByLocator(startworkflow.SchemeCode, startworkflow.Localizador);
 
             Guid? ProcessId = (wfInstance?.WFProcessGuid == null)
                                 ? (Guid?)null
@@ -35,13 +33,13 @@ namespace AntWay.Core.Runtime
 
             if (ProcessId != null)
             {
-                var processInstance = antwayRuntime.GetProcessInstance(ProcessId.Value);
+                var processInstance = startworkflow.AntwayRuntime.GetProcessInstance(ProcessId.Value);
 
                 if (processInstance != null)
                 {
-                    if (antwayRuntime.IsErrorState(processInstance.ProcessId))
+                    if (startworkflow.AntwayRuntime.IsErrorState(processInstance.ProcessId))
                     {
-                        var stateName = antwayRuntime.GetCurrentStateName(ProcessId.Value);
+                        var stateName = startworkflow.AntwayRuntime.GetCurrentStateName(ProcessId.Value);
                         string activityId = null;
 
                         if(stateName == Constants.ACTIVITY_ERROR_TITLE)
@@ -63,7 +61,7 @@ namespace AntWay.Core.Runtime
                         };
                     }
 
-                    bool timeExpired = CheckTimersExpired(antwayRuntime, processInstance);
+                    bool timeExpired = CheckTimersExpired(startworkflow.AntwayRuntime, processInstance);
                     if (timeExpired)
                     {
                         return new ManagerResponse
@@ -71,23 +69,23 @@ namespace AntWay.Core.Runtime
                             ProcessId = processInstance.ProcessId,
                             Success = true,
                             TimeExpired = true,
-                            ActivityName = antwayRuntime.GetCurrentActivityName(ProcessId.Value),
-                            StateName = antwayRuntime.GetCurrentStateName(ProcessId.Value)
+                            ActivityName = startworkflow.AntwayRuntime.GetCurrentActivityName(ProcessId.Value),
+                            StateName = startworkflow.AntwayRuntime.GetCurrentStateName(ProcessId.Value)
                         };
                     }
 
-                    var managerResponse = antwayRuntime.ValidateModel(processInstance);
+                    var managerResponse = startworkflow.AntwayRuntime.ValidateModel(processInstance);
 
-                    managerResponse.AvailableCommands = antwayRuntime
-                                                        .GetAvailableCommands(ProcessId.Value, actor)
+                    managerResponse.AvailableCommands = startworkflow.AntwayRuntime
+                                                        .GetAvailableCommands(ProcessId.Value, startworkflow.Actor)
                                                         .Select(c => c.CommandName)
                                                         .ToList();
-                    managerResponse.ActivityName = antwayRuntime.GetCurrentActivityName(ProcessId.Value);
-                    managerResponse.StateName = antwayRuntime.GetCurrentStateName(ProcessId.Value);
+                    managerResponse.ActivityName = startworkflow.AntwayRuntime.GetCurrentActivityName(ProcessId.Value);
+                    managerResponse.StateName = startworkflow.AntwayRuntime.GetCurrentStateName(ProcessId.Value);
 
                     if (!managerResponse.Success)
                     {
-                        antwayRuntime.WorkflowRuntime
+                        startworkflow.AntwayRuntime.WorkflowRuntime
                         .SetErrorState(processInstance,
                                       $"{managerResponse.ActivityId}/{Constants.CHECKSUM_ERROR_TITLE}",
                                       managerResponse.ActivityName,
@@ -103,46 +101,45 @@ namespace AntWay.Core.Runtime
             }
 
 
-            var processPersistenceViewNew = new ProcessPersistenceView
+            var processPersistenceViewNew = new LocatorView
             {
                 WFProcessGuid = Guid.NewGuid(),
-                LocatorFieldName = localizadorFieldName,
-                LocatorValue = localizador,
-                SchemeCode = schemeCode,
+                LocatorFieldName = startworkflow.LocalizadorFieldName,
+                LocatorValue = startworkflow.Localizador,
+                SchemeCode = startworkflow.SchemeCode,
             };
 
-            var processId = antwayRuntime
+            var processId = startworkflow.AntwayRuntime
                              .CreateInstanceAndPersist(processPersistenceViewNew);
 
             return new ManagerResponse { Success = true, ProcessId = processId };
         }
 
-        internal static ManagerResponse StartWFPNew(AntWayRuntime antwayRuntime,
-                                               string schemeCode,
-                                               string localizadorFieldName,
-                                               string localizador,
-                                               string actor = null)
+        internal static ManagerResponse StartWFPNew(StartWorkflow startworkflow)
         {
-            var processPersistenceViewNew = new ProcessPersistenceView
+            var processPersistenceViewNew = new LocatorView
             {
                 WFProcessGuid = Guid.NewGuid(),
-                LocatorFieldName = localizadorFieldName,
-                LocatorValue = localizador,
-                SchemeCode = schemeCode,
+                LocatorFieldName = startworkflow.LocalizadorFieldName,
+                LocatorValue = startworkflow.Localizador,
+                SchemeCode = startworkflow.SchemeCode,
             };
 
-            var processId = antwayRuntime
+            //AntWayRuntimeHost.AddParameter($"ActivitiesMapping/{processPersistenceViewNew.WFProcessGuid}", 
+            //                              startworkflow.ActivitiesMapping);
+
+            var processId = startworkflow.AntwayRuntime
                              .CreateInstanceAndPersist(processPersistenceViewNew);
 
             var result = new ManagerResponse
             {
                 ProcessId = processId,
-                AvailableCommands = antwayRuntime
-                                    .GetAvailableCommands(processId, actor)
+                AvailableCommands = startworkflow.AntwayRuntime
+                                    .GetAvailableCommands(processId, startworkflow.Actor)
                                     .Select(c => c.CommandName)
                                     .ToList(),
-                ActivityName = antwayRuntime.GetCurrentActivityName(processId),
-                StateName = antwayRuntime.GetCurrentStateName(processId),
+                ActivityName = startworkflow.AntwayRuntime.GetCurrentActivityName(processId),
+                StateName = startworkflow.AntwayRuntime.GetCurrentStateName(processId),
                 Success = true,
             };
 

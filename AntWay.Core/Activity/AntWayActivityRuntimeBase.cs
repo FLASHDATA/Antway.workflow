@@ -38,13 +38,52 @@ namespace AntWay.Core.Activity
                                              WorkflowRuntime runtime,
                                              object[] parameters = null)
         {
-            throw new NotImplementedException();
+            var result = new ActivityExecution
+            {
+                ActivityId = ActivityId,
+                ActivityName = ActivityName,
+                ProcessId = pi.ProcessId,
+            };
+
+            //STUFF TO OVERRIDE
+
+            //
+            result.ExecutionSuccess = true;
+            PersistActivityExecution(result, pi, runtime);
+
+            return result;
         }
 
-        protected virtual void PersistActivityExecution<TActivityModel>
+        public virtual object SetParametersInput(object[] parameters)
+        {
+            return null;
+        }
+
+        public virtual object InputBinding(object[] parameters)
+        {
+            return null;
+        }
+
+        public virtual object SetParametersOutput(object[] parameters)
+        {
+            return null;
+        }
+
+        public virtual object OutputBinding(object[] parameters)
+        {
+            return null;
+        }
+
+        protected virtual void PersistActivityExecution
                  (ActivityExecution activityExecution, ProcessInstance pi, WorkflowRuntime runtime)
         {
             activityExecution.EndTime = DateTime.Now;
+
+            activityExecution.ParametersInput = activityExecution.ParametersInput ??
+                                                    SetParametersInput(new object[] { pi.ProcessId });
+            activityExecution.ParametersOutput = activityExecution.ParametersOutput ??
+                                                    SetParametersOutput(new object[] { pi.ProcessId });
+
             var parameterToStore = new List<ActivityExecution>() { activityExecution };
 
             //Recogemos de BD objeto actual, para acumularlo.
@@ -64,13 +103,13 @@ namespace AntWay.Core.Activity
 
             if (activityExecution.ParametersInput != null)
             {
-                TActivityModel paramsInput = (TActivityModel)activityExecution.ParametersInput;
+                var paramsInput = activityExecution.ParametersInput;
                 activityExecution.InputChecksum = GetChecksum(paramsInput, ChecksumType.Input);
             }
 
             if (activityExecution.ParametersOutput != null)
             {
-                TActivityModel paramsOutput = (TActivityModel)activityExecution.ParametersOutput;
+                var paramsOutput = activityExecution.ParametersOutput;
                 activityExecution.OutputChecksum = GetChecksum(paramsOutput, ChecksumType.Output);
             }
 

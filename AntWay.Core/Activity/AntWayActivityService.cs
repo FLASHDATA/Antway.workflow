@@ -48,7 +48,7 @@ namespace AntWay.Core.Activity
                 result.ExecutionSuccess = false; 
             }
 
-            PersistActivityExecution<AntWayActivityService>(result, pi, runtime);
+            PersistActivityExecution(result, pi, runtime);
 
             return result;
         }

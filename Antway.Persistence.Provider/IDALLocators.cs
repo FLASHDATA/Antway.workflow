@@ -9,10 +9,10 @@ namespace AntWay.Persistence.Provider.Model
 {
     public interface IDALLocators: IDAL
     {
-        ProcessPersistenceView Fetch(string schemeCode, string locatorValue);
+        LocatorView Fetch(string schemeCode, string locatorValue);
 
-        ProcessPersistenceView GetLocatorFromGuid(Guid guid);
+        LocatorView GetLocatorFromGuid(Guid guid);
 
-        List<ProcessPersistenceView> GetLocatorsFromScheme(string scheme);
+        List<LocatorView> GetLocatorsFromScheme(string scheme);
     }
 }

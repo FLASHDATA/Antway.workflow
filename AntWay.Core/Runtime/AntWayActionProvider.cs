@@ -80,8 +80,17 @@ namespace AntWay.Core.Runtime
                 if (currenteActivity == null) { return; }
 
                 List<Type> types = WorkflowClient.IAssemblies.GetTypes();
+
+                //var activitiesMapping = AntWayRuntimeHost
+                //                        .FindParameter<ActivitiesMapping>($"ActivitiesMapping/{processInstance.ProcessId}");
+                //var attributeFilter = activitiesMapping?.Filters
+                //                      .FirstOrDefault(a => a.Id == currenteActivity.Id);
+                //awRuntimeActivity = AntWayActivityActivator
+                //                    .GetAntWayRuntimeActivity(currenteActivity.Id, types,
+                //                                             attributeFilter);
                 awRuntimeActivity = AntWayActivityActivator
-                                    .GetAntWayRuntimeActivity(currenteActivity.Id, types);
+                                   .GetAntWayRuntimeActivity(currenteActivity.Id, types,
+                                                            WorkflowClient.IActivityManager);
 
                 if (awRuntimeActivity == null) { return; }
 

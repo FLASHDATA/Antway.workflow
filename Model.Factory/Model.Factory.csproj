@@ -30,13 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IMHab.PreventBlanqueo.Riesgo.AntWay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\SchemeModels\IMHab.PreventBlanqueo.Riesgo.AntWay.dll</HintPath>
+    <Reference Include="SEPBLAC.Model">
+      <HintPath>..\Dependencies\SchemeModels\SEPBLAC.Model.dll</HintPath>
     </Reference>
-    <Reference Include="IMHab.PreventBlaqueo.SEPBLAC.AntWay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SEPBLAC.Scheme.Riesgo.AntWay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\SchemeModels\IMHab.PreventBlaqueo.SEPBLAC.AntWay.dll</HintPath>
+      <HintPath>..\Dependencies\SchemeModels\SEPBLAC.Scheme.Riesgo.AntWay.dll</HintPath>
+    </Reference>
+    <Reference Include="SEPBLAC.Scheme.SEPBLAC.Antway, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\SchemeModels\SEPBLAC.Scheme.SEPBLAC.Antway.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

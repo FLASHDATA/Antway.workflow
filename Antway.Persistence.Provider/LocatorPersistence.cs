@@ -12,25 +12,25 @@ namespace AntWay.Persistence.Provider.Model
         public IDALLocators IDALocators { get; set; }
 
 
-        public ProcessPersistenceView GetWorkflowLocatorFromGuid(Guid guid)
+        public LocatorView GetWorkflowLocatorFromGuid(Guid guid)
         {
             var dataView = IDALocators.GetLocatorFromGuid(guid);
             return dataView;
         }
 
-        public ProcessPersistenceView GetWorkflowByLocator(string schemeCode, string locator)
+        public LocatorView GetWorkflowByLocator(string schemeCode, string locator)
         {
             var dataView = IDALocators.Fetch(schemeCode, locator);
             return dataView;
         }
         
-        public List<ProcessPersistenceView> GetLocatorsFromScheme(string scheme)
+        public List<LocatorView> GetLocatorsFromScheme(string scheme)
         {
             var result = IDALocators.GetLocatorsFromScheme(scheme);
             return result;
         }
 
-        public ProcessPersistenceView AddWorkflowLocator(ProcessPersistenceView wfLocatorView)
+        public LocatorView AddWorkflowLocator(LocatorView wfLocatorView)
         {
             var result = IDALocators.Insert(wfLocatorView);
             return result;

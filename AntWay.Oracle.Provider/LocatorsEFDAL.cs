@@ -11,15 +11,15 @@ namespace AntWay.Oracle.Provider
     public class LocatorsEFDAL : IDALLocators
     {
 
-        public List<ProcessPersistenceView> GetLocatorsFromScheme(string scheme)
+        public List<LocatorView> GetLocatorsFromScheme(string scheme)
         {
-            var result = new List<ProcessPersistenceView>();
+            var result = new List<LocatorView>();
 
             using (var ctx = new Model1())
             {
                 result = ctx.LOCATORS
                             .Where(l => l.SCHEME_CODE == scheme)
-                            .Select(l => new ProcessPersistenceView
+                            .Select(l => new LocatorView
                             {
                                 LocatorValue = l.LOCATOR_VALUE,
                                 WFProcessGuid = l.ID_WFPROCESSINSTANCE                                
@@ -30,7 +30,7 @@ namespace AntWay.Oracle.Provider
             return result;
         }
 
-        public ProcessPersistenceView GetLocatorFromGuid(Guid guid)
+        public LocatorView GetLocatorFromGuid(Guid guid)
         {
             using (var ctx = new Model1())
             {
@@ -42,7 +42,7 @@ namespace AntWay.Oracle.Provider
             }
         }
 
-        public ProcessPersistenceView Fetch(string schemeCode, string locatorValue)
+        public LocatorView Fetch(string schemeCode, string locatorValue)
         {
             using (var ctx = new Model1())
             {
@@ -95,11 +95,11 @@ namespace AntWay.Oracle.Provider
         }
 
 
-        private ProcessPersistenceView MapFromDalToView(LOCATORS entity)
+        private LocatorView MapFromDalToView(LOCATORS entity)
         {
             if (entity == null) return null;
 
-            var view = new ProcessPersistenceView
+            var view = new LocatorView
             {
                 WFProcessGuid = entity.ID_WFPROCESSINSTANCE,
                 LocatorFieldName = entity.LOCATOR_FIELD_NAME,
@@ -113,7 +113,7 @@ namespace AntWay.Oracle.Provider
 
         private LOCATORS MapFromViewToDal<T>(T objectView)
         {
-            var view = (ProcessPersistenceView)Convert.ChangeType(objectView, typeof(T));
+            var view = (LocatorView)Convert.ChangeType(objectView, typeof(T));
 
             var entity = new LOCATORS
             {

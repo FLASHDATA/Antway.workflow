@@ -15,11 +15,11 @@ namespace Model.Factory
             switch (schemeCode)
             {
                 case "EVALUAR_RIESGO":
-                    assemblies = new IMHab.PreventBlanqueo.Riesgo.AntWay.AntWayBinding.RiesgoAssemblies();
+                    assemblies = new SEPBLAC.Scheme.Riesgo.AntWay.AntWayBinding.RiesgoAssemblies();
                     break;
 
                 case "SEPBLAC":
-                    assemblies = new IMHab.PreventBlanqueo.SEPBLAC.AntWay.AntWayBinding.SEPBLACAssemblies();
+                    assemblies = new SEPBLAC.Scheme.SEPBLAC.AntWay.AntWayBinding.SEPBLACAssemblies();
                     break;
             }
 

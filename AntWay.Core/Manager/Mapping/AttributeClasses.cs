@@ -6,11 +6,26 @@ using System.Threading.Tasks;
 
 namespace AntWay.Core.Mapping
 {
+    public class ActivitiesMapping
+    {
+        public List<ActivityAttribute> Filters { get; set; }
+    }
+
     public class ActivityAttribute : Attribute
     {
         public string Id;
-    }
+        public string CoreVersion;
+        public string Name;
 
+        public Type InputType;
+        public Type OutputType;
+
+        /// <summary>
+        /// If this attribute is true
+        /// Only class mapped inside manager will be instanciated
+        /// </summary>
+        public bool RunOnlyIfIsInManager;
+    }
 
     public class ParameterBindingAttribute : Attribute
     {

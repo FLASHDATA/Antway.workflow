@@ -12,13 +12,19 @@ namespace AntWay.Oracle.Provider.Data
         {
         }
 
+        public virtual DbSet<APLICACIO_RUTES> APLICACIO_RUTES { get; set; }
         public virtual DbSet<LOCATORS> LOCATORS { get; set; }
+        public virtual DbSet<LOCATORS_RELATIONS> LOCATORS_RELATIONS { get; set; }
         public virtual DbSet<WF_SCHEME_PARAMETERS_VALUES> WF_SCHEME_PARAMETERS_VALUES { get; set; }
         public virtual DbSet<WF_SCHEMES> WF_SCHEMES { get; set; }
         public virtual DbSet<WF_SCHEMES_PARAMETERS> WF_SCHEMES_PARAMETERS { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<APLICACIO_RUTES>()
+                .Property(e => e.TIPUS)
+                .HasPrecision(29, 0);
+
             modelBuilder.Entity<WF_SCHEMES>()
                 .Property(e => e.WORKFLOW_SERVICE)
                 .HasPrecision(29, 0);

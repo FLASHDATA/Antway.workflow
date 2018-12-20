@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AntWay.Core.Manager;
 using AntWay.Core.Mapping;
+using AntWay.Core.Runtime;
 
 namespace AntWay.Core.Activity
 {
@@ -14,10 +16,74 @@ namespace AntWay.Core.Activity
     public static class AntWayActivityActivator
     {
         public static IAntWayRuntimeActivity GetAntWayRuntimeActivity(string actityId,
-                                                                     List<Type> types)
+                                                List<Type> types,
+                                                IActivityManager activityManager = null)
+        {
+            try
+            {
+                IAntWayRuntimeActivity obj = null;
+                foreach (var t in types)
+                {
+                    var idFromActivityClass = t.GetAttributeValue((ActivityAttribute a) => a.Id);
+
+                    bool createInstance = false;
+                    if (actityId == idFromActivityClass)
+                    {
+                        createInstance = true;
+                        if (activityManager != null &&
+                            t.GetAttributeValue((ActivityAttribute a) => a.RunOnlyIfIsInManager))
+                        {
+                            var activities = activityManager.GetActivitiesManager();
+                            var activityFromType = activities.FirstOrDefault(a => a.ClassActivityType == t);
+                            createInstance = (activityFromType != null);
+                        }
+
+                        if (createInstance)
+                        {
+                            obj = Activator.CreateInstance(t) as IAntWayRuntimeActivity;
+                            break;
+                        }
+                    }
+                }
+
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                log4net.Config.XmlConfigurator.Configure();
+
+                log.Error(ex.Message);
+                if (ex is System.Reflection.ReflectionTypeLoadException)
+                {
+                    var typeLoadException = ex as ReflectionTypeLoadException;
+                    var loaderExceptions = typeLoadException.LoaderExceptions;
+                    string error = "";
+                    foreach (var exc in loaderExceptions)
+                    {
+                        error += exc + ",";
+                    }
+                    log.Error(error);
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Deprecated
+        /// </summary>
+        /// <param name="actityId"></param>
+        /// <param name="types"></param>
+        /// <param name="attributeFilter"></param>
+        /// <returns></returns>
+        public static IAntWayRuntimeActivity GetAntWayRuntimeActivity(string actityId,
+                                                  List<Type> types,
+                                                  ActivityAttribute attributeFilter = null
+                                             )
         {
             string idFromActivityClass = null;
-
+            string attributeNameFromClass = null;
             try
             {
                 IAntWayRuntimeActivity obj = null;
@@ -25,7 +91,13 @@ namespace AntWay.Core.Activity
                 {
                     idFromActivityClass = t.GetAttributeValue((ActivityAttribute a) => a.Id);
 
-                    if (actityId == idFromActivityClass)
+                    if (attributeFilter != null)
+                    {
+                        attributeNameFromClass = t.GetAttributeValue((ActivityAttribute a) => a.Name);
+                    }
+
+                    if (actityId == idFromActivityClass &&
+                         attributeFilter?.Name == attributeNameFromClass)
                     {
                         obj = Activator.CreateInstance(t) as IAntWayRuntimeActivity;
                         break;
@@ -56,7 +128,7 @@ namespace AntWay.Core.Activity
             }
         }
 
-        public static T RunMethod<T>(string methodName, string processId,
+        public static T RunMethod<T>(string methodName, Guid processId,
                                      IAntWayRuntimeActivity activityInstance,
                                      T parametersBind)
         {
@@ -68,7 +140,7 @@ namespace AntWay.Core.Activity
             return result;
         }
 
-        internal static object RunMethod(string methodName, string processId,
+        internal static object RunMethod(string methodName, Guid processId,
                                          IAntWayRuntimeActivity activityInstance)
         {
             MethodInfo methodInfo = activityInstance.GetType().GetMethod(methodName);

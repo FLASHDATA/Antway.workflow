@@ -29,12 +29,11 @@ namespace AntWay.Core.Manager
     {
         public int Priority { get; set; }
         public Type ClassActivityType { get; set; }
-        public Type ClassActivityModelType { get; set; }
 
-        public ActivityManager(Type classActivityType, Type classActivityModelType)
+
+        public ActivityManager(Type classActivityType)
         {
             ClassActivityType = classActivityType;
-            ClassActivityModelType = classActivityModelType;
         }
     }
 }

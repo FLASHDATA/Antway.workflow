@@ -31,88 +31,74 @@ namespace AntWay.Core.Runtime
                                 ? (Guid?)null
                                 : wfInstance.WFProcessGuid;
 
-            if (ProcessId != null)
+            if (ProcessId == null)
             {
-                var processInstance = startworkflow.AntwayRuntime.GetProcessInstance(ProcessId.Value);
+                return StartWFPNew(startworkflow);
+            }
 
-                if (processInstance != null)
+            //Instance already exists
+            var processInstance = startworkflow.AntwayRuntime.GetProcessInstance(ProcessId.Value);
+
+            if (startworkflow.AntwayRuntime.IsErrorState(processInstance.ProcessId))
+            {
+                var stateName = startworkflow.AntwayRuntime.GetCurrentStateName(ProcessId.Value);
+                string activityId = null;
+
+                if(stateName == Constants.ACTIVITY_ERROR_TITLE)
                 {
-                    if (startworkflow.AntwayRuntime.IsErrorState(processInstance.ProcessId))
-                    {
-                        var stateName = startworkflow.AntwayRuntime.GetCurrentStateName(ProcessId.Value);
-                        string activityId = null;
-
-                        if(stateName == Constants.ACTIVITY_ERROR_TITLE)
-                        {
-                            activityId = $"{processInstance.CurrentActivityName.Split('/')[0]}/{Constants.ACTIVITY_RUNNING_EXCEPTION_ID}";
-                        }
-
-                        if (stateName == Constants.CHECKSUM_ERROR_TITLE)
-                        {
-                            activityId = $"{processInstance.CurrentActivityName.Split('/')[0]}/{Constants.CHECKSUM_ERROR_TITLE}";
-                        }
-
-                        return new ManagerResponse
-                        {
-                            ProcessId = processInstance.ProcessId,
-                            ActivityId = activityId,
-                            ActivityName = processInstance.CurrentActivityName,
-                            Success = false
-                        };
-                    }
-
-                    bool timeExpired = CheckTimersExpired(startworkflow.AntwayRuntime, processInstance);
-                    if (timeExpired)
-                    {
-                        return new ManagerResponse
-                        {
-                            ProcessId = processInstance.ProcessId,
-                            Success = true,
-                            TimeExpired = true,
-                            ActivityName = startworkflow.AntwayRuntime.GetCurrentActivityName(ProcessId.Value),
-                            StateName = startworkflow.AntwayRuntime.GetCurrentStateName(ProcessId.Value)
-                        };
-                    }
-
-                    var managerResponse = startworkflow.AntwayRuntime.ValidateModel(processInstance);
-
-                    managerResponse.AvailableCommands = startworkflow.AntwayRuntime
-                                                        .GetAvailableCommands(ProcessId.Value, startworkflow.Actor)
-                                                        .Select(c => c.CommandName)
-                                                        .ToList();
-                    managerResponse.ActivityName = startworkflow.AntwayRuntime.GetCurrentActivityName(ProcessId.Value);
-                    managerResponse.StateName = startworkflow.AntwayRuntime.GetCurrentStateName(ProcessId.Value);
-
-                    if (!managerResponse.Success)
-                    {
-                        startworkflow.AntwayRuntime.WorkflowRuntime
-                        .SetErrorState(processInstance,
-                                      $"{managerResponse.ActivityId}/{Constants.CHECKSUM_ERROR_TITLE}",
-                                      managerResponse.ActivityName,
-                                      Constants.CHECKSUM_ERROR_TITLE,
-                                      managerResponse.ValidationMessages);
-
-                        managerResponse.ActivityId = $"{managerResponse.ActivityId}/{Constants.CHECKSUM_ERROR_TITLE}";
-                    }
-
-
-                    return managerResponse;
+                    activityId = $"{processInstance.CurrentActivityName.Split('/')[0]}/{Constants.ACTIVITY_RUNNING_EXCEPTION_ID}";
                 }
+
+                if (stateName == Constants.CHECKSUM_ERROR_TITLE)
+                {
+                    activityId = $"{processInstance.CurrentActivityName.Split('/')[0]}/{Constants.CHECKSUM_ERROR_TITLE}";
+                }
+
+                return new ManagerResponse
+                {
+                    ProcessId = processInstance.ProcessId,
+                    ActivityId = activityId,
+                    ActivityName = processInstance.CurrentActivityName,
+                    Success = false
+                };
+            }
+
+            bool timeExpired = CheckTimersExpired(startworkflow.AntwayRuntime, processInstance);
+            if (timeExpired)
+            {
+                return new ManagerResponse
+                {
+                    ProcessId = processInstance.ProcessId,
+                    Success = true,
+                    TimeExpired = true,
+                    ActivityName = startworkflow.AntwayRuntime.GetCurrentActivityName(ProcessId.Value),
+                    StateName = startworkflow.AntwayRuntime.GetCurrentStateName(ProcessId.Value)
+                };
+            }
+
+            var managerResponse = startworkflow.AntwayRuntime.ValidateModel(processInstance);
+
+            managerResponse.AvailableCommands = startworkflow.AntwayRuntime
+                                                .GetAvailableCommands(ProcessId.Value, startworkflow.Actor)
+                                                .Select(c => c.CommandName)
+                                                .ToList();
+            managerResponse.ActivityName = startworkflow.AntwayRuntime.GetCurrentActivityName(ProcessId.Value);
+            managerResponse.StateName = startworkflow.AntwayRuntime.GetCurrentStateName(ProcessId.Value);
+
+            if (!managerResponse.Success)
+            {
+                startworkflow.AntwayRuntime.WorkflowRuntime
+                .SetErrorState(processInstance,
+                                $"{managerResponse.ActivityId}/{Constants.CHECKSUM_ERROR_TITLE}",
+                                managerResponse.ActivityName,
+                                Constants.CHECKSUM_ERROR_TITLE,
+                                managerResponse.ValidationMessages);
+
+                managerResponse.ActivityId = $"{managerResponse.ActivityId}/{Constants.CHECKSUM_ERROR_TITLE}";
             }
 
 
-            var processPersistenceViewNew = new LocatorView
-            {
-                WFProcessGuid = Guid.NewGuid(),
-                LocatorFieldName = startworkflow.LocalizadorFieldName,
-                LocatorValue = startworkflow.Localizador,
-                SchemeCode = startworkflow.SchemeCode,
-            };
-
-            var processId = startworkflow.AntwayRuntime
-                             .CreateInstanceAndPersist(processPersistenceViewNew);
-
-            return new ManagerResponse { Success = true, ProcessId = processId };
+            return managerResponse;
         }
 
         internal static ManagerResponse StartWFPNew(StartWorkflow startworkflow)

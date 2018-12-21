@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using AntWay.Core.Manager;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
+using AntWay.Core.Runtime;
 using Newtonsoft.Json;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
+using SEPBLAC.Model.BO.Views;
 using static AntWay.Core.Manager.Checksum;
 
 namespace AntWay.Core.Activity
@@ -18,13 +20,6 @@ namespace AntWay.Core.Activity
     {
         public string ActivityId { get; set; }
         public string ActivityName { get; set; }
-
-        public virtual List<string> DifferenceBetweenPersistedAndBindedObject(Guid processId,
-                                                                    string jsonPersisted,
-                                                                    ChecksumType checksumType)
-        {
-            return new List<string> { "Diferencia sin especificar" };
-        }
 
         public virtual async Task<ActivityExecution> RunAsync(ProcessInstance pi,
                                                               WorkflowRuntime runtime,
@@ -141,7 +136,80 @@ namespace AntWay.Core.Activity
             string result = Checksum.Single.CalculateChecksum(cadToChecksum);
             return result;
         }
+    }
 
+    public static class AntWayActivityExtensions
+    {
+        public static TO GetActivityParametersOutput<TO>
+                        (this AntWayActivityRuntimeBase activityClass,
+                         ProcessInstance processInstance) 
+        {
+            string idFromActivityClass = activityClass.GetType()
+                                          .GetAttributeValue((ActivityAttribute a) => a.Id);
+
+            var activityExecutionPersisted = WorkflowClient.AntWayRunTime
+                                             .GetLastActivityExecution(processInstance,
+                                                                       idFromActivityClass);
+
+            TO persistedResult = JsonConvert.DeserializeObject<TO>
+                                  (activityExecutionPersisted.ParametersOutput.ToString());
+
+            return persistedResult;
+        }
+
+        public static TI GetActivityParametersInput<TI>
+                (this AntWayActivityRuntimeBase activityClass,
+                 ProcessInstance processInstance)
+        {
+            string idFromActivityClass = activityClass.GetType()
+                                          .GetAttributeValue((ActivityAttribute a) => a.Id);
+
+            var activityExecutionPersisted = WorkflowClient.AntWayRunTime
+                                             .GetLastActivityExecution(processInstance,
+                                                                       idFromActivityClass);
+
+            TI persistedResult = JsonConvert.DeserializeObject<TI>
+                                  (activityExecutionPersisted.ParametersInput.ToString());
+
+            return persistedResult;
+        }
+
+
+        public static List<string> DifferenceBetweenPersistedAndBindedObject<TA,TM>
+                (this TA activity, TM activityModel,
+                 Guid processId,
+                 string jsonPersisted, ChecksumType checksumType) 
+            where TA : IAntWayRuntimeActivity
+        {
+            List<string> result = new List<string>();
+
+            try
+            {
+                object[] parametersArray = new object[] { processId };
+
+                var bindedObject = (checksumType == ChecksumType.Input)
+                                        ? activity.InputBinding(parametersArray)
+                                        : activity.OutputBinding(parametersArray);
+
+                EvaluarRiesgoView persistedObject = JsonConvert
+                                      .DeserializeObject<EvaluarRiesgoView>(jsonPersisted);
+
+                var differences = AntWayActivityActivator.ObjectsDifference(persistedObject, bindedObject);
+
+                if (differences.Any())
+                {
+                    result.Add($"Checksum Error at {activity.ActivityId}");
+                    result.AddRange(differences);
+                }
+            }
+            catch(Exception ex)
+            {
+                result.Add($"Antway checksum error in  DifferenceBetweenPersistedAndBindedObject" +
+                           $"{activity.ActivityId}: {ex.Message}");
+            }
+
+            return result;
+        }
     }
 }
 

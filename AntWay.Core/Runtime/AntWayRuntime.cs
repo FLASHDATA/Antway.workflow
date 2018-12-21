@@ -316,17 +316,13 @@ namespace AntWay.Core.Runtime
                 activityInstance = Activator.CreateInstance(am.ClassActivityType)
                                              as IAntWayRuntimeActivity;
 
-                activityModelInstance = Activator.CreateInstance(am.ClassActivityModelType);
-
-                var idFromActivityClass = activityInstance.GetType().GetAttributeValue((ActivityAttribute a) => a.Id);
+                var idFromActivityClass = activityInstance.GetType()
+                                          .GetAttributeValue((ActivityAttribute a) => a.Id);
                 activityInstance.ActivityId = idFromActivityClass;
 
                 var activityExecutionPersisted = GetLastActivityExecution(processInstance, activityInstance.ActivityId);
 
-                if (activityExecutionPersisted == null)
-                {
-                    return new ManagerResponse { Success = true, ProcessId = processInstance.ProcessId };
-                }
+                if (activityExecutionPersisted == null) { continue; }
 
                 var errorResponse = new ManagerResponse
                                     {
@@ -340,13 +336,18 @@ namespace AntWay.Core.Runtime
                 {
                     string checksumInputBinded = GetChecksum(processInstance,
                                                              activityInstance,
-                                                             activityModelInstance,
                                                              ChecksumType.Input);
                     if (checksumInputBinded!=null &&
                         checksumInputBinded != activityExecutionPersisted.InputChecksum)
                     {
+                        activityModelInstance = Activator.CreateInstance(
+                                                    activityInstance.GetType()
+                                                    .GetAttributeValue((ActivityAttribute a) => a.InputType)
+                                                );
+
                         errorResponse.ValidationMessages = activityInstance
                                                           .DifferenceBetweenPersistedAndBindedObject(
+                                                              activityModelInstance,
                                                               processInstance.ProcessId,
                                                               activityExecutionPersisted.ParametersInput.ToString(),
                                                               ChecksumType.Input);
@@ -358,14 +359,21 @@ namespace AntWay.Core.Runtime
                 {
                     string checksumOutputBinded = GetChecksum(processInstance,
                                                               activityInstance,
-                                                              activityModelInstance,
                                                               ChecksumType.Output);
 
                     if (checksumOutputBinded!=null &&
                         checksumOutputBinded != activityExecutionPersisted.OutputChecksum)
                     {
+                        //activityModelInstance = Activator.CreateInstance(am.ClassActivityModelOutputType);
+                        activityModelInstance = Activator.CreateInstance(
+                                                    activityInstance.GetType()
+                                                    .GetAttributeValue((ActivityAttribute a) => a.OutputType)
+                                                );
+
+
                         errorResponse.ValidationMessages =  activityInstance
                                                             .DifferenceBetweenPersistedAndBindedObject(
+                                                                   activityModelInstance,
                                                                    processInstance.ProcessId,
                                                                    activityExecutionPersisted.ParametersOutput.ToString(),
                                                                    ChecksumType.Output);
@@ -380,7 +388,6 @@ namespace AntWay.Core.Runtime
 
         protected string GetChecksum(ProcessInstance processInstance,
                                      IAntWayRuntimeActivity activityInstance,
-                                     object activityModelInstance,
                                      ChecksumType checksumType)
         {
             string cadTochecksumFromBindingMethods = "";
@@ -390,6 +397,8 @@ namespace AntWay.Core.Runtime
 
             object methodResult = AntWayActivityActivator.RunMethod
                                     (method, processInstance.ProcessId, activityInstance);
+
+            if (methodResult == null) return null;
 
             cadTochecksumFromBindingMethods += JsonConvert.SerializeObject(methodResult);
 

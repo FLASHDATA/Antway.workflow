@@ -88,6 +88,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SEPBLAC\SEPBLAC.Model\SEPBLAC.Model.csproj">
+      <Project>{1990F8C5-2103-4F8A-B321-F9DD230163C1}</Project>
+      <Name>SEPBLAC.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AntWay.Oracle.Provider\AntWay.Oracle.Provider.csproj">
       <Project>{d92a8f0f-7e8c-4d6f-b915-2032b7ee3147}</Project>
       <Name>AntWay.Oracle.Provider</Name>

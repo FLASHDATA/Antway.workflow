@@ -563,22 +563,28 @@
             draggable: draggable
         });
 
+        var imageName1 = 'transaction-blak.png';
+        var imageName2 = 'transaction-blak.png';
         var textvalue = '';
+
         var triggertype = this.item.Trigger.Type.toLowerCase();
 
         if (triggertype === 'auto') {
             textvalue += 'A';//'⚡ 🚀 🚦';
+            imageName2 = 'transaction-next.png';
         }
         else if (triggertype === 'command') {
-             textvalue += 'C'; //👨🏻‍💼
+            textvalue += 'C'; //👨🏻‍💼
+            imageName2 = 'transaction-command.png';
         }
         else if (triggertype === 'timer' || triggertype === 'timerexpired') {
             textvalue += 'T';//'⏱ ⚡🚩 🚧';
+            imageName2 = 'transition-always.png'; 
         }
 
 
 
-        var imageName1 = '';
+        
 
         switch (textvalue) {
             case 'A':
@@ -592,29 +598,35 @@
                 break;
         }
 
+        
+        
+
         var conditiontype = this.item.Conditions[0].Type.toLowerCase();
         if (conditiontype === 'always') {
+            
             textvalue += 'A';
         }
         else if (conditiontype === 'action') {
+            imageName2 = 'transition-always.png';
             textvalue += 'C';
         }
         else if (conditiontype === 'otherwise') {
+            imageName2 = 'transition-otherwise.png';
             textvalue += 'O';
         }
         
 
-        if (textvalue == "AA") { textvalue = ""; }
-        if (textvalue == "CA") { textvalue = ""; }
-        if (textvalue == "TA") { textvalue = "     if"; }
+        ////if (textvalue == "AA") { textvalue = ""; }
+        ////if (textvalue == "CA") { textvalue = ""; }
+        ////if (textvalue == "TA") { textvalue = "     if"; }
 
-        if (textvalue == "AC") { textvalue = "     if"; }
-        if (textvalue == "CC") { textvalue = "     if"; }
-        if (textvalue == "TC") { textvalue = "     if"; }
+        ////if (textvalue == "AC") { textvalue = "     if"; }
+        ////if (textvalue == "CC") { textvalue = "     if"; }
+        ////if (textvalue == "TC") { textvalue = "     if"; }
 
-        if (textvalue == "AO") { textvalue = "     else"; }
-        if (textvalue == "CO") { textvalue = "     else"; }
-        if (textvalue == "TO") { textvalue = "     else"; }
+        ////if (textvalue == "AO") { textvalue = "     else"; }
+        ////if (textvalue == "CO") { textvalue = "     else"; }
+        ////if (textvalue == "TO") { textvalue = "     else"; }
 
 
         //if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command') {
@@ -646,7 +658,7 @@
 
 
         var circle = new Konva.Rect({
-            x: textvalue.length == 5 ? - 32 : -26,
+            x: -32,//textvalue.length == 5 ? - 32 : -26,
             y: -15,
             width: 75,
             height: 37,
@@ -658,25 +670,34 @@
         cActivePoint.add(circle);
 
         var image = new Konva.Image({
-            x: textvalue.length == 0 ? 0 : -25,
-            y: -7,
+            x: imageName2 == 'transaction-blak.png' ? -12 : -23,
+            y: -12,
             image: WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + imageName1),
-            width: 25,
-            height: 25
+            width: 32,
+            height: 32
         });
         cActivePoint.add(image);
 
-
-        var text = new Konva.Text({
-            x: textvalue.length == 5 ? -32 : -26,
-            y: -7,
-            text: textvalue,
-            fontSize: 20,
-            fontFamily: 'Arial',
-            fill: '#FFFFFF',
-            fontStyle: 'bold'
+        var image2 = new Konva.Image({
+            x: 3,
+            y: -15,
+            image: WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + imageName2),
+            width: 32,
+            height: 32
         });
-        cActivePoint.add(text);
+        cActivePoint.add(image2);
+        
+
+        //var text = new Konva.Text({
+        //    x: textvalue.length == 5 ? -32 : -26,
+        //    y: -7,
+        //    text: textvalue,
+        //    fontSize: 20,
+        //    fontFamily: 'Arial',
+        //    fill: '#FFFFFF',
+        //    fontStyle: 'bold'
+        //});
+        //cActivePoint.add(text);
 
         cActivePoint.transition = cTransition;
 

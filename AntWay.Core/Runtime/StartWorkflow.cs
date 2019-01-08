@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AntWay.Core.Model
+namespace AntWay.Core.Runtime
 {
     public class StartWorkflow
     {

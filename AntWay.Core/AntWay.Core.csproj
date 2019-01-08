@@ -59,18 +59,13 @@
     <Compile Include="Manager\Mapping\AttributeClasses.cs" />
     <Compile Include="Manager\Mapping\CommandsMapping.cs" />
     <Compile Include="Manager\Mapping\EmptyCommandMapping.cs" />
-    <Compile Include="Model\ActivityExecution.cs" />
     <Compile Include="Activity\AntWayActivityRuntimeBase.cs" />
     <Compile Include="Activity\AntWayActivityService.cs" />
-    <Compile Include="Model\Constants.cs" />
-    <Compile Include="Model\DefaultSchemeCommands.cs" />
     <Compile Include="Activity\IAntWayRuntimeActivity.cs" />
-    <Compile Include="Model\StartWorkflow.cs" />
+    <Compile Include="Runtime\StartWorkflow.cs" />
     <Compile Include="Runtime\AntWayRuntimeHost.cs" />
     <Compile Include="Runtime\IAssemblies.cs" />
-    <Compile Include="Model\ResponseViews.cs" />
     <Compile Include="Persistence\IWFSchemeModel.cs" />
-    <Compile Include="Model\AntWayCommandParameter.cs" />
     <Compile Include="Persistence\PersistenceObjectsFactory.cs" />
     <Compile Include="Runtime\AntWayRuntime.cs" />
     <Compile Include="Persistence\WFSchemeModel.cs" />
@@ -88,9 +83,9 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SEPBLAC\SEPBLAC.Model\SEPBLAC.Model.csproj">
-      <Project>{1990F8C5-2103-4F8A-B321-F9DD230163C1}</Project>
-      <Name>SEPBLAC.Model</Name>
+    <ProjectReference Include="..\AntWay.Core.Model\AntWay.Core.Model.csproj">
+      <Project>{40559f48-2ce5-4fcf-b38a-87aeee657765}</Project>
+      <Name>AntWay.Core.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\AntWay.Oracle.Provider\AntWay.Oracle.Provider.csproj">
       <Project>{d92a8f0f-7e8c-4d6f-b915-2032b7ee3147}</Project>

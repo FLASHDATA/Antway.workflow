@@ -129,12 +129,11 @@ namespace AntWay.Core.Activity
         }
 
         public static T RunMethod<T>(string methodName, Guid processId,
-                                     IAntWayRuntimeActivity activityInstance,
-                                     T parametersBind)
+                                     IAntWayRuntimeActivity activityInstance)
         {
             MethodInfo methodInfo = activityInstance.GetType().GetMethod(methodName);
             ParameterInfo[] parameters = methodInfo.GetParameters();
-            object[] parametersArray = new object[] { new object[] { processId, parametersBind } };
+            object[] parametersArray = new object[] { new object[] { processId} };
             T result = (T)methodInfo.Invoke(activityInstance, parametersArray);
 
             return result;
@@ -158,6 +157,19 @@ namespace AntWay.Core.Activity
 
             var oType = oOldRecord.GetType();
 
+            if (!oType.IsClass)
+            {
+                if (!object.Equals(oOldRecord, oNewRecord))
+                {
+                    // Handle the display values when the underlying value is null
+                    var sOldValue = oOldRecord == null ? "null" : oOldRecord.ToString();
+                    var sNewValue = oNewRecord == null ? "null" : oNewRecord.ToString();
+
+                    result.Add(oType.Name + " was: " + sOldValue + "; is: " + sNewValue);
+                    return result;
+                }
+            }
+
             foreach (var oProperty in oType.GetProperties())
             {
                 var oOldValue = oProperty.GetValue(oOldRecord, null);
@@ -173,7 +185,6 @@ namespace AntWay.Core.Activity
                     }
                 }
                 
-                // this will handle the scenario where either value is null
                 if (!object.Equals(oOldValue, oNewValue))
                 {
                     // Handle the display values when the underlying value is null

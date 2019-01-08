@@ -14,5 +14,7 @@ namespace AntWay.Persistence.Provider.Model
         LocatorView GetLocatorFromGuid(Guid guid);
 
         List<LocatorView> GetLocatorsFromScheme(string scheme);
+
+        Guid? GetProcessIdFromRelation(string consumer, string entityId);
     }
 }

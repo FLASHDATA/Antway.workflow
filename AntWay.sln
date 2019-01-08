@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimaJet.Workflow.Oracle",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Factory", "Model.Factory\Model.Factory.csproj", "{F8D52DAD-C406-41F9-AF38-1F545DF41F3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntWay.Core.Model", "AntWay.Core.Model\AntWay.Core.Model.csproj", "{40559F48-2CE5-4FCF-B38A-87AEEE657765}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,18 @@ Global
 		{F8D52DAD-C406-41F9-AF38-1F545DF41F3F}.Release|x64.Build.0 = Release|Any CPU
 		{F8D52DAD-C406-41F9-AF38-1F545DF41F3F}.Release|x86.ActiveCfg = Release|Any CPU
 		{F8D52DAD-C406-41F9-AF38-1F545DF41F3F}.Release|x86.Build.0 = Release|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Debug|x64.Build.0 = Debug|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Debug|x86.Build.0 = Debug|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Release|x64.ActiveCfg = Release|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Release|x64.Build.0 = Release|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Release|x86.ActiveCfg = Release|Any CPU
+		{40559F48-2CE5-4FCF-B38A-87AEEE657765}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

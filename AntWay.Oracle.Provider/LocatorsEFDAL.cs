@@ -42,6 +42,18 @@ namespace AntWay.Oracle.Provider
             }
         }
 
+        public Guid? GetProcessIdFromRelation(string consumer, string entityId)
+        {
+            using (var ctx = new Model1())
+            {
+                var entity = ctx.LOCATORS_RELATIONS
+                             .FirstOrDefault(q => q.ENTITY.ToLower() == consumer.ToLower() &&
+                                                q.ENTITY_VALUE == entityId);
+
+                return entity?.ID_WFPROCESSINSTANCE;
+            }
+        }
+
         public LocatorView Fetch(string schemeCode, string locatorValue)
         {
             using (var ctx = new Model1())
@@ -125,6 +137,5 @@ namespace AntWay.Oracle.Provider
 
             return entity;
         }
-
     }
 }

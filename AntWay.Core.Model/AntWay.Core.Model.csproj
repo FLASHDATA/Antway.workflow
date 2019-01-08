@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F8D52DAD-C406-41F9-AF38-1F545DF41F3F}</ProjectGuid>
+    <ProjectGuid>{40559F48-2CE5-4FCF-B38A-87AEEE657765}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Model.Factory</RootNamespace>
-    <AssemblyName>Model.Factory</AssemblyName>
+    <RootNamespace>AntWay.Core.Model</RootNamespace>
+    <AssemblyName>AntWay.Core.Model</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,17 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SEPBLAC.Model">
-      <HintPath>..\Dependencies\SchemeModels\SEPBLAC.Model.dll</HintPath>
-    </Reference>
-    <Reference Include="SEPBLAC.Scheme.Riesgo.AntWay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\SchemeModels\SEPBLAC.Scheme.Riesgo.AntWay.dll</HintPath>
-    </Reference>
-    <Reference Include="SEPBLAC.Scheme.SEPBLAC.Antway, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\SchemeModels\SEPBLAC.Scheme.SEPBLAC.Antway.dll</HintPath>
-    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,23 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyFactory.cs" />
-    <Compile Include="CommandFactory.cs" />
+    <Compile Include="ActivityExecution.cs" />
+    <Compile Include="ActivityModelBase.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="DefaultSchemeCommands.cs" />
+    <Compile Include="IActivityModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AntWay.Core.Model\AntWay.Core.Model.csproj">
-      <Project>{40559f48-2ce5-4fcf-b38a-87aeee657765}</Project>
-      <Name>AntWay.Core.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AntWay.Core\AntWay.Core.csproj">
-      <Project>{9fb295c0-e9e7-4b37-9120-d9dfcca9a3f2}</Project>
-      <Name>AntWay.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OptimaJet.Workflow.Core\OptimaJet.Workflow.Core.csproj">
-      <Project>{d92ef824-b99d-4955-8078-aa8ece917187}</Project>
-      <Name>OptimaJet.Workflow.Core</Name>
-    </ProjectReference>
+    <Compile Include="ResponseViews.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

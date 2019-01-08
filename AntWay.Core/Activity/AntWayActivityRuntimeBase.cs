@@ -4,24 +4,31 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Antway.Core.Persistence;
 using AntWay.Core.Manager;
 using AntWay.Core.Mapping;
 using AntWay.Core.Model;
 using AntWay.Core.Runtime;
+using AntWay.Persistence.Provider.Model;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OptimaJet.Workflow.Core.Model;
 using OptimaJet.Workflow.Core.Runtime;
-using SEPBLAC.Model.BO.Views;
 using static AntWay.Core.Manager.Checksum;
 
 namespace AntWay.Core.Activity
 {
     public abstract class AntWayActivityRuntimeBase
     {
+        public const string InvokedMethodInputBindingName = "InvokedMethodInputBinding";
+        public const string InvokedMethodOutputBindingName = "InvokedMethodOutputBinding";
+
         public string ActivityId { get; set; }
         public string ActivityName { get; set; }
 
-        public virtual async Task<ActivityExecution> RunAsync(ProcessInstance pi,
+        protected ActivityExecution ActivityExecution;
+
+        public async Task<ActivityExecution> RunAsync(ProcessInstance pi,
                                                               WorkflowRuntime runtime,
                                                               object[] parameters = null)
         {
@@ -29,44 +36,71 @@ namespace AntWay.Core.Activity
             return result;
         }
 
-        public virtual ActivityExecution Run(ProcessInstance pi,
+        public ActivityExecution Run(ProcessInstance pi,
                                              WorkflowRuntime runtime,
                                              object[] parameters = null)
         {
-            var result = new ActivityExecution
+            ActivityExecution = new ActivityExecution
             {
                 ActivityId = ActivityId,
                 ActivityName = ActivityName,
                 ProcessId = pi.ProcessId,
             };
 
+            ActivityExecution.ExecutionSuccess = true;
+
             //STUFF TO OVERRIDE
-
+            string locator = GetLocalizadorFromProcessId(pi.ProcessId);
+            try
+            {
+                RunImplementation(locator, pi.ProcessId);
+            }
+            catch(Exception ex)
+            {
+                ActivityExecution.ExecutionSuccess = false;
+            }
             //
-            result.ExecutionSuccess = true;
-            PersistActivityExecution(result, pi, runtime);
 
-            return result;
+            PersistActivityExecution(ActivityExecution, pi, runtime);
+
+            return ActivityExecution;
         }
 
-        public virtual object SetParametersInput(object[] parameters)
+        public virtual void RunImplementation(string locator, Guid processId)
+        {
+            return;
+        }
+
+
+        public object InvokedMethodInputBinding(object[] parameters)
+        {
+            return InputBinding(GetLocalizadorFromProcessId((Guid)parameters[0]), (Guid)parameters[0]);
+        }
+
+        public object InvokedMethodOutputBinding(object[] parameters)
+        {
+            return OutputBinding(GetLocalizadorFromProcessId((Guid)parameters[0]), (Guid)parameters[0]);
+        }
+
+        public virtual object InputBinding(string locator, Guid processId)
         {
             return null;
         }
 
-        public virtual object InputBinding(object[] parameters)
+
+        public virtual object OutputBinding(string locator, Guid processId)
         {
             return null;
         }
 
-        public virtual object SetParametersOutput(object[] parameters)
-        {
-            return null;
-        }
 
-        public virtual object OutputBinding(object[] parameters)
+        public string GetLocalizadorFromProcessId(Guid processId)
         {
-            return null;
+            var locatorPersistence = new LocatorPersistence
+            { IDALocators = PersistenceObjectsFactory.GetIDALLocatorsObject() };
+            var wfInstance = locatorPersistence.GetWorkflowLocatorFromGuid(processId);
+
+            return wfInstance.LocatorValue;
         }
 
         protected virtual void PersistActivityExecution
@@ -74,10 +108,8 @@ namespace AntWay.Core.Activity
         {
             activityExecution.EndTime = DateTime.Now;
 
-            activityExecution.ParametersInput = activityExecution.ParametersInput ??
-                                                    SetParametersInput(new object[] { pi.ProcessId });
-            activityExecution.ParametersOutput = activityExecution.ParametersOutput ??
-                                                    SetParametersOutput(new object[] { pi.ProcessId });
+            activityExecution.ParametersInput = activityExecution.ParametersInput;
+            activityExecution.ParametersOutput = activityExecution.ParametersOutput;
 
             var parameterToStore = new List<ActivityExecution>() { activityExecution };
 
@@ -142,7 +174,7 @@ namespace AntWay.Core.Activity
     {
         public static TO GetActivityParametersOutput<TO>
                         (this AntWayActivityRuntimeBase activityClass,
-                         ProcessInstance processInstance) 
+                         ProcessInstance processInstance)
         {
             string idFromActivityClass = activityClass.GetType()
                                           .GetAttributeValue((ActivityAttribute a) => a.Id);
@@ -175,26 +207,28 @@ namespace AntWay.Core.Activity
         }
 
 
-        public static List<string> DifferenceBetweenPersistedAndBindedObject<TA,TM>
+
+        public static List<string> DifferenceBetweenPersistedAndBindedObject<TA, TM>
                 (this TA activity, TM activityModel,
                  Guid processId,
-                 string jsonPersisted, ChecksumType checksumType) 
+                 string jsonPersisted, ChecksumType checksumType)
             where TA : IAntWayRuntimeActivity
+            where TM: IActivityModel
         {
             List<string> result = new List<string>();
 
             try
             {
-                object[] parametersArray = new object[] { processId };
+                string locator = activity.GetLocalizadorFromProcessId(processId);
 
                 var bindedObject = (checksumType == ChecksumType.Input)
-                                        ? activity.InputBinding(parametersArray)
-                                        : activity.OutputBinding(parametersArray);
+                                        ? activity.InputBinding(locator, processId)
+                                        : activity.OutputBinding(locator, processId);
 
-                EvaluarRiesgoView persistedObject = JsonConvert
-                                      .DeserializeObject<EvaluarRiesgoView>(jsonPersisted);
+                object persistedObject = activityModel.DeserializePersistedObject(jsonPersisted);
 
-                var differences = AntWayActivityActivator.ObjectsDifference(persistedObject, bindedObject);
+                var differences = AntWayActivityActivator
+                                  .ObjectsDifference(persistedObject, bindedObject);
 
                 if (differences.Any())
                 {
@@ -202,9 +236,9 @@ namespace AntWay.Core.Activity
                     result.AddRange(differences);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                result.Add($"Antway checksum error in  DifferenceBetweenPersistedAndBindedObject" +
+                result.Add($"Antway checksum error in DifferenceBetweenPersistedAndBindedObject" +
                            $"{activity.ActivityId}: {ex.Message}");
             }
 

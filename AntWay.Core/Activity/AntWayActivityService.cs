@@ -14,43 +14,27 @@ namespace AntWay.Core.Activity
     [Activity(Id = "ServiceCall")]
     public class AntWayActivityService : AntWayActivityRuntimeBase, IAntWayRuntimeActivity
     {
-        
-        public override ActivityExecution Run(ProcessInstance pi,
-                                              WorkflowRuntime runtime,
-                                              object[] parameters = null)
+        public override void RunImplementation(string locator, Guid processId)
         {
-            var result = new ActivityExecution
-            {
-                ActivityId = ActivityId,
-                ActivityName = ActivityName,
-                ProcessId = pi.ProcessId,
-            };
-
-            var url = parameters[0].ToString();
+            var url = locator;
 
             try
             {
                 var response = new HttpClient().GetAsync(url).Result;
 
-                result.ParametersOutput = new ActivityServiceModel()
+                ActivityExecution.ParametersOutput = new ActivityServiceModel()
                 {
                     PARAMETER_HTTP_RESPONSE = "200"
-                }; 
-
-                result.ExecutionSuccess = true;
+                };
             }
             catch (Exception ex)
             {
-                result.ParametersOutput = new ActivityServiceModel()
+                ActivityExecution.ParametersOutput = new ActivityServiceModel()
                 {
                     PARAMETER_HTTP_RESPONSE = "403"
                 };
-                result.ExecutionSuccess = false; 
+                ActivityExecution.ExecutionSuccess = false;
             }
-
-            PersistActivityExecution(result, pi, runtime);
-
-            return result;
         }
     }
 

@@ -59,22 +59,6 @@ namespace AntWay.Core.Runtime
             return processId;
         }
 
-        public void AddRelationToWorkflowInstance(Guid processsId,
-                                                  KeyValuePair<string,string> relations)
-        {
-            var locatorRelationsPersistence = new LocatorRelationsPersistence
-                {  IDAL = PersistenceObjectsFactory.GetIDALLocatorRelationsObject() };
-
-            var locatorRelationView = new LocatorRelationsView
-            {
-                WFProcessGuid = processsId,
-                Entity = relations.Key,
-                EntityValue = relations.Value,
-            };
-
-            locatorRelationsPersistence.AddRelation(locatorRelationView);
-        }
-
         public string DesignerAPI(NameValueCollection pars, Stream filestream = null)
         {
             string result = WorkflowRuntime.DesignerAPI(pars, filestream, true);
@@ -154,7 +138,7 @@ namespace AntWay.Core.Runtime
             return WorkflowRuntime.ExecuteTriggeredTransitions(processInstance, conditionalTransitions);
         }
 
-        public bool ExecuteCommandSiguente(Guid processId, string identifyId = null)
+        public bool ExecuteCommandSiguiente(Guid processId, string identifyId = null)
         {
             WorkflowCommand command = WorkflowClient.AntWayRunTime
                                        .GetAvailableCommands(processId, identifyId ?? string.Empty)
@@ -271,6 +255,8 @@ namespace AntWay.Core.Runtime
                 { CodeResponse = ResponseCodes.CODE_RESPONSE_NOT_FOUND };
             }
 
+            var currentState = WorkflowClient.AntWayRunTime.GetCurrentStateName(fromProcessGuid);
+
             WorkflowClient.GetAntWayRunTime(scheme.SchemeCode);
             WorkflowClient.DataBaseScheme = scheme.DBSchemeName;
 
@@ -286,6 +272,10 @@ namespace AntWay.Core.Runtime
 
             WorkflowClient.GetAntWayRunTime(fromSchemeName);
             WorkflowClient.DataBaseScheme = fromDatabaseScheme;
+
+            var pi = WorkflowClient.AntWayRunTime.GetProcessInstance(fromProcessGuid);
+            WorkflowClient.AntWayRunTime.WorkflowRuntime
+            .ChangeStatus(pi, currentState, managerResponse.StateName);
 
             return new CallWorkFlowResponseView
             {
@@ -306,7 +296,7 @@ namespace AntWay.Core.Runtime
         internal ManagerResponse ValidateModel(ProcessInstance processInstance)
         {
             IAntWayRuntimeActivity activityInstance = null;
-            object activityModelInstance = null;
+            IActivityModel activityModelInstance = null;
 
             //GET CHECKSUM VALUES FROM Activity Manager
             List<ActivityManager> activityManagerList = WorkflowClient.IActivityManager
@@ -340,7 +330,7 @@ namespace AntWay.Core.Runtime
                     if (checksumInputBinded!=null &&
                         checksumInputBinded != activityExecutionPersisted.InputChecksum)
                     {
-                        activityModelInstance = Activator.CreateInstance(
+                        activityModelInstance = (IActivityModel) Activator.CreateInstance(
                                                     activityInstance.GetType()
                                                     .GetAttributeValue((ActivityAttribute a) => a.InputType)
                                                 );
@@ -364,14 +354,13 @@ namespace AntWay.Core.Runtime
                     if (checksumOutputBinded!=null &&
                         checksumOutputBinded != activityExecutionPersisted.OutputChecksum)
                     {
-                        //activityModelInstance = Activator.CreateInstance(am.ClassActivityModelOutputType);
-                        activityModelInstance = Activator.CreateInstance(
+                        activityModelInstance = (IActivityModel) Activator.CreateInstance(
                                                     activityInstance.GetType()
                                                     .GetAttributeValue((ActivityAttribute a) => a.OutputType)
                                                 );
 
 
-                        errorResponse.ValidationMessages =  activityInstance
+                        errorResponse.ValidationMessages = activityInstance
                                                             .DifferenceBetweenPersistedAndBindedObject(
                                                                    activityModelInstance,
                                                                    processInstance.ProcessId,
@@ -393,7 +382,8 @@ namespace AntWay.Core.Runtime
             string cadTochecksumFromBindingMethods = "";
 
             var method = checksumType == ChecksumType.Input
-                            ? "InputBinding" : "OutputBinding";
+                            ? AntWayActivityRuntimeBase.InvokedMethodInputBindingName
+                            : AntWayActivityRuntimeBase.InvokedMethodOutputBindingName;
 
             object methodResult = AntWayActivityActivator.RunMethod
                                     (method, processInstance.ProcessId, activityInstance);
@@ -487,10 +477,12 @@ namespace AntWay.Core.Runtime
 
             if (activityInstance == null) return false;
 
-            string method = (checksumType == ChecksumType.Input ? "InputBinding" : "OutputBinding");
+            string method = (checksumType == ChecksumType.Input 
+                                    ? AntWayActivityRuntimeBase.InvokedMethodInputBindingName
+                                    : AntWayActivityRuntimeBase.InvokedMethodOutputBindingName);
             TAM parametersBind = (TAM) AntWayActivityActivator
                                        .RunMethod(method, processInstance.ProcessId, 
-                                                  activityInstance, parametersStoredFromActivity);
+                                                  activityInstance);
 
             if (parametersBind != null)
             {

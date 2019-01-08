@@ -25,6 +25,8 @@ namespace AntWay.Core.Mapping
         /// Only class mapped inside manager will be instanciated
         /// </summary>
         public bool RunOnlyIfIsInManager;
+
+        public string VersionFromManager;
     }
 
     public class ParameterBindingAttribute : Attribute

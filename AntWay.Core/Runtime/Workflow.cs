@@ -54,13 +54,17 @@ namespace AntWay.Core.Runtime
                     activityId = $"{processInstance.CurrentActivityName.Split('/')[0]}/{Constants.CHECKSUM_ERROR_TITLE}";
                 }
 
-                return new ManagerResponse
+                var errorResponse = new ManagerResponse
                 {
                     ProcessId = processInstance.ProcessId,
                     ActivityId = activityId,
                     ActivityName = processInstance.CurrentActivityName,
-                    Success = false
+                    Success = false,
+                    StateName = startworkflow.AntwayRuntime.GetCurrentActivityName(processInstance.ProcessId),
                 };
+                errorResponse.ValidationMessages = startworkflow.AntwayRuntime.GetPersistedErrorMessages(errorResponse);
+
+                return errorResponse;
             }
 
             bool timeExpired = CheckTimersExpired(startworkflow.AntwayRuntime, processInstance);
@@ -96,7 +100,6 @@ namespace AntWay.Core.Runtime
 
                 managerResponse.ActivityId = $"{managerResponse.ActivityId}/{Constants.CHECKSUM_ERROR_TITLE}";
             }
-
 
             return managerResponse;
         }

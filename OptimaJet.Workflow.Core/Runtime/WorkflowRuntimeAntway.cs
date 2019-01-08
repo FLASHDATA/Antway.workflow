@@ -32,6 +32,27 @@ namespace OptimaJet.Workflow.Core.Runtime
         }
 
 
+        public void ChangeStatus(ProcessInstance processInstance,string stateFrom, string stateTo)
+        {
+            try
+            {
+                var activityToSet =
+                    processInstance.ProcessScheme.Activities.FirstOrDefault(
+                            a => a.State == stateFrom);
+
+                PersistenceProvider.FillSystemProcessParameters(processInstance);
+                var from = processInstance.CurrentActivity;
+                var to = processInstance.CurrentActivity;
+                to.State = stateTo;
+                PersistenceProvider.UpdatePersistenceState(processInstance, TransitionDefinition.Create(@from, to));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Workflow Id={processInstance.ProcessId}", ex);
+            }
+        }
+
+
         public void SetErrorState(ProcessInstance processInstance,
                                       string activityId,
                                       string activityName,

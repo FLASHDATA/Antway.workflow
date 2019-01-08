@@ -11,11 +11,18 @@ namespace AntWay.Persistence.Provider.Model
     {
         public IDALLocators IDALocators { get; set; }
 
-
         public LocatorView GetWorkflowLocatorFromGuid(Guid guid)
         {
             var dataView = IDALocators.GetLocatorFromGuid(guid);
             return dataView;
+        }
+
+        public string GetLocatorFromRelation(string consumer, string entityId)
+        {
+            Guid? processId = IDALocators.GetProcessIdFromRelation(consumer, entityId);
+            if (processId == null) return null;
+            var locatorView = GetWorkflowLocatorFromGuid(processId.Value);
+            return locatorView.LocatorValue;
         }
 
         public LocatorView GetWorkflowByLocator(string schemeCode, string locator)

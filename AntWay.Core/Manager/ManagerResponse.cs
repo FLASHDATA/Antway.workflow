@@ -23,8 +23,5 @@ namespace AntWay.Core.Manager
         public bool TimeExpired { get; set; }
 
         public List<string> ValidationMessages { get; set; }
-
-        //public object ParametersInput { get; set; }
-        //public object ParametersOutput { get; set; }
     }
 }

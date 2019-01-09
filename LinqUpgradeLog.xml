@@ -2,9 +2,9 @@
 <?xml-stylesheet type='text/xsl' href='_LinqUpgradeReport_Files/LinqUpgradeReport.xslt'?>
 <LinqUpgradeLog>
 <Properties>
-<Property Name="Solution" Value="C:\Projects\AntWay\AntWay.sln"></Property>
-<Property Name="Solution File" Value="C:\Projects\AntWay"></Property>
-<Property Name="Date" Value="08/01/2019 12:17:10"></Property>
+<Property Name="Solution" Value="C:\PROJECTS\AntWay\AntWay.sln"></Property>
+<Property Name="Solution File" Value="C:\PROJECTS\AntWay"></Property>
+<Property Name="Date" Value="09/01/2019 14:44:58"></Property>
 </Properties>
 <Event ErrorLevel="3" Project="AntWay.Core" Source="Activity" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Core" Source="ActivityModel.cs" Description="No need to convert"></Event>
@@ -40,7 +40,7 @@
 <Event ErrorLevel="3" Project="AntWay.Core" Source="Workflow.cs" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Core" Source="WorkflowClient.cs" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Core" Source="WorkflowServer.cs" Description="No need to convert"></Event>
-<Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="App.config" Description="Converted"></Event>
+<Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="App.config" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="Data" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="APLICACIO_RUTES.cs" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="LOCATORS.cs" Description="No need to convert"></Event>
@@ -55,7 +55,7 @@
 <Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="ProcessEFDAL.cs" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="Properties" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="AssemblyInfo.cs" Description="No need to convert"></Event>
-<Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="licenses.licx" Description="Converted"></Event>
+<Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="licenses.licx" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="SQL" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="CreatePersistenceObjects.sql" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Oracle.Provider" Source="DropPersistenceObjects.sql" Description="No need to convert"></Event>
@@ -302,7 +302,7 @@
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Demo.Web" Source="App_Licenses.dll" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Demo.Web" Source="DashboardDemo.zip" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Demo.Web" Source="Index.htm" Description="No need to convert"></Event>
-<Event ErrorLevel="3" Project="AntWay.Dashboard.Demo.Web" Source="licenses.licx" Description="Converted"></Event>
+<Event ErrorLevel="3" Project="AntWay.Dashboard.Demo.Web" Source="licenses.licx" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Demo.Web" Source="Web.config" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="App_Data" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="App_Start" Description="No need to convert"></Event>
@@ -574,7 +574,7 @@
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="packages.config" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="Properties" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="AssemblyInfo.cs" Description="No need to convert"></Event>
-<Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="licenses.licx" Description="Converted"></Event>
+<Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="licenses.licx" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="readme.txt" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="Scripts" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="ace.js" Description="No need to convert"></Event>
@@ -643,7 +643,7 @@
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="_SchemeNew.cshtml" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="Error.cshtml" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="Web.config" Description="No need to convert"></Event>
-<Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="Web.config" Description="Converted"></Event>
+<Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="Web.config" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="Web.Debug.config" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="AntWay.Dashboard.Web" Source="Web.Release.config" Description="No need to convert"></Event>
 <Event ErrorLevel="3" Project="OptimaJet.Workflow.Core" Source="_Documentación" Description="No need to convert"></Event>

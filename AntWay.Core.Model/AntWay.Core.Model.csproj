@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ActivityExecution.cs" />
     <Compile Include="ActivityModelBase.cs" />
+    <Compile Include="ActivityModelBasicTypes.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DefaultSchemeCommands.cs" />
     <Compile Include="IActivityModel.cs" />

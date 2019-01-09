@@ -225,7 +225,7 @@ namespace AntWay.Core.Activity
                                         ? activity.InputBinding(locator, processId)
                                         : activity.OutputBinding(locator, processId);
 
-                object persistedObject = activityModel.DeserializePersistedObject(jsonPersisted);
+                object persistedObject = activityModel?.DeserializePersistedObject(jsonPersisted);
 
                 var differences = AntWayActivityActivator
                                   .ObjectsDifference(persistedObject, bindedObject);
@@ -239,7 +239,7 @@ namespace AntWay.Core.Activity
             catch (Exception ex)
             {
                 result.Add($"Antway checksum error in DifferenceBetweenPersistedAndBindedObject" +
-                           $"{activity.ActivityId}: {ex.Message}");
+                           $" {activity.ActivityId}: {ex.Message}");
             }
 
             return result;

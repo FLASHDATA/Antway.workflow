@@ -83,7 +83,7 @@
             isNormal = false;
         }
 
-        if (me.item.IsCondition) {
+        if (me.item.IsCondition) { 
             rectColor = WorkflowDesignerConstants.ActivityConditionColor;
             textColor = WorkflowDesignerConstants.ActivityConditionTextColor;
             width = this.graph.Settings.DefaultActivityWidth;
@@ -99,7 +99,7 @@
             width = this.graph.Settings.DefaultActivityWidth;
             height = this.graph.Settings.DefaultActivityHeight;
             //cornerRadius = 50;
-            xtext = 20;
+            //xtext = 10;
             isNormal = false;
         }
 
@@ -251,8 +251,8 @@
                 me.item.State = '';
 
             me.stateText = new Konva.Text({
-                x: xtext,
-                y: 37,
+                x: 25,
+                y: 38,
                 //width: 145,
                 text: me.item.State,
                 fontSize: 12,
@@ -346,7 +346,7 @@
             me.control.add(me.text);
             me.control.add(me.stateText);
 
-        } else {   /////////////////////////
+        } else {  
 
             me.rectangle = new Konva.Rect({
                 x: xra,

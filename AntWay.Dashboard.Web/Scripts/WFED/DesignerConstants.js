@@ -7,6 +7,8 @@
     ActivityFinalTextColor: '#FFFFFF',
     ActivityConditionColor: '#2980B9',
     ActivityConditionTextColor: '#FFFFFF',
+    ActivityIsSchemeColor: '#ECF0F1',
+    ActivityIsSchemeTextColor: '#2D3436',
     ActivityShape: '#CECECE',
     SelectColor: '#F39C12',
     SelectTextColor: '#FFFFFF',

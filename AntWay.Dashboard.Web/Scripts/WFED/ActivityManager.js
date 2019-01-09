@@ -12,6 +12,8 @@
         this.ImageImplementationWhite = WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + 'wfe.implementation.white.png');
 
         this.ImageScheme = WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + 'callworkflow.png');
+        this.ImageTag = WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + 'tag.png');
+        this.ImageTagW = WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + 'tagW.png');
     };
     this.ItemControls = new Array();
     this.draw = function () {

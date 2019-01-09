@@ -93,6 +93,16 @@
             isNormal = false;
         }
 
+        if (me.item.IsScheme) {
+            rectColor = WorkflowDesignerConstants.ActivityIsSchemeColor;
+            textColor = WorkflowDesignerConstants.ActivityIsSchemeTextColor;
+            width = this.graph.Settings.DefaultActivityWidth;
+            height = this.graph.Settings.DefaultActivityHeight;
+            //cornerRadius = 50;
+            xtext = 20;
+            isNormal = false;
+        }
+
         if (me.graph.GetCurrentActivity() == me.item.Name) {
             rectColor = WorkflowDesignerConstants.SelectColor;
             textColor = WorkflowDesignerConstants.SelectTextColor;
@@ -108,14 +118,7 @@
             cornerRadius = 50;
             isNormal = false;
         }
-        //if (){
-        // || 
-        //}
-        //var nose = me.item.Implementation;
-        //alert(nose);
 
-
-        //if (me.item.ImpAction == "InsertarNotificacionAction") {
         if (me.item.IsCondition) {
             me.rectangle = new Konva.Rect({
                 x: xra,
@@ -124,23 +127,50 @@
                 offsetX: offsetX,
                 width: this.graph.Settings.DefaultActivityWidth,
                 height: this.graph.Settings.DefaultActivityHeight,
-                // stroke: WorkflowDesignerConstants.ActivityShape,
-                // strokeWidth: 0,
                 rotation: rotation,
                 fill: "#F4F4F4",
-                cornerRadius: 5,
+                cornerRadius: 5
             });
-            me.control.add(me.rectangle);
+            //me.control.add(me.rectangle); //necesario para unir pero no pintado
             me.impImage = new Konva.RegularPolygon({
                 x: 100,
                 y: 30,
                 sides: 4,
                 radius: 30,
                 scaleX: 3.3,
-                stroke: "#94948E",
                 fill: "#FFE59E",
+                stroke: '#ab9866',
+                strokeWidth: 2,
+                shadowColor: '#797979',
+                shadowOffset: { x: 1, y: 4 },
+                shadowOpacity: 0.6
             });
             me.control.add(me.impImage);
+
+            me.text = new Konva.Text({
+                x: xtext,
+                y: 15,
+                text: this.GetName(),
+                fontSize: 12,
+                fontFamily: 'Arial',
+                fontStyle: 'bold',
+                fill: textColor
+            });
+
+            if (me.item.State == undefined)
+                me.item.State = '';
+
+            me.stateText = new Konva.Text({
+                x: xtext,
+                y: 27,
+                text: me.item.State,
+                fontSize: 12,
+                fontFamily: 'Arial',
+                fill: textColor
+            });
+
+            me.control.add(me.text);
+            me.control.add(me.stateText);
         }
         else if (me.item.IsScheme) {
             me.rectangle = new Konva.Rect({
@@ -155,19 +185,86 @@
                 rotation: rotation,
                 fill: rectColor,
                 cornerRadius: cornerRadius,
+                stroke: '#ab9866',
+                strokeWidth: 2,
+                shadowColor: '#797979',
+                //shadowBlur: 0,
+                shadowOffset: { x: 4, y: 4 },
+                shadowOpacity: 0.6
             });
             me.control.add(me.rectangle);
 
+            me.impImage = new Konva.Rect({
+                x: xra,
+                y: yra,
+                width: this.graph.Settings.DefaultActivityWidth,
+                height: 30,
+
+                fill: "#ab9866"
+
+                //cornerRadius: '5,5,5,5'
+            });
+            me.control.add(me.impImage);
+            me.circleinfo = new Konva.Rect({
+                x: 160,
+                y: -20,
+                width: 45,
+                height: 45,
+                cornerRadius: 30,
+                fill: "#fbfbfb",
+                stroke: '#ab9866',
+                strokeWidth: 3
+
+            });
+            me.control.add(me.circleinfo);
+
             me.impImage = new Konva.Image({
-                x: me.rectangle.attrs.width - 40,
-                y: 10,
+                x: me.rectangle.attrs.width - 30,
+                y: -10,
                 image: me.manager.ImageScheme,
                 width: 25,
                 height: 25
             });
             me.control.add(me.impImage);
+
+            me.tagimg = new Konva.Image({
+                x: 5,
+                y: 35,
+                image: me.manager.ImageTag,
+                width: 15,
+                height: 15
+            });
+            me.control.add(me.tagimg);
+
+            me.text = new Konva.Text({
+                x: xtext,
+                y: 10,
+                //width: 145,
+                text: this.GetName(),
+                fontSize: 12,
+                fontFamily: 'Arial',
+                fontStyle: 'bold',
+                fill: '#fff'
+            });
+
+            if (me.item.State == undefined)
+                me.item.State = '';
+
+            me.stateText = new Konva.Text({
+                x: xtext,
+                y: 37,
+                //width: 145,
+                text: me.item.State,
+                fontSize: 12,
+                fontFamily: 'Arial',
+                fill: textColor
+            });
+
+            me.control.add(me.text);
+            me.control.add(me.stateText);
         }
-        else {
+        else if (!me.item.IsInitial && !me.item.IsFinal) {
+
             me.rectangle = new Konva.Rect({
                 x: xra,
                 y: yra,
@@ -180,9 +277,37 @@
                 rotation: rotation,
                 fill: rectColor,
                 cornerRadius: cornerRadius,
+                stroke: '#ab9866',
+                strokeWidth: 2,
+                shadowColor: '#797979',
+                //shadowBlur: 0,
+                shadowOffset: { x: 4, y: 4 },
+                shadowOpacity: 0.6
+
             });
             me.control.add(me.rectangle);
 
+            me.impImage = new Konva.Rect({
+                x: xra,
+                y: yra,
+                width: this.graph.Settings.DefaultActivityWidth,
+                height: 30,
+
+                fill: "#ab9866",
+
+                //cornerRadius: '5,5,5,5'
+            });
+            me.control.add(me.impImage);
+
+
+            me.tagimg = new Konva.Image({
+                x: 5,
+                y: 36,
+                image: me.manager.ImageTag,
+                width: 15,
+                height: 15
+            });
+            me.control.add(me.tagimg);
             if (Array.isArray(me.item.Implementation) && me.item.Implementation.length > 0) {
                 me.impImage = new Konva.Image({
                     x: me.rectangle.attrs.width - 20,
@@ -193,6 +318,102 @@
                 });
                 me.control.add(me.impImage);
             }
+
+            me.text = new Konva.Text({
+                x: xtext,
+                y: 10,
+                //width: 145,
+                text: this.GetName(),
+                fontSize: 12,
+                fontFamily: 'Arial',
+                fontStyle: 'bold',
+                fill: '#fff'
+            });
+
+            if (me.item.State == undefined)
+                me.item.State = '';
+
+            me.stateText = new Konva.Text({
+                x: 25,
+                y: 38,
+                //width: 145,
+                text: me.item.State,
+                fontSize: 12,
+                fontFamily: 'Arial',
+                fill: textColor
+            });
+
+            me.control.add(me.text);
+            me.control.add(me.stateText);
+
+        } else {   /////////////////////////
+
+            me.rectangle = new Konva.Rect({
+                x: xra,
+                y: yra,
+                offsetY: offsetY,
+                offsetX: offsetX,
+                width: this.graph.Settings.DefaultActivityWidth,
+                height: this.graph.Settings.DefaultActivityHeight,
+                // stroke: WorkflowDesignerConstants.ActivityShape,
+                // strokeWidth: 0,
+                rotation: rotation,
+                fill: rectColor,
+                cornerRadius: cornerRadius,
+                shadowColor: '#797979',
+                //shadowBlur: 0,
+                shadowOffset: { x: 4, y: 4 },
+                shadowOpacity: 0.6
+
+            });
+            me.control.add(me.rectangle);
+                 
+            me.tagimg = new Konva.Image({
+                x: 20,
+                y: 25,
+                image: me.manager.ImageTagW,
+                width: 15,
+                height: 15
+            });
+            me.control.add(me.tagimg);
+            if (Array.isArray(me.item.Implementation) && me.item.Implementation.length > 0) {
+                me.impImage = new Konva.Image({
+                    x: me.rectangle.attrs.width - 20,
+                    y: 38,
+                    image: isNormal ? me.manager.ImageImplementation : me.manager.ImageImplementationWhite,
+                    width: 15,
+                    height: 15
+                });
+                me.control.add(me.impImage);
+            }
+
+            me.text = new Konva.Text({
+                x: xtext,
+                y: 10,
+                //width: 145,
+                text: this.GetName(),
+                fontSize: 12,
+                fontFamily: 'Arial',
+                fontStyle: 'bold',
+                fill: '#fff'
+            });
+
+            if (me.item.State == undefined)
+                me.item.State = '';
+
+            me.stateText = new Konva.Text({
+                x: 40,
+                y: 25,
+                //width: 145,
+                text: me.item.State,
+                fontSize: 12,
+                fontFamily: 'Arial',
+                fill: textColor
+            });
+
+            me.control.add(me.text);
+            me.control.add(me.stateText);
+
         }
 
         //if (Array.isArray(me.item.PreExecutionImplementation) && me.item.PreExecutionImplementation.length > 0) {
@@ -206,30 +427,7 @@
         //    me.control.add(me.impImage2);
         //}
 
-        me.text = new Konva.Text({
-            x: xtext,
-            y: 10,
-            text: this.GetName(),
-            fontSize: 12,
-            fontFamily: 'Arial',
-            fontStyle: 'bold',
-            fill: textColor
-        });
 
-        if (me.item.State == undefined)
-            me.item.State = '';
-
-        me.stateText = new Konva.Text({
-            x: xtext,
-            y: 25,
-            text: me.item.State,
-            fontSize: 12,
-            fontFamily: 'Arial',
-            fill: textColor
-        });
-
-        me.control.add(me.text);
-        me.control.add(me.stateText);
 
         var typeText = "";
         if (me.item.IsInitial == true) {

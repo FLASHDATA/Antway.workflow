@@ -296,11 +296,17 @@
             : this.item.Classifier.toLowerCase();
 
         //console.log(classifier);
-        if (classifier == 'TimeInterval') return '#3F8C8D';
+        if (classifier == 'TimeInterval') return '#27AE60';
+
+        if (me.graph.getParam("exinfo") == true) {
+            return classifier == 'notspecified'
+                ? '#7F8C8D'
+                : (classifier == 'direct') ? '#27AE60' : '#2980B9';
+        }
 
         return classifier == 'notspecified'
             ? '#7F8C8D'
-            : (classifier == 'direct') ? '#27AE60' : '#2980B9';
+            : (classifier == 'direct') ? '#27AE60' : '#00000000';
     };
 
     this.DrawActivePoint = function () {
@@ -563,8 +569,8 @@
             draggable: draggable
         });
 
-        var imageName1 = 'transaction-blak.png';
-        var imageName2 = 'transaction-blak.png';
+        var imageName1 = 'transaction-empty.png';
+        var imageName2 = 'transaction-empty.png';
         var textvalue = '';
 
         var triggertype = this.item.Trigger.Type.toLowerCase();
@@ -586,20 +592,23 @@
 
         
 
-        switch (textvalue) {
-            case 'A':
+        switch (triggertype) {
+            case 'auto':
                 imageName1 = 'transition-auto.png';
                 break;
-            case 'C':
+            case 'command':
                 imageName1 = 'transition-command.png';
                 break;
-            case 'T':
+            case 'timer':
+                imageName1 = 'transition-timer.png';
+                break;
+            case 'timerexpired':
                 imageName1 = 'transition-timer.png';
                 break;
         }
 
         
-        
+
 
         var conditiontype = this.item.Conditions[0].Type.toLowerCase();
         if (conditiontype === 'always') {
@@ -616,17 +625,17 @@
         }
         
 
-        ////if (textvalue == "AA") { textvalue = ""; }
-        ////if (textvalue == "CA") { textvalue = ""; }
-        ////if (textvalue == "TA") { textvalue = "     if"; }
+        if (textvalue == "AA") { textvalue = "Automático"; }
+        if (textvalue == "CA") { textvalue = "Comando"; }
+        if (textvalue == "TA") { textvalue = "Temporizador"; }
 
-        ////if (textvalue == "AC") { textvalue = "     if"; }
-        ////if (textvalue == "CC") { textvalue = "     if"; }
-        ////if (textvalue == "TC") { textvalue = "     if"; }
+        if (textvalue == "AC") { textvalue = "Auto. if"; }
+        if (textvalue == "CC") { textvalue = "Comando if"; }
+        if (textvalue == "TC") { textvalue = "Timer if"; }
 
-        ////if (textvalue == "AO") { textvalue = "     else"; }
-        ////if (textvalue == "CO") { textvalue = "     else"; }
-        ////if (textvalue == "TO") { textvalue = "     else"; }
+        if (textvalue == "AO") { textvalue = "Auto. else"; }
+        if (textvalue == "CO") { textvalue = "Comando else"; }
+        if (textvalue == "TO") { textvalue = "Timer else"; }
 
 
         //if (me.item.Trigger != undefined && me.item.Trigger.Command != undefined && me.item.Trigger.Type === 'Command') {
@@ -656,18 +665,55 @@
         //if (textvalue == "TCR") { textvalue = "⏱if⛔"; }
         //if (textvalue == "TOR") { textvalue = "⏱else⛔"; }
 
+        if (triggertype === 'timer' || triggertype === 'timerexpired') {
+
+            var circleTimer = new Konva.Rect({
+                x: -32,//textvalue.length == 5 ? - 32 : -26,
+                y: -15,
+                width: 75,
+                height: 47,
+                fill: me.GetColor(),
+                cornerRadius: 15
+            });
+
+            var imageTimer = new Konva.Image({
+                x: imageName2 == 'transaction-blak.png' ? -12 : -23,
+                y: -12,
+                image: WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + imageName1),
+                width: 32,
+                height: 32
+            });
+
+            var image2Timer = new Konva.Image({
+                x: 3,
+                y: -15,
+                image: WorkflowDesignerCommon.loadImage(this.graph.Settings.imagefolder + imageName2),
+                width: 32,
+                height: 32
+            });
+            
+            var textTimer = new Konva.Text({
+                x: -22,
+                y: 20,
+                text: textvalue,
+                fontSize: 10,
+                fontFamily: 'Arial',
+                fill: '#FFFFFF',
+                //fontStyle: 'bold'
+            });
+
+        }
+        else {
 
         var circle = new Konva.Rect({
             x: -32,//textvalue.length == 5 ? - 32 : -26,
             y: -15,
             width: 75,
-            height: 37,
+            height: 47,
             fill: me.GetColor(),
             cornerRadius: 15
         });
 
-
-        cActivePoint.add(circle);
 
         var image = new Konva.Image({
             x: imageName2 == 'transaction-blak.png' ? -12 : -23,
@@ -676,7 +722,7 @@
             width: 32,
             height: 32
         });
-        cActivePoint.add(image);
+
 
         var image2 = new Konva.Image({
             x: 3,
@@ -685,19 +731,30 @@
             width: 32,
             height: 32
         });
-        cActivePoint.add(image2);
-        
 
-        //var text = new Konva.Text({
-        //    x: textvalue.length == 5 ? -32 : -26,
-        //    y: -7,
-        //    text: textvalue,
-        //    fontSize: 20,
-        //    fontFamily: 'Arial',
-        //    fill: '#FFFFFF',
-        //    fontStyle: 'bold'
-        //});
-        //cActivePoint.add(text);
+
+
+        var text = new Konva.Text({
+            x: -22,
+            y: 20,
+            text: textvalue,
+            fontSize: 10,
+            fontFamily: 'Arial',
+            fill: '#FFFFFF',
+            //fontStyle: 'bold'
+        });
+
+
+
+        cActivePoint.add(circle);
+        cActivePoint.add(image);
+        cActivePoint.add(image2);
+        cActivePoint.add(text);
+           
+        }
+
+
+
 
         cActivePoint.transition = cTransition;
 
@@ -776,6 +833,12 @@
 
         if (me.graph.getParam("exinfo") == true) {
             me.createExInfo(cActivePoint);
+            if (triggertype === 'timer' || triggertype === 'timerexpired') {
+                cActivePoint.add(circleTimer);
+                cActivePoint.add(imageTimer);
+                cActivePoint.add(image2Timer);
+                cActivePoint.add(textTimer);   
+            }
         }
         else {
             var tooltiptext = this.item.Trigger.Type;
@@ -792,6 +855,8 @@
 
             WorkflowDesignerTooltip(me.manager.APLayer, cActivePoint, tooltiptext, 17);
         }
+
+
         return cActivePoint;
     };
 

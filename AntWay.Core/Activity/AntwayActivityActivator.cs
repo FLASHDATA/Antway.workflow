@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using AntWay.Core.Manager;
 using AntWay.Core.Mapping;
-using AntWay.Core.Runtime;
 
+/// <summary>
+/// These class methods provide Reflection functionality to antway activities 
+/// </summary>
 namespace AntWay.Core.Activity
 {
-    /// <summary>
-    /// TODO: Conveniente repartir métodos de esta clase en otros
-    /// </summary>
-    public static class AntWayActivityActivator
+    internal static class AntWayActivityActivator
     {
-        public static IAntWayRuntimeActivity GetAntWayRuntimeActivity(string actityId,
+        internal static IAntWayRuntimeActivity GetAntWayRuntimeActivity(string actityId,
                                                 List<Type> types,
                                                 IActivityManager activityManager = null)
         {
@@ -77,7 +74,7 @@ namespace AntWay.Core.Activity
         /// <param name="types"></param>
         /// <param name="attributeFilter"></param>
         /// <returns></returns>
-        public static IAntWayRuntimeActivity GetAntWayRuntimeActivity(string actityId,
+        internal static IAntWayRuntimeActivity GetAntWayRuntimeActivity(string actityId,
                                                   List<Type> types,
                                                   ActivityAttribute attributeFilter = null
                                              )
@@ -128,16 +125,17 @@ namespace AntWay.Core.Activity
             }
         }
 
-        public static T RunMethod<T>(string methodName, Guid processId,
-                                     IAntWayRuntimeActivity activityInstance)
-        {
-            MethodInfo methodInfo = activityInstance.GetType().GetMethod(methodName);
-            ParameterInfo[] parameters = methodInfo.GetParameters();
-            object[] parametersArray = new object[] { new object[] { processId} };
-            T result = (T)methodInfo.Invoke(activityInstance, parametersArray);
 
-            return result;
-        }
+        //public static T RunMethod<T>(string methodName, Guid processId,
+        //                             IAntWayRuntimeActivity activityInstance)
+        //{
+        //    MethodInfo methodInfo = activityInstance.GetType().GetMethod(methodName);
+        //    ParameterInfo[] parameters = methodInfo.GetParameters();
+        //    object[] parametersArray = new object[] { new object[] { processId} };
+        //    T result = (T)methodInfo.Invoke(activityInstance, parametersArray);
+
+        //    return result;
+        //}
 
         internal static object RunMethod(string methodName, Guid processId,
                                          IAntWayRuntimeActivity activityInstance)
@@ -150,7 +148,7 @@ namespace AntWay.Core.Activity
             return result;
         }
 
-        public static List<string> ObjectsDifference(object oOldRecord, object oNewRecord,
+        internal static List<string> ObjectsDifference(object oOldRecord, object oNewRecord,
                                                     List<string> differences = null)
         {
             var result = differences ?? new List<string>();
@@ -198,7 +196,6 @@ namespace AntWay.Core.Activity
             return result;
         }
     }
-
 
     public static class AttributeExtensions
     {

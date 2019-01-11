@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Xml.Linq;
-using AntWay.Core.Manager;
+﻿using AntWay.Core.Mapping;
 using OptimaJet.Workflow.Core.Runtime;
 
 namespace AntWay.Core.Runtime

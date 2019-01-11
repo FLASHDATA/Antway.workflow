@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace AntWay.Core.Runtime
 {
+    /// <summary>
+    /// TODO: Review
+    /// </summary>
     public static class AntWayRuntimeHost
     { 
         public static List<KeyValuePair<string, string>> ParametersTemp
